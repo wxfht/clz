@@ -1,0 +1,62 @@
+<extend name="Public:base" />
+
+<block name="content">
+	
+<div class="page-header">
+	<a href="{:U('Roles/add')}" class="btn btn-primary">新增角色</a>
+</div>		
+	
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>											
+					 	<th>角色名称</th>
+		                <th>备注</th>
+		                <th>状态</th>
+		                <th>操作</th>		
+					</tr>
+				</thead>
+				<tbody>
+						 <volist name="roles" id="role" empty="$empty">
+						<tr>							
+								<td align="left">{$role['fullname']}</td>
+				                <td>{$role['description']}</td>
+				                <td><if condition="$role['status'] eq 1">已启用<else/>已禁用</if></td>
+				                <td>[ <a href="{:U('Roles/edit', array('id' => $role['id']))}">编辑</a> ] <if condition="(1 == $_SESSION['oscshop_admin_s']['user_auth']['is_super']) ">[ <a href="{:U('Roles/assignAccess', array('id' => $role['id']))}">分配权限</a> ]</if></td>
+				            
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script>
+$(function(){
+	
+	$("#search").click(function () {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });
+	
+	
+});		
+</script>
+</block>

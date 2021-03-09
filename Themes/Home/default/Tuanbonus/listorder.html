@@ -1,0 +1,178 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/tuanbonus.css">
+<div id="main">
+<div id="spike-list">
+	<div class="my-memvers">
+		<section class="member-count">
+			<h2 class="member-count-title">
+				<i class="icon-chunk-gray"><i class="icon-chunk-blue"></i></i><span>推荐订单数据</span>
+			</h2>
+			<div class="row member-count-row">
+				<div class="small-4 columns member-count-column">
+					<span class="member-count-label">今日新增</span>
+					<em class="member-count-number">{$today_count}</em>
+				</div>
+				<div class="small-4 columns member-count-column">
+					<span class="member-count-label">昨日新增</span>
+					<em class="member-count-number">{$yes_count}</em>
+				</div>
+				<div class="small-4 columns member-count-column">
+					<span class="member-count-label">订单总数</span>
+					<em class="member-count-number">{$total_count}</em>
+				</div>
+			</div>
+		</section>
+		<section class="member-browse">
+			<h2 class="member-browse-title">
+				<i class="icon-chunk-gray"><i class="icon-chunk-blue"></i></i>
+				<span>详细订单记录</span>
+			</h2>
+		<ul class="member-browse-ul" id="tuan_list">
+			
+			<?php foreach($list as $val){ ?>
+			<li class="member-browse-li">
+				<div class="row member-browse-summey">
+					<a class="member-browse-summey-info" href="#">
+						<div class="member-browse-nt">
+							<span class="member-browse-name" style="font-weight:bold;">
+								订单：<?php echo $val['order_num_alias']; ?> 
+								<span class="pro-price">【<?php echo $val['status_name']; ?>】</span>
+							</span>
+						</div>
+					</a>
+				</div>
+				<div class="member-browser-pro-list">
+					<a class="member-browser-pro-a" href="#">
+						<span class="pro-img">
+							<img src="<?php echo $val['image']; ?>" />
+						</span>
+						<p class="pro-info">
+							<span class="pro-name" style="color:#999;"><?php echo $val['name']; ?></span>
+							<span class="pro-price">
+							<?php if($val['state'] ==0){ ?>
+							预估佣金：
+							<?php }else if($val['state'] ==1){ ?>
+							已获佣金：
+							<?php }else{ ?>
+							退回佣金：
+							<?php }?>
+							<strong>+<?php echo $val['money']; ?></strong>
+							</span>
+							<span class="pro-price">&nbsp;&nbsp;&nbsp;&nbsp;数量：<strong><?php echo $val['quantity']; ?></strong></span>
+						</p>
+					</a>
+				</div>
+			
+				<div class="row member-browse-summey">
+					<a class="member-browse-summey-info" href="#">
+						<div class="member-browse-nt">
+							<span class="member-browse-name" style="color:#999;">
+								购买人：<?php echo $val['uname']; ?>&nbsp;&nbsp;&nbsp;&nbsp;金额：<?php echo $val['total']; ?> <br>日期：<?php echo $val['addtime']; ?>
+							</span>
+						</div>
+					</a>
+				</div>
+			</li>
+			<?php } ?>
+		</ul>
+		</section>
+
+	</div>
+</div>
+</div>
+
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<style>
+
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Spike/index')}";
+
+var req_step = 1;
+
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: "{:U('tuanbonus/listorder', array('state' => $state))}", 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+				
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					
+					_pa++;
+					is_can_next = 1;
+				} else if(result.code == 0) {
+					$('#center_pullup').hide();
+					is_can_next = 0;
+					$('#center_pullup').remove();
+				}
+			}
+		}
+	);
+}
+$(function(){
+	nextpage();
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

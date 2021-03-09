@@ -1,0 +1,147 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<div id="jsalert-assist_free_coupon_rules666" style="display:none;">
+	<div class='bg-fill bg-fill2'></div>
+	<div id='assist-free-coupon-rules-alert' class='assist-free-coupon-rules-alert'>
+	  <div class='content-wrapper'>
+		<div class='detail'>
+		  <div class='title'>积分说明</div>
+		  <div class='desc'>
+			<?php foreach($integral_rules_str as $li){ ?>
+			<div class='li'>
+			  {$li}
+			</div>
+			<?php } ?>
+		  </div>
+		</div>
+	  </div>
+	</div>
+</div>
+<style>
+.rule-btn2 {
+    left: 12px;
+    top: 12px;
+    width: auto;
+  
+    line-height: 20px;
+    font-size: 10px;
+    color: #3b003d;
+    background: hsla(0,0%,100%,.8);
+    border-radius: 5px;
+    padding: 0px 10px;
+}
+</style>
+<div id="main">
+		<div id="index-content" class="container">
+			<div class="score_tip">
+				<a href="javascript:;">
+					<div class="rule-btn2 button-hover">
+						积分说明
+					</div>
+				</a>
+			</div>
+			<div class="ad_info">
+				<a href="{$ad_info.url}">
+					<img src="/Uploads/image/{$ad_info.image}" width="100%" />
+				</a>
+			</div>
+			<div id="rp-banner" style="margin-top:0px;">
+				
+				<!-- Product begin -->
+				<include file="Widget:integral_ajax_goods_index_list" />
+				<!-- Product end  -->
+			</div>
+			
+			
+		</div>
+	</div>
+	<include file="Widget:pin_notify" />	
+	<include file="Public:foot_lazy" />
+	<include file="Public:foot_pinduoduo" />
+	<style>
+.score_tip{
+	position:absolute;
+	right:10px;
+	top:20px;
+}
+.bg-fill {
+    background-color: rgba(0,0,0,.7);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: fixed;
+    z-index: 10001;
+}
+#assist-free-coupon-rules-alert, #flash_groups_rules_alert {
+    -webkit-box-pack: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10002;
+    bottom: 64px;
+}
+#assist-free-coupon-rules-alert {
+    position: fixed;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+#assist-free-coupon-rules-alert .content-wrapper {
+    position: relative;
+    display: block;
+    width: 77%;
+    max-height: 100vh;
+    max-width: 640px;
+    margin: auto;
+    background: #fff;
+    border-radius: 8px;
+    overflow-y: hidden;
+}
+#assist-free-coupon-confirm-alert .content-wrapper .detail, #assist-free-coupon-rules-alert .content-wrapper .detail, #flash_groups_rules_alert .content-wrapper .detail {
+    word-wrap: break-word;
+    word-break: normal;
+    cursor: default;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+#assist-free-coupon-rules-alert .content-wrapper .detail {
+    padding: 25px 20px;
+    text-align: left;
+    -webkit-user-select: none;
+    user-select: none;
+}
+#assist-free-coupon-rules-alert .content-wrapper .detail .title {
+    text-align: center;
+    font-size: 17px;
+    line-height: 1;
+    color: #151516;
+    padding-bottom: 2.5px;
+}
+#assist-free-coupon-rules-alert .content-wrapper .detail .desc .li {
+    
+    font-size: 15px;
+    line-height: 26px;
+    color: #58595b;
+}
+</style>
+<script>
+$(function(){
+	$('.score_tip').click(function(){
+		$('#jsalert-assist_free_coupon_rules666').show();
+	})
+	$('#jsalert-assist_free_coupon_rules666').click(function(){
+		$('#jsalert-assist_free_coupon_rules666').hide();
+	})
+})
+</script>
+</block>

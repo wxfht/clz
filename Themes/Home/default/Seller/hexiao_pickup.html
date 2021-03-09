@@ -1,0 +1,243 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/order_bbf21a65d7f04ce42404217afc4512bd.css">
+<div id="root">
+	<div>
+		<div class="order-banner">
+            <div class="_banner_img order_unpay">
+            </div>
+            <div class="_banner_txt">
+                <div class="_msg_tag">{$order_status_info.name}</div>
+                <div class="_msg_content"></div>
+            </div>
+        </div>
+        <div class="order-address-info">
+           <img class="order-address-icon" src="__PUBLIC__/pinduoduo/assets/img/address_locate-a8a004db65.png">
+           <div class="order-address-body">
+               <div class="address-body-top">
+                   <div class="_address_person">收货人：{$order_info.shipping_name}</div>
+                   <div class="_address_mobile">{$order_info.telephone}</div>
+               </div>
+               <div class="address-body-detail">收货地址：{$shipping_province.area_name}{$shipping_city.area_name}{$shipping_country.area_name}{$order_info.shipping_address}</div>
+           </div>
+       </div>
+       
+       <div class="order-order">
+           <div class="order-order-bd-top">
+               <div class="order-mall-title">
+                   <img class="_icon" src="<?php echo resize($store_info['s_logo'], 100, 100); ?>">
+                   <span class="_mall_name">{$store_info.s_true_name}</span>
+                   <span class="_order_status">{$order_status_info.name}</span>
+               </div>
+           </div>
+           <div class="order-order-goods">
+               <div class="order-order-goods-img">
+                   <img src="{$goods_info.image}">
+               </div>
+               <div class="order-order-goods-name" >
+                   <div class="_goods_name">{$order_goods.name}</div>
+                  
+                   <div class="_spec">
+                   		<?php if(!empty($order_option_info)){ ?>
+                   		<?php foreach($order_option_info as $val) { ?>
+                   		<?php echo $val['name']; ?>（<?php echo $val['value']; ?>）
+                   		<?php } ?>
+                   		<?php } ?>
+                   </div>
+               </div>
+               <div class="order-order-goods-attr">
+                   <div class="order-order-goods-attr-item">
+                       <div class="order-order-goods-price">
+                           <div class="_price"><i>￥</i><?php echo round($order_goods['price'],2);?></div>
+                           <div class="_num">×{$order_goods.quantity}</div>
+                       </div>
+                   </div>
+               </div>
+                <div class="order-order-group-detail">
+					<?php if($order_info['delivery'] == 'pickup'){ ?>
+					<?php if( in_array($order_info['order_status_id'],array(4))){ ?>
+					<div class="_group_info" id="hexiao" rel="{:U('Seller/pickup_pickage', array('pick_id' => $pick_order_info['id']))}">确认核销</div>
+					<?php } ?>
+					<?php } ?>
+				</div>
+           </div>
+           <div class="order-order-bd-bottom">
+               <div class="order-order-ft">
+                   <div class="order-order-total">
+                  	   <?php if(!empty($voucher_info)){ ?>
+                  	   <div class="_coupon_des">{$voucher_info.voucher_title}</div>
+                       <?php } ?>
+                       <!--ms-if-->
+                       <div class="_right">
+                           <div class="_order_price">共{$order_goods.quantity}件商品&nbsp;合计：<span>￥<?php echo round($order_info['total'],2);?></span>(免运费)</div>
+                       </div>
+                   </div>
+                   <div class="order-order-more-info" style="display:none;">
+                       <div class="_more_info">
+                           <img class="_more_info_img" src="http://cdn.yangkeduo.com/assets/img/phone_call-9c4b445ee5.png">
+                           <a class="_more_info_txt" id="phone_call" href="tel: 4008822528">拨打电话</a>
+                       </div>
+                       <div class="_more_info _hr">
+                           <img class="_more_info_img" src="http://cdn.yangkeduo.com/assets/img/chat-4f13924c39.png">
+                           <!--ms-if-->
+                           <span class="_more_info_txt">联系卖家</span>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <div class="order-order-detail">
+           <div class="order-detail-row">
+               <div class="_row_key">订单编号：</div>
+               <div class="_row_value">
+                   <span>{$order_info.order_num_alias}</span>
+               </div>
+           </div>
+           <div class="order-detail-row">
+               <div class="_row_key">支付方式：</div>
+               <div class="_row_value">      
+         		      微信支付
+               </div>
+           </div>
+           <div class="order-detail-row">
+               <div class="_row_key">下单时间：</div>
+               <div class="_row_value"><?php echo date('Y-m-d H:i:s', $order_info['date_added']); ?></div>
+           </div>
+           <!--ms-if-->
+            
+		  
+			<?php if($order_info['delivery'] == 'pickup'){ ?>
+				<?php if( in_array($order_info['order_status_id'],array(4,6,11,12,13))){ ?>
+				<div class="order-detail-row" style="">
+				   <div class="_row_key">配送方式：</div>
+				   <div class="_row_value">自提</div>
+				</div>
+				<div class="order-detail-row" style="">
+				   <div class="_row_key">自提点：</div>
+				   <div class="_row_value">{$pick_up.pick_name}</div>
+				</div>
+				<div class="order-detail-row" style="">
+				   <div class="_row_key">联系方式：</div>
+				   <div class="_row_value">{$pick_up.telephone}</div>
+				</div>
+				<div class="order-detail-row" style="">
+				   <div class="_row_key">自提单号：</div>
+				   <div class="_row_value">
+						<?php echo $pick_order_info['pick_sn']; ?>
+						(提货状态:<span style="color:red;">
+						<?php 
+						if($pick_order_info['state'] == 0)
+						{
+							echo '未提货';
+						} else if($pick_order_info['state'] == 1){
+							echo '已提货';
+						}
+						?></span>)
+				   </div>
+				</div>
+				<?php } ?>
+			<?php }else { ?>
+				<?php if( in_array($order_info['order_status_id'],array(4,6,11,12,13))){ ?>
+				<div class="order-detail-row" style="">
+				   <div class="_row_key">快递方式：</div>
+				   <?php $seller_express = M('seller_express')->where( array('id' =>$order_info['shipping_method']) )->find(); ?>
+				   <div class="_row_value">{$seller_express['express_name']}</div>
+				</div>
+				<div class="order-detail-row" style="">
+				   <div class="_row_key">运单编号：</div>
+				   <div class="_row_value">{$order_info.shipping_no}</div>
+				</div>
+				<?php } ?>
+			<?php } ?>
+		   
+       </div>
+       
+	</div>
+	<div class="order-detail-bottom"></div>
+</div>
+
+
+
+ <include file="Widget:pin_toast" />
+<script>
+$(function(){
+	var s_wins_width = $(window).width() - 170; 
+	$('.order-order-goods-name').css('width',s_wins_width+'px');
+	
+	$('#hexiao').click(function(){
+		var rel_url = $(this).attr('rel');
+		$.ajax({
+			url:rel_url,
+			type:'get',
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('核销成功');
+					location.href = location.href;
+					return false;
+				} else {
+					alert(ret.msg);
+				}
+			}
+		})
+	})
+	
+})
+//立即支付
+function order_pay(obj)
+{
+	var pay_url = $(obj).attr('data-pay-url');
+	//goto pay
+	location.href = pay_url;
+	return false;
+	
+}
+
+//确认收货
+function order_receive(obj)
+{
+	var order_id = $(obj).attr('data-o-id');
+	$.ajax({
+		url:"{:U('Order/receive_order')}",
+		type:'post',
+		data:{order_id:order_id},
+		dataType:'json',
+		success:function(result){
+			if(result.code == 1){
+				showTip('收货成功');
+				$(obj).hide();
+			} else {
+				showTip(result.msg);
+			}
+			
+		}
+	})
+}
+
+//取消订单
+function order_cancel(obj)
+{
+	var order_id = $(obj).attr('data-o-id');
+	var back_url = "{:U('Order/index')}";
+	$.ajax({
+		url:"{:U('Order/cancel_order')}",
+		type:'post',
+		data:{order_id:order_id},
+		dataType:'json',
+		success:function(result){
+			if(result.code == 1){
+				showTip('取消成功');
+				location.href = back_url;
+				return false;
+			} else {
+				showTip(result.msg);
+			}
+			
+		}
+	})	
+}
+</script>
+
+
+</block>

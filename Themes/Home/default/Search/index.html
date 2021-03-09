@@ -1,0 +1,149 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/boot_9ceec27523e20f8313e0b5fcc99513f5.css">
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/classification_v2_a150d26f80103c876c3c77cc650e9414.css">
+<script type="text/javascript" src="__PUBLIC__/pinduoduo/js/iscroll.js"></script>
+
+<section id="classification-container" class="container" avalonctrl="categories">
+       <div id="search-bar">
+	       <div style="margin-bottom: 0;" class="search-box-class">
+	           <div class="search-box-main">
+	               <div class="search-icon-container">
+	                   <div class="search-icon-class"></div>
+	               </div>
+	               <div class="search-box-container">
+	                   <div class="search-box">输入您想要查找的商品名称</div>
+	               </div>
+	           </div>
+	       </div>
+       </div>
+       <div id="root-list" class="turn-background-grey">
+            <ul>
+            	<?php $i = 0; foreach($parent_list as $cate) { ?>	
+                <li class="root-list-item <?php if($i==0){ ?>root-active<?php } ?>">
+                    <div class="root-box">
+                        <span><?php echo $cate['name']; ?></span>
+                        <img src="__UPLOAD__/<?php echo $cate['logo']; ?>" style="display:none;">
+                    </div>
+                </li>
+                 <?php $i ++; } ?>
+            </ul>
+        </div>
+        <div id="detail-list" >
+            <ul>
+                <?php foreach($parent_list as $cate) { ?>
+				<li class="classification-detail-item">
+                    <div class="head"  onclick="location.href='<?php echo U('Category/info', array('gid' => $cate['id'])); ?>'">
+                        <div class="tab">
+                            <span><?php echo $cate['name']; ?></span>
+                        </div>
+                        <div class="show-all" style="display:none;">
+                            	查看更多
+                            <img class="detail-arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQBAMAAADdUfNzAAAAIVBMVEUAAACcnJycnJycnJycnJycnJycnJycnJycnJycnJycnJx3mU74AAAAC3RSTlMAfw5vJHdYSjUbQQwBkC0AAAAySURBVAjXY+AoYgCCicIKQFJV0AhIsgiCOY6onAQgySUYAGFDxMFqIEywXpg5IDNhAAB0CwdERcuYjQAAAABJRU5ErkJggg==">
+                        </div>
+                    </div>
+                    <ul class="detail">
+                    	<?php foreach($cate['child_list'] as $childcate){ ?>
+                        <li class="detail-item" onclick="location.href='<?php echo U('Category/info', array('gid' => $childcate['id'])); ?>'">
+                            <img src="__UPLOAD__/<?php echo $childcate['logo']; ?>" />
+                            <p>{$childcate.name}</p>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                </li>
+                <?php } ?>
+            </ul>
+        </div>
+</section>
+
+<div class="search-view-container" avalonctrl="search" style="display:none;">
+	<div class="search-view-top">
+		<form action="{:U('Category/index')}"   method="post" id="search-module-submit">
+			<input type="search" name="keyword" style="-webkit-appearance: none; width: 265px;" class="search-box-view-main" placeholder="请输入您要搜索的商品名称">
+		</form>
+		<div class="search-view-icon"></div>
+		<div class="search-content-clear"></div>
+		<div class="cancel-container-view">
+			<div class="cancel-button-view">取消</div>
+		</div>
+	</div>
+	<!--ms-if-->
+</div>
+<include file="Widget:pin_notify" />
+<include file="Public:foot_pinduoduo" />
+<style>
+#ws-for-push{
+	display:none;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+	var myScroll;
+	var myScroll2;
+	
+	function loaded () {
+		
+	}
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	$(function(){
+		var win_height = $(window).height();
+		var need_height = win_height - 100;
+		
+		$('#detail-list').css('height',need_height+'px');
+		$('#root-list').css('height',need_height+'px');
+		
+		myScroll = new IScroll('#detail-list', { snap: '.classification-detail-item',mouseWheel: true, click: true });
+		myScroll2 = new IScroll('#root-list', { snap: true,mouseWheel: true, click: true });
+		
+		$('#root-list li').click(function(){
+			var s_index = $(this).index();
+			
+			$(this).addClass('root-active').siblings().removeClass('root-active');
+			myScroll.goToPage(0, s_index, 1000);
+		});
+	})
+</script>
+<script>
+
+$(function(){
+	$('.search-box-class').click(function(){
+		$('.search-view-container').show();
+	})
+	$('.cancel-container-view').click(function(){
+		$('.search-view-container').hide();
+	})
+	$('.search-content-clear').click(function(){
+		$('.search-box-view-main').val('');
+	})
+})
+</script>
+</block>

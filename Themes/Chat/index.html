@@ -1,0 +1,229 @@
+<extend name="Public:base" />
+<block name="content">
+
+
+<style>
+
+.message .frt{float:right;}
+.mar8{margin-right:8px;}
+</style>
+<div class="row">
+	<div class="col-xs-12">	
+<script id="template1" type="text/x-jquery-tmpl">
+<div class="message clearfix" id="${id}">
+	<div class="user-logo">
+		<img src="__PUBLIC__/img/head/2015.jpg">
+	</div>
+	<div class="wrap-text"><h5 class="clearfix">王旭</h5>
+		<div>个的回复内容</div>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+</script>
+<script id="template2" type="text/x-jquery-tmpl">
+<div class="message clearfix" id="${id}">
+	<div class="user-logo frt">
+		<img src="__PUBLIC__/img/head/2015.jpg">
+	</div>
+	<div class="wrap-text frt mar8" style="width:auto;">
+		<h5 class="clearfix">黄旭</h5>
+		<div>个的回复内容</div>
+	</div>
+	
+	
+	<div style="clear:both;"></div>
+</div>
+</script>
+<script id="template3" type="text/x-jquery-tmpl">
+<li {{if choosed==0}}class="choosed"{{/if}} id="user_${id}" data-name="${name}">
+	{{if choosed==0}}<label class="offline"></label>{{else}}<label class="online"></label>{{/if}}
+	<a href="javascript:;">
+		<img src="${img}">
+	</a>
+	<a href="javascript:;" class="chat03_name">${name}</a>
+</li>
+</script>
+<script id="template4" type="text/x-jquery-tmpl">
+<div class="panel_box"  id="${id}"> 
+	<div class="chat01_title">
+		<ul class="talkTo">
+			<li><a href="javascript:;">${name}</a></li></ul>
+		<a class="close_btn" href="javascript:;"></a>
+	</div>
+	<div class="chat01_content" id="chat01_content">
+	</div>
+</div>
+</script>
+
+<style>
+.chat03_content ul li.cur_panel{background-color: #F99247;}
+.chat03_content ul li.new_msg{background: rgb(226, 167, 146);-webkit-animation: twinkling 1s 3 ease-in-out; }
+@-webkit-keyframes twinkling{    /*透明度由0到1*/
+    0%{
+       opacity:0.2; /*透明度为0*/
+
+     }
+    100%{
+       opacity:1; /*透明度为1*/
+    }
+  }  
+</style>
+
+    <div class="content">
+        <div class="chatBox">
+            <div class="chatLeft">
+                <div class="chat01" id="panel_box">
+					<div class="panel_box" id="panel_nobody"> 
+						<div class="chat01_title" >
+							<ul class="talkTo">
+								<li><a href="javascript:;">无</a></li></ul>
+							<a class="close_btn" href="javascript:;"></a>
+						</div>
+						<div class="chat01_content" id="">
+						</div>
+					</div>
+                </div>
+                <div class="chat02">
+                    <div class="chat02_title">
+						<a class="chat02_title_btn ctb02"
+                            href="javascript:;" title="选择文件">
+                            
+                        </a><a class="chat02_title_btn ctb03" href="javascript:;" title="选择附件">
+                            
+                        </a>
+                        
+                        
+                    </div>
+                    <div class="chat02_content">
+                        <textarea id="textarea"></textarea>
+                    </div>
+                    <div class="chat02_bar">
+                        <ul>
+                           <li style="right: 5px; top: 5px;">
+							<a href="javascript:;" id="replay_msg">
+                                <img src="__PUBLIC__/img/send_btn.jpg">
+							</a>
+							</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="chatRight">
+                <div class="chat03">
+                    <div class="chat03_title">
+                        <label class="chat03_title_t">
+                            成员列表</label>
+                    </div>
+                    <div class="chat03_content" id="chat03_content">
+                        <ul>
+                            
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;">
+            </div>
+        </div>
+    </div>
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+<p></p>
+<p></p>
+</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/chat.css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.tmpl.min.js"></script>
+
+<script>
+jQuery.fn.extend({
+  /**
+   * ctrl+enter提交表单
+   * @param {Function} fn 操作后执行的函数
+   * @param {Object} thisObj 指针作用域
+   */
+  ctrlSubmit:function(fn,thisObj){
+    var obj = thisObj || this;
+    var stat = false;
+    return this.each(function(){
+      $(this).keyup(function(event){
+        //只按下ctrl情况，等待enter键的按下
+        if(event.keyCode == 17){
+          stat = true;
+          //取消等待
+          setTimeout(function(){
+            stat = false;
+          },300);
+        } 
+        if(event.keyCode == 13 && (stat || event.ctrlKey)){
+          fn.call(obj,event);
+        } 
+      });
+    });
+  } 
+});
+</script>
+<script>
+var s_id = 1;
+var user_info = [{id:1,img:'__PUBLIC__/img/head/2013.jpg',name:'gogo1',choosed:1},{id:2,img:'__PUBLIC__/img/head/2013.jpg',name:'gogo2',choosed:0}];
+var send_to_userid = '';
+    
+$(function(){
+
+	$('#template3').tmpl(user_info).appendTo('#chat03_content ul');
+	
+	
+	$("#textarea").ctrlSubmit(function(event){
+		send_replay_msg();
+	});
+
+
+	$('#replay_msg').click(function(){
+		send_replay_msg();
+	})
+	$('#chat03_content li').click(function(){
+		var panel_id = $(this).attr('id');
+		var user_name = $(this).attr('data-name');
+		if($('#panel_'+panel_id).length == 0)
+		{
+			var s_obj = {id:'panel_'+panel_id,name:user_name};
+			$('#template4').tmpl(s_obj).appendTo('#panel_box');
+		}
+		send_to_userid = panel_id;
+		$('#'+panel_id).removeClass('new_msg');
+		//$('#'+panel_id).addClass('new_msg');
+		$('#'+panel_id).addClass('cur_panel').siblings().removeClass('cur_panel');
+		$('#panel_'+panel_id).show().siblings().hide();
+		
+	})
+	
+	$('.close_btn').live('click',function(){
+		send_to_userid = '';
+		$('#panel_nobody').show().siblings().hide();
+	})
+	
+})
+function send_replay_msg()
+{
+	var s_uid = $('.cur_panel').attr('id');//user_2
+	if(send_to_userid == '')
+	{
+		alert('请选择发送的会员');
+		return false;
+	}
+	
+	var link = { id:s_id,Text: 12, Link: 'http://www.cnblogs.com/xishuai/' };
+	$('#template1').tmpl(link).appendTo('#panel_'+s_uid+' .chat01_content');
+	$('#template2').tmpl(link).appendTo('#panel_'+s_uid+' .chat01_content');
+	
+	$('#template2').tmpl(link).appendTo('#panel_'+s_uid+' .chat01_content');
+	
+	//#s_uid chat01_content
+	$('#textarea').val('');
+	document.getElementById(s_id).scrollIntoView();
+	s_id++;
+}
+</script>
+</block>

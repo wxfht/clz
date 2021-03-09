@@ -1,0 +1,243 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="panel-body">
+			<ul class="nav nav-tabs">
+            <li <?php if($type == 1){ ?>class="active" <?php } ?>><a href="{:U('settings/wxtempmsg')}">参数配置</a></li>
+            <li <?php if($type == 2){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallwxmsg')}">消息群发</a></li> 
+            <li <?php if($type == 3){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallcuswxmsg')}">客服消息群发</a></li> 
+			<li <?php if($type == 4){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallmodifywxmsg')}">自定义模板消息群发</a></li> 
+          </ul>
+		</div>
+	</div>
+	<div class="col-xs-12">
+		  <div class="alert alert-block alert-success">
+				1.http://mp.weixin.qq.com 登录<br/>
+				2.添加功能插件——模板消息<br/>
+				3.添加模板“IT科技/互联网|电子商务”<br/>
+				4.添加模板“消费品/消费品”<br/>
+				5.模板库中搜索标题“电子券到账提醒”——详情，添加<br/>
+				6.模板库中搜索标题“最新订单信息提醒”——详情，添加<br/>
+				7.模板库中搜索标题“商品到货通知”——详情，添加<br/>
+				8.我的模板——复制对应的模板id——填写到下方<br/>
+
+				在订单提醒和赠送优惠券等系统触发操作会给用户下发相应的模版消息。<br/>
+				下发成功前提是用户关注本公众号。	
+					
+					<!-- 
+					需要到微信公众号管理后台开通模版消息，选择 IT科技/互联网|电子商务，消费品/消费品，添加对应模版消息。
+					订单标记发货通知： 编号  TM00505<br/>
+					到期提醒：编号 TM00710<br/>
+					团购结果通知：编号  TM00353<br/>
+					参团提醒： 编号  TM00352<br/>
+					退款通知：  编号  TM00004<br/>
+					客服处理提醒： 编号 OPENTM202172872<br/>
+					中奖结果通知： 编号 OPENTM204632492<br/>
+					最新订单信息提醒： 编号 TM204397052<br/>
+					-->
+					
+					<!-- 
+					核销成功提醒： 编号 OPENTM206215005<br/>
+					电子券到期提醒： 编号 OPENTM228321043
+					
+					<br/><br/>
+					在下单、订单处理、团购成功、退款等系统触发操作会给用户下发相应的模版消息。<br>下发成功前提是用户关注本公众号。
+					 -->
+					
+		   </div>					
+	</div>
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="form" method="post" action="{:U('Settings/save')}">	
+		
+			<div class="col-xs-12 top" style="display:none;">
+  					<div class="col-sm-2 ">订单标记发货通知：</div>
+  					<div class="col-sm-6">
+  						<input type="text" value="{$site.deliverNoticeId.value|default=''}" id="deliverNoticeId" name="deliverNoticeId" class="form-control" placeholder="">
+                    </div>
+            </div>
+			<div class="col-xs-12 top" style="display:none;">
+				 <div class="col-sm-2 ">到期提醒：</div>
+				 <div class="col-sm-6">
+					<input type="text" value="{$site.expireId.value|default=''}" id="expireId" name="expireId" class="form-control" placeholder="">
+                 </div>
+             </div>
+			<div class="col-xs-12 top" style="display:none;">
+					<div class="col-sm-2 ">团购结果通知：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.groupResultId.value|default=''}" id="groupResultId" name="groupResultId" class="form-control" placeholder="">
+                    </div>
+            </div>
+			<div class="col-xs-12 top" style="display:none;">
+  					<div class="col-sm-2 ">参团提醒：</div>
+  					<div class="col-sm-6">
+  						<input type="text" value="{$site.joinGroupId.value|default=''}" id="joinGroupId" name="joinGroupId" class="form-control" placeholder="">
+                    </div>
+            </div>
+			<div class="col-xs-12 top" style="display:none;">
+					<div class="col-sm-2 ">退款通知：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.refundNoticeId.value|default=''}" id="refundNoticeId" name="refundNoticeId" class="form-control" placeholder="">
+                    </div>
+            </div>
+			<div class="col-xs-12 top" style="display:none;">
+    					<div class="col-sm-2 ">客服处理提醒：</div>
+    					<div class="col-sm-6">
+    						<input type="text" value="{$site.customerResultId.value|default=''}" id="customerResultId" name="customerResultId" class="form-control" placeholder="">
+                        </div>
+            </div>
+			<div class="col-xs-12 top" style="display:none;">
+    					<div class="col-sm-2 ">中奖结果通知：</div>
+    					<div class="col-sm-6">
+    						<input type="text" value="{$site.awardResultId.value|default=''}" id="awardResultId" name="awardResultId" class="form-control" placeholder="">
+                        </div>
+            </div>
+            <div class="col-xs-12 top" >
+   					<div class="col-sm-2 ">最新订单信息提醒：</div>
+   					<div class="col-sm-6">
+   						<input type="text" value="{$site.newOrdersNoticeId.value|default=''}" id="newOrdersNoticeId" name="newOrdersNoticeId" class="form-control" placeholder="">
+                    </div>
+            </div>   
+			<div class="col-xs-12 top" style="display:none;">
+   					<div class="col-sm-2 ">核销成功提醒：</div>
+   					<div class="col-sm-6">
+   						<input type="text" value="{$site.verifyNoticeId.value|default=''}" id="verifyNoticeId" name="verifyNoticeId" class="form-control" placeholder="">
+                    </div>
+            </div>
+			<div class="col-xs-12 top">
+					<div class="col-sm-2 ">赠送优惠券提醒：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.sendQuanNotice.value|default=''}" id="sendQuanNotice" name="sendQuanNotice" class="form-control" placeholder="">
+                  	</div>
+            </div>
+			<div class="col-xs-12 top">
+					<div class="col-sm-2 ">商品到货提醒：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.GoodsOnNoticeId.value|default=''}" id="GoodsOnNoticeId" name="GoodsOnNoticeId" class="form-control" placeholder="">
+                  	</div>
+            </div>
+		</form>
+		<div class="form-group">
+			<label class="col-sm-1 control-label no-padding-left"> </label>	
+			<div class="col-sm-11">
+				<button form="form" type="submit"   class="btn btn-sm btn-primary">提交</button>		
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<style>
+.top, .buttom {
+    margin-top: 15px;
+}
+</style>
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>	
+$(function(){	
+	
+	// tooltips on hover button-upload
+	$('[data-toggle=\'tooltip\']').tooltip({container: 'body', html: true});
+
+	// Makes tooltips work on ajax generated content
+	$(document).ajaxStop(function() {
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	});	
+	
+	
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+		
+		//alert(index);
+		
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		//商品图片
+		$('#thumb-image').on('click', function() {
+			
+			//alert('333');
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'shop'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_goods_image:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+			
+		
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+});
+	
+</script>
+</block>

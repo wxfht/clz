@@ -1,0 +1,147 @@
+<footer>
+<?php 
+$openhaitao = M('config')->where( array('name'=>'openhaitao') )->find();
+$is_openhaitao = $openhaitao['value'];
+$is_openhaitao = 0;
+?>
+<?php if($is_openhaitao ==0 ){ ?>
+<style>
+.footer li{width:25%;}
+.footer {
+	z-index: 10000!important;
+}
+.footer {
+	width: 100%;
+	max-width: 640px;
+	height: 49px;
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	-webkit-transform: translate3d(-50%,0,0);
+	transform: translate3d(-50%,0,0);
+	overflow: hidden;
+	background-color: #fff;
+}
+.footer:before {
+	position: absolute;
+	content: '';
+	width: 100%;
+	left: 0;
+	top: 0;
+	height: 1px;
+	background-color: #e0e0e0;
+	-webkit-transform: scaleY(.5);
+	transform: scaleY(.5);
+	-webkit-transform-origin: center bottom;
+	transform-origin: center bottom;
+}
+.footer li {
+	float: left;
+	width: 20%;
+	text-align: center;
+	margin: auto;
+	height: 100%;
+}
+.footer li {
+	width: 25%;
+}
+.footer a, .footer a:focus, .footer a:hover {
+	color: #777;
+	font-size: 10px;
+}
+.footer .nav-controller {
+	position: relative;
+	height: 100%;
+	display: block;
+}
+.fb {
+	position: relative;
+}
+.footer .nav-controller i {
+	display: block;
+	font-size: 1.5em;
+	margin-bottom: 3px;
+}
+.active .fb-class, .active .fb-home, .active .fb-oversea, .active .fb-rank, .active .fb-user, .fb-class, .fb-home, .fb-oversea, .fb-rank, .fb-user {
+	background-size: auto 23px;
+	content: "";
+	height: 23px;
+	margin: auto;
+	width: 23px;
+	margin-top: 6px;
+}
+
+</style>
+<?php } ?>
+       <ul class="footer">
+		<li onclick="location.href='{:U('Index/index')}';">
+			<a id="footer_home" class="nav-controller <?php if($cur_page == 'index'){ ?>active<?php } ?>">
+			<i class="fb fb-home" style="<?php if($cur_page == 'index'){ ?>background:url(__PUBLIC__/mogu/image/upload_29e515a6k59k937a3ej3l5e6bfji2_36x39.png) no-repeat 0 0;<?php }else{ ?> background:url(__PUBLIC__/mogu/image/upload_439ak5453ih43h5d2a109dhe71agg_36x39.png) no-repeat 0 0;<?php } ?>background-size:23px;"></i>
+			首页
+			</a> 
+		</li>
+		
+		<?php if($is_openhaitao ==1 ){ ?>
+		<li onclick="location.href='{:U('Haitao/index')}';">
+			<a id="footer_oversea" class="nav-controller <?php if($cur_page == 'haitao'){ ?>active<?php } ?>">
+				<i class="fb fb-oversea">
+				</i>
+			海淘
+			</a> 
+		</li>
+		<?php } ?>
+		<li onclick="location.href='{:U('Search/index')}';">
+			<a id="footer_class" class="nav-controller <?php if($cur_page == 'search'){ ?>active<?php } ?>">
+				<i class="fb fb-class" <?php if($cur_page == 'search'){ ?>style="background-position:0 0; background-image:url(__PUBLIC__/mogu/image/upload_488lbkj7ll3e92bg3ld1kh5k73l87_34x34.png);"<?php }else{ ?> style="background-position:0 0; background-image:url(__PUBLIC__/mogu/image/upload_3egkhdd8460el241d98kcl706ke65_34x34.png);" <?php } ?>></i>分类
+			</a>
+		</li>
+		<li onclick="location.href='{:U('Cart/show_cart_goods')}';">
+			<a id="footer_rank" class="nav-controller ">
+				<i class="fb fb-rank" <?php if($cur_page == 'cart'){ ?>style="background-position:0 0; background-image:url(__PUBLIC__/mogu/image/upload_565i382k0hi45ek6chhj5603d41a8_40x38.png);"<?php }else{ ?> style="background-position:0 0; background-image:url(__PUBLIC__/mogu/image/upload_0eabagglh39aggl8jihfakfbf70a9_40x38.png);" <?php } ?>></i>购物车
+			</a>
+		</li>
+		<li onclick="location.href='{:U('User/index')}';">
+			<a id="footer_personal" class="nav-controller <?php if($cur_page == 'user'){ ?>active<?php } ?>">
+				<i class="fb fb-user" <?php if($cur_page == 'user'){ ?>style="background-position:0 0; background-image:url(__PUBLIC__/mogu/image/idid_ifqtkztcgjstazrumezdambqgyyde_38x38.png);"<?php }else{ ?> style="background-position:0 0; background-image:url(__PUBLIC__/mogu/image/upload_5g85l55d280l94lfg678lcleegf5e_38x38.png);" <?php } ?>></i>个人中心
+			</a>
+		</li>
+	</ul>
+</footer>
+<div class="go-top go_top_goods go_top_goods_list" style="bottom: -25%; opacity: 0;"><span>顶部</span></div>
+<script language="javascript"> 
+	$(function(){
+		var e = $(".go_top_goods"),
+				o = $("body"),
+				t = parseInt(.5 * o.height()),
+				r = "-25%",
+				n = "115px";
+			e.click(function() {
+				console.log(32);
+				$("html,body").animate({
+					scrollTop: 0
+				}, 300)
+			}), e.css({
+				bottom: r,
+				opacity: 0
+			}), $(window).scroll(function() {
+				if($(window).scrollTop() < t)
+				{
+					e.css({
+						bottom: r,
+						opacity: 0
+					})
+				} else{
+					e.css({
+						bottom: n,
+						opacity: 1
+					})
+				}
+				
+			})
+	})
+	
+
+</script>
+
+</body>
+<html>

@@ -1,0 +1,501 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<style>
+.head-box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(#fef7f8, #ffcbda);
+}
+.head-line{
+  padding-top:20px;
+  margin:0px auto;
+}
+.score_text{
+  text-align: center;
+  color:#3e3e3e;
+  font-size:14px;
+}
+.score_num{
+  text-align: center;
+  color:#ff6699;
+  font-size:25px;
+}
+.nav_left{
+  float:left;
+  margin-top:12.5px;
+  margin-bottom:12.5px;
+  margin-left:12.5px;
+  height:46px;
+}
+.left_image{
+  float:left;
+  width:46px;
+}
+.left_image image{
+  width:46px;
+  height:46px;
+}
+.left_text{
+  float:left;
+  margin-left: 10px;
+}
+.text_name{
+  height:26px;
+  line-height:26px;
+  font-size:14px;
+  color:#000;
+}
+.text_desc{
+  height:20px;
+  line-height: 20px;
+  font-size:12px;
+  color:#a0a0a0;
+}
+.nav_right{
+  float: right;
+  background-color:#ff6699;
+  border-radius: 3px;
+  margin-top:21px;
+  margin-right:12.5px;
+  
+  padding:5px;
+  padding-left:10px;
+}
+.go_buy{
+  color:#fff;
+  background:url(https://mall.shiziyu888.com/dan/Common/image/jian_right.png) no-repeat 100%;
+  background-size:13px auto;
+  padding-right:15px;
+}
+page{
+  background-color: #f0f1f4;
+}
+.nav_box{
+  background-color: #fff;
+}
+.nav_box:after{display:block;clear:both;content:"";visibility:hidden;height:0;}
+.score_list_box{
+  margin-top: 8px;
+  background-color: #fff;
+}
+.score_nav::after{
+  display:block;clear:both;content:"";visibility:hidden;height:0;
+}
+.score_nav_li{
+  float:left;
+  width:33.333%;
+  height:43px;
+  line-height: 43px;
+  text-align: center;
+}
+.score_nav_li.cur{
+  margin-bottom: -1px;
+  border-bottom:1px solid #ff6699;
+}
+.score_nav_li text{
+  color:#000;
+  font-size: 14px;
+  font-weight: 500;
+}
+.score_list{
+  padding:0px 13px;
+}
+.score_li{
+  border-bottom:1px solid #f4f4f4;
+  padding:12px 0px;
+}
+.score_li:after{
+  display:block;clear:both;content:"";visibility:hidden;height:0;
+}
+.score_li_left{
+  float:left;
+  height:48px;
+}
+.score_detail_name{
+  height:25px;
+  line-height: 25px;
+  font-size: 15px;
+  color:#101010;
+}
+.score_detail_time{
+  height:23px;
+  line-height: 23px;
+  color:#929292;
+  font-size:13px;
+}
+.score_li_right{
+  float:right;
+  height:48px;
+  line-height:48px;
+}
+.score_li_right span{
+  font-size: 19px;
+  color: #101010;
+}
+
+
+.like-tip,.loading,.nomore {
+	text-align: center;
+	margin: 10px 0;
+	font-size: 13px
+}
+#tuan_list p{
+	margin-top: 200px;
+    font-size: 18px;
+    text-align: center;
+}
+body{background-color:#fff;}
+</style>
+
+<style>
+.score_tip{
+	position:absolute;
+	right:10px;
+	top:20px;
+}
+.bg-fill {
+    background-color: rgba(0,0,0,.7);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: fixed;
+    z-index: 10001;
+}
+#assist-free-coupon-rules-alert, #flash_groups_rules_alert {
+    -webkit-box-pack: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10002;
+    bottom: 64px;
+}
+#assist-free-coupon-rules-alert {
+    position: fixed;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+#assist-free-coupon-rules-alert .content-wrapper {
+    position: relative;
+    display: block;
+    width: 77%;
+    max-height: 100vh;
+    max-width: 640px;
+    margin: auto;
+    background: #fff;
+    border-radius: 8px;
+    overflow-y: hidden;
+}
+#assist-free-coupon-confirm-alert .content-wrapper .detail, #assist-free-coupon-rules-alert .content-wrapper .detail, #flash_groups_rules_alert .content-wrapper .detail {
+    word-wrap: break-word;
+    word-break: normal;
+    cursor: default;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+#assist-free-coupon-rules-alert .content-wrapper .detail {
+    padding: 25px 20px;
+    text-align: left;
+    -webkit-user-select: none;
+    user-select: none;
+}
+#assist-free-coupon-rules-alert .content-wrapper .detail .title {
+    text-align: center;
+    font-size: 17px;
+    line-height: 1;
+    color: #151516;
+    padding-bottom: 2.5px;
+}
+#assist-free-coupon-rules-alert .content-wrapper .detail .desc .li {
+    
+    font-size: 15px;
+    line-height: 26px;
+    color: #58595b;
+}
+</style>
+<div id="jsalert-assist_free_coupon_rules666" style="display:none;">
+	<div class='bg-fill bg-fill2'></div>
+	<div id='assist-free-coupon-rules-alert' class='assist-free-coupon-rules-alert'>
+	  <div class='content-wrapper'>
+		<div class='detail'>
+		  <div class='title'>积分说明</div>
+		  <div class='desc'>
+			<?php foreach($integral_rules_str as $li){ ?>
+			<div class='li'>
+			  {$li}
+			</div>
+			<?php } ?>
+		  </div>
+		</div>
+	  </div>
+	</div>
+</div>
+<style>
+.official-activity, .statement-btn {
+	line-height:18px;
+	font-size:10px;
+	color:#3b003d;
+	border-radius:10px;
+	position:absolute;
+	top:10px;
+	right:12.5px;
+}
+.rule-btn2 {
+	width: auto;
+    height: 20px;
+    line-height: 2px;
+    font-size: 10px;
+    color: #726a6a;
+    background: #ffd3df;
+    padding: 10px 15px;
+    border-radius: 3px;
+}
+.rule-btn3{
+    background: #fae0e7;
+}
+.offcial-jifen{
+  top:62px;
+}
+</style>
+<div class='head-box'>
+    <div class='head-line'>
+      <div class="score_text">可用积分</div>
+      <div class='score_num'>{$member_info.score}</div>
+    </div>
+	
+	<div class="official-activity score_tip_show">
+		<div class="rule-btn2 rule-btn3">积分说明</div>
+	</div>
+	<div class="official-activity offcial-jifen" onclick='location.href = "{:U("User/me_score_order")}";'>
+		<div class="rule-btn2">兑换记录</div>
+	</div>
+	
+	<div class="score_tip" style="display:none;">
+		<a href="javascript:;">
+			<img src="__PUBLIC__/images/score_tip.png" style="width:20px;" />
+		</a>
+	</div>
+</div>
+<div class='nav_box' onclick='location.href = "{:U("Index/index")}";'>
+    <div class='nav_left'>
+        <div class='left_image'>
+          <img src='https://mall.shiziyu888.com/dan/Common/image/bao_score.png' ></img>
+        </div>
+        <div class='left_text'>
+          <div class='text_name'>
+            购物赚积分
+          </div>
+          <div class='text_desc'>
+            买越多赚越多
+          </div>
+        </div>
+    </div>
+    <div class='nav_right'>
+        <text class='go_buy'>去购物</text>
+    </div>
+</div>
+<div class='nav_box' onclick='location.href = "{:U("Integral/index")}";'>
+    <div class='nav_left' style="margin-top:0px;">
+        <div class='left_image'>
+          <img src='__PUBLIC__/images/score_to_gift.png' ></img>
+        </div>
+        <div class='left_text'>
+          <div class='text_name'>
+            积分换好礼
+          </div>
+          <div class='text_desc'>
+            积分越多换越多
+          </div>
+        </div>
+    </div>
+    <div class='nav_right' style="margin-top:8.5px;">
+        <text class='go_buy'>去兑换</text>
+    </div>
+</div>
+
+<div class='score_list_box'>
+    <div class='score_nav'>
+      <div class='score_nav_li cur' onclick='go_nav_menu(this)' data-type="all">
+        <text>明细</text>
+      </div>
+      <div class='score_nav_li'  onclick='go_nav_menu(this)' data-type="in">
+        <text>收入</text>
+      </div>
+      <div class='score_nav_li'  onclick='go_nav_menu(this)' data-type="out">
+        <text>支出</text>
+      </div>
+    </div>
+    <div class='score_list' id="tuan_list">
+	  <volist name="list" id="d">
+      <div class='score_li' >
+        <div class='score_li_left'>
+          <div class='score_detail_name'>
+			<?php echo $d['typename']; ?>
+          </div>
+          <div class='score_detail_time'>
+			 <?php echo $d['addtime']; ?>
+          </div>
+        </div>
+        <div class='score_li_right'>
+          <span><?php echo $d['score']; ?></span>
+        </div>
+      </div>
+	  </volist>
+	  <?php if(empty($list)){ ?>
+	  <p>您还没有积分明细</p>
+	  <?php } ?>
+    </div>
+</div>
+
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<div style="height:50px;"></div>
+<include file="Public:foot_pinduoduo" />
+<style>
+.like-item-goods-start{
+	border:1px solid #ff6699;
+	background-color: #ff6699;
+}
+.like-item-goods-price{
+	color:#ff6699;
+}
+.container{background-color:#fff;}
+.coupon-tabbar .coupon-tab { 
+	width:49%;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('User/myscore')}";
+var req_step = 1;
+var type = 'all';
+
+
+function no_data()
+{
+	if(type == 'all')
+	{
+		$('#tuan_list').html( '<p>您还没有积分明细</p>' );
+	}else if(type == 'in'){
+		$('#tuan_list').html( '<p>您还没有积分收入</p>' );
+	}else if(type == 'out'){
+		$('#tuan_list').html( '<p>您还没有积分支出</p>' );
+	}
+}
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function go_nav_menu(obj)
+{
+	var s_type = $(obj).attr('data-type');
+	$(obj).addClass('cur').siblings().removeClass('cur');
+	
+	type = s_type;
+	_pa = 1;
+	is_can_next = 0;
+	$('#tuan_list').html('');
+	nextpage();
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'get',
+			data:{page:_pa,type:type,is_ajax:1},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+				} else if(result.code == 0) {
+					if(_pa == 1)
+					{
+						no_data();
+					}
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+	$('.score_tip_show').click(function(){
+		$('#jsalert-assist_free_coupon_rules666').show();
+	})
+	$('#jsalert-assist_free_coupon_rules666').click(function(){
+		$('#jsalert-assist_free_coupon_rules666').hide();
+	})
+})
+
+</script>
+</block>

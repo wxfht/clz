@@ -1,0 +1,850 @@
+<extend name="Public:mogubase" />
+<block name="content">  
+
+<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/mogu/aZsui7zFTG4yb9jnBh219.css?v=2">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/index.css" media="all" /> 
+
+<script type="text/javascript">			window.use_screen_base = '750';			(function(a,b){var c="orientationchange"in b?"orientationchange":"resize",d=use_screen_base.indexOf("_mate"),e=parseInt(use_screen_base),f=a.documentElement,g=function(){var a=f.clientWidth,c=b.innerWidth;f.style.fontSize=100*(c/e)+"px"};if(/iPad.*OS|iPhone.*OS/.test(navigator.userAgent)&&d>0){var h=a.querySelectorAll("meta[name=viewport]"),i=b.devicePixelRatio;i=i!=1?2:1,h[0]&&h[0].setAttribute("content","width=device-width, user-scalable=no, minimum-scale="+1/i+", maximum-scale="+1/i+", initial-scale="+1/i)}g(),b.addEventListener(c,g,!1),delete use_screen_base})(document,window);		</script>
+<script src="__PUBLIC__/js/jquery.tmpl.min.js"></script>
+<script src="__PUBLIC__/mogu/js/load_index.js?v=6"></script>
+
+<script>
+var load_pintuan_url ="{:U('Apiindex/load_best_pintuan')}";
+var load_goods_url = "{:U('Apiindex/get_index_bestgoods')}";
+var load_suiji_url = "{:U('Apiindex/get_index_suijigoods')}";
+</script>
+
+<script id="best_pintuan" type="text/x-jquery-tmpl">
+<a class="goods_box" href="${url}">
+	<div class="pic_box">
+		<div class="J_dynamic_imagebox lazyloadBg">
+			<img class="J_dynamic_img fill_img scrollLoading" src="${fan_image}" alt="">
+		</div>
+		{{if type == 'lottery'}}
+		<img class="flag" src="/Common/mogu/image/170731_5e428cacel8ffj5197i38136ii525_168x60.png">
+		{{/if}}
+	</div>
+	<div class="content">
+		<h3>${name}</h3>
+		<div class="l_box">
+			<p class="price_box">
+				<span>￥${pin_price}</span>
+			</p>
+			<p>
+				${pin_count}人团  <b> · </b>已团${seller_count}件
+			</p>
+		</div>
+		<div class="open_tuan_btn">
+			去开团
+		</div>
+	</div>
+</a>
+</script>
+
+<script id="best_goods" type="text/x-jquery-tmpl">
+<div class="item-wrap waterfall-frame-1 waterfall-box waterfall-optimise-show" >
+	<a class="iwf" href="${url}">
+	<div class="img-wrap J_dynamic_imagebox" img-src="/Common/mogu/image/170905_1hfl9f14ebfb4fbgfcb45c033d0f9_640x900.jpg" style="padding-bottom: 110%;">
+		<div class="bottom-img-tags clearfix">
+			<img class="img-tag fl" src="/Common/mogu/image/1_1h8e97a4ed6giciglgjae69g9a269_60x28.png" style="width: 0.7rem;">
+		</div>
+		<img class="J_dynamic_img fill_img scrollLoading" src="{$index_ly_image}" data-echo="${image}" alt="">
+	</div>
+	<p class="title">
+		 ${name}
+	</p>
+	<div class="goods_info">
+		<span class="price_info">${danprice}</span>
+		<span class="fav_num"><em class="no_collect_icon"></em>${seller_count}</span>
+	</div>
+	</a>
+</div>
+</script>
+
+<div id="main">
+	<div class="page_activity page_type_h5 ">
+		<div class="module_row module_row_124088 MOD_ID_118074" data-mid="124088" data-versionid="1841448" id="m124088" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_124088">
+			<div class="mod_row MCUBE_MOD_ID_118074">
+				<div class="lazyData" data-source-type="" data-source-key="5868" data-tpl="hotwords" data-manual="true">
+					<header class="search-wrapper lazyData" data-source-type="" data-source-key="6348" data-tpl="form" data-manual="true">
+						<a class="mb_go2pre" style="display:none;"></a>
+						<form id="js-form" action="{:U('category/index')}" class="" method="post">
+							<a href="/" class="home_btn" style="background:url('<?php echo '/Uploads/image/'.C('SITE_ICON'); ?>') no-repeat center;background-size: contain;" ></a>
+							<input name="keyword" id="js-search-input" class="js-search-input search-input" type="search" autocomplete="off" placeholder="套装" data-value="套装">
+							<a class="cart" href="{:U('Cart/show_cart_goods')}"></a>
+						</form>
+					</header>
+					
+					
+					<div id="js-hotwords" class="prompt-panel">
+						<div class="init-box rec-show-log">
+							<span class="tit-icon"></span>
+							<h3 class="title">热门搜索</h3>
+							<ul class="list">
+								
+								<?php 
+									$i = 1;
+									foreach($keywords_arr as $kws)
+									{
+								?>
+								<li class="show-log-item" ><a href="<?php echo U('category/index', array('keyword' => $kws) ); ?> " class="a-list <?php if($i % 2 ==1){ ?>red <?php } ?>"><?php echo $kws; ?></a></li>
+								<?php $i++; } ?>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<?php if($is_sub == 0){ ?> 
+		<style>
+			.m-component-download {
+				padding: 5px 10px;
+				background: #fff;
+				position: relative;
+				overflow: hidden;
+			}
+			.pull-left {
+				float: left;
+			}
+			.pull-right {
+				float: right;
+			}
+			.m-component-download .m-tips {
+				float: left!important;
+				margin: 4px 0 0 10px;
+				font-size: 15px;
+			}
+			.m-component-download .m-img {
+				display: inline;
+				width: 50px;
+				height: 50px;
+			}
+			.m-component-download .app_btn, .m-component-download .tf_app_btn {
+				color: #fff;
+				background-color: #ff6699;
+				border-color: #ff6699;
+				display: inline-block;
+				margin-bottom: 0;
+				font-weight: 400;
+				text-align: center;
+				vertical-align: middle;
+				-ms-touch-action: manipulation;
+				touch-action: manipulation;
+				cursor: pointer;
+				background-image: none;
+				border: 1px solid transparent;
+				white-space: nowrap;
+				font-size: 14px;
+				line-height: 1.42857143;
+				border-radius: 4px;
+			}
+			.m-component-download .app_btn {
+				padding: 6px 12px;
+			}
+		</style>
+			<section class="m-component-download clearfix" id="downloadApp">
+				<span class="pull-left">
+					<a href="{$sub_url}">
+					<img class="m-img " src="Uploads/image/{$site_logo}">
+					</a>
+				</span>
+				<span class="pull-left m-tips">{$site_title}<br>{$site_name}</span>
+				<span class="pull-right m-btn">
+					<a href="{$sub_url}" class="app_btn" role="button" name="apk_url">立刻关注</a>
+				</span>
+			</section>
+		<?php } ?>
+		
+		<div class="module_row module_row_676440 MOD_ID_20" data-mid="676440" data-versionid="1841582" id="m676440" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_676440">
+			<div class="mod_row MCUBE_MOD_ID_20 module_row_155390">
+				
+				<div class="lazyData" >
+					<div class="slider swipe" id="focus" style="visibility: visible;">
+						<div class="swipe_wrap" >
+							<ul>
+							<volist name="slider" id="v">
+							<li  class="cube-acm-node data-ptp-item item-0" >
+								<a class="swipe-item block J_mogu-link J_dynamic_imagebox" href="{$v.url}" >
+									<img class="J_dynamic_img fill_img" _src="__ROOT__/Uploads/image/{$v.image}" alt="">
+								</a>
+							</li>
+							</volist> 
+							</ul>
+						</div>
+						<div class="hd">
+						<ul class="swipe_indicator">
+							<?php 
+								$count = count($slider);
+								for($i=1;$i<=$count;$i++)
+								{
+							?>
+								<li <?php if($i == 1){ ?>class="on"<?php } ?>></li>
+							<?php } ?>
+						</ul>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<script src="__PUBLIC__/pinduoduo/js/TouchSlide.1.1.js"></script>
+		<?php if(!empty($slider)){ ?>
+		<script>
+			$(function(){
+				TouchSlide({ 
+					slideCell:"#focus",
+					titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+					mainCell:".swipe_wrap ul", 
+					delayTime:200,
+					interTime:5000,
+					autoPlay:true,
+					effect:"leftLoop", 
+					autoPage:true, //自动分页
+					switchLoad:"_src"
+				});
+			})
+		</script>
+		<?php } ?>
+		<?php if(!empty($quan_list)){  ?>
+		<!--voucher begin-->
+		<style>
+		.promotion {
+			padding: .2rem .07rem 0 .07rem;
+			background-color:#fff;
+		}
+		.head {
+			font-size: .24rem;
+			color: #999;
+			margin-bottom: .16rem;
+		}
+		.slider {
+			position: relative;
+			overflow: hidden;
+		}
+		.slider-wraper {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+			-webkit-transition-property: -webkit-transform;
+			transition-property: -webkit-transform;
+			transition-property: transform;
+			transition-property: transform,-webkit-transform;
+			-webkit-transform: translateZ(0);
+			transform: translateZ(0);
+		}
+		.jg_16{
+		 padding:.08rem 0;
+		 color:#999;
+		 text-align: center;
+		  clear:both;
+		}
+		.p_price {
+		  color:#ff5777;
+		}
+		.p_feed {
+		  background:none;
+		  padding-right:0px;
+		}
+		.guess_goods{
+		  float:left;
+		}
+		.iwf{
+		  margin: 0 0 4% 0;
+		  width:100%;
+		}
+		.list {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-orient: horizontal;
+			-webkit-box-direction: normal;
+			-webkit-flex-flow: row nowrap;
+			-moz-box-orient: horizontal;
+			-moz-box-direction: normal;
+			-ms-flex-flow: row nowrap;
+			flex-flow: row nowrap;
+			position: absolute;
+		}
+		.list-item {
+			margin-right: .08rem;
+		}
+		.list-item:last-child {
+		  margin-right:0px;
+		}
+		.card-content {
+			height: 1.06rem;
+			position: relative;
+			overflow: hidden;
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-image: url(https://mall.shiziyu888.com/Common/image/117603130_6i5767h706g683dj35febbc2c37a4_176x116.png);
+		}
+		.card {
+			position: relative;
+			overflow: hidden;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-webkit-box-direction: normal;
+			-webkit-flex-flow: column nowrap;
+			-moz-box-orient: vertical;
+			-moz-box-direction: normal;
+			-ms-flex-flow: column nowrap;
+			flex-flow: column nowrap;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			-moz-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			-webkit-box-pack: center;
+			-webkit-justify-content: center;
+			-moz-box-pack: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+			color: #fff;
+			border-radius: .04rem;
+			height: .88rem;
+			width: 1.8rem;
+			padding: .08rem;
+		}
+		.card-price {
+			-webkit-box-orient: horizontal;
+			-webkit-box-direction: normal;
+			-webkit-flex-flow: row nowrap;
+			-moz-box-orient: horizontal;
+			-moz-box-direction: normal;
+			-ms-flex-flow: row nowrap;
+			flex-flow: row nowrap;
+			-webkit-box-align: start;
+			-webkit-align-items: flex-start;
+			-moz-box-align: start;
+			-ms-flex-align: start;
+			align-items: flex-start;
+		}
+		.card-price--unit, .card-price {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+		}
+		.card-price--unit, .card-price {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+		}
+		.card-price--unit {
+			font-size: .18rem;
+		}
+
+		.card-price--num {
+			font-size: .48rem;
+			line-height: .48rem;
+		}
+		.card-desc, .card-price--num {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+		}
+		.card-desc {
+			font-size: .2rem;
+		}
+		.card-tag {
+			display: none;
+			-webkit-box-pack: center;
+			-webkit-justify-content: center;
+			-moz-box-pack: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			-moz-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			width: .64rem;
+			height: .64rem;
+			position: absolute;
+			bottom: -.16rem;
+			right: -.1rem;
+			-webkit-transform: rotate(-20deg);
+			transform: rotate(-20deg);
+			border: 1px solid #666;
+			border-radius: 50%;
+		}
+		.card-tag--text {
+			font-size: .2rem;
+			color: #666;
+			margin-bottom: .1rem;
+			text-align: center;
+		}
+		.card-tag--get {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+		}
+		.card-content.get{
+		background-image: url(  https://mall.shiziyu888.com/Common/image/117603130_4a8d76d1e2l7b854b0hk76lg97g3a_176x116.png);
+		}
+		</style>
+		
+		<div class="meili-all-vue-detail-base-promotion promotion">
+			<div class="meili-all-vue-base-slider slider" style="height:53px;">
+				<div class="slider-wraper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+					<div class="list">
+						
+						<?php foreach($quan_list as $quan) { ?>
+						<div class="card-content list-item coupon-take" data-id="<?php echo $quan['id']; ?>" >
+							<div class="card">
+								<div class="card-price span">
+									<div class="card-price--unit span">
+										¥
+									</div>
+									<div class="card-price--num span">
+										<?php echo round($quan['credit'],2); ?>
+									</div>
+								</div>
+								<div class="card-desc span">
+									 <?php if($quan['limit_money'] > 0) { ?>
+										满<?php echo $quan['limit_money']; ?>元立减
+									<?php }else{ ?>
+										无门槛使用
+									<?php } ?>
+								</div>
+								<div class="card-tag span " >
+									<div class="card-tag--text span">已领</div>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				$('.coupon-take').click(function(){
+					var quan_id = $(this).attr('data-id');
+					var obj = $(this);
+					$.ajax({
+						url:"{:U('Seller/getQuan')}",
+						type:'post',
+						data:{quan_id:quan_id},
+						dataType:'json',
+						success:function(result){
+							show_mask(result.msg);
+							$(obj).addClass('get');
+							$(obj).children('.card').children('.card-tag').addClass('card-tag--get');
+							//get
+						}
+					})
+				})
+			})
+		</script>
+		<!--voucher end-->
+		<?php } ?>
+		
+		<?php if(!empty($slider_nav)){ ?>
+		<div id="quick-entrance-new-2" data-reactid="24">
+			<ul class="qe-wrapper-2" data-reactid="25">
+				<?php foreach($slider_nav as $val){  ?>
+				<li class="" onclick="location='<?php echo $val['url']; ?>'">
+					<div class="quick-entrance-cube">
+						<div class="item-img-box">
+							<img src="__ROOT__/Uploads/image/<?php echo $val['image']; ?>">
+						</div>
+						<div class="cube-text"><span><?php echo $val['slider_name']; ?></span></div>
+					</div>
+				</li>
+				<?php } ?>		
+			</ul>
+		</div>
+		<?php } ?>
+		
+		
+		<?php 
+			if(!empty($index_ad_two_list)){ 
+		?> 
+			<div class="module_row module_row_450739 MOD_ID_130039">
+				<?php foreach($index_ad_two_list as $val){  ?>
+				<div style="margin-bottom:5px;float:left;width:50%;" onclick="location='<?php echo $val['url']; ?>'">
+					<img src="__ROOT__/Uploads/image/<?php echo $val['image']; ?>" width="100%">
+				</div>
+				<?php } ?>	
+				<div style="clear:both;"></div>
+			</div>
+		<?php } ?>
+		
+		<div class="module_row module_row_560429 MOD_ID_559701" data-mid="560429" data-versionid="1804485" id="m560429" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_560429">
+			<div class="mod_row MCUBE_MOD_ID_559701">
+				<div class="lazyData" data-source-type="" data-source-key="59540" data-floornum="5" data-manual="true">
+					<div class="wrapCbox" style="padding-top:0rem; padding-bottom:0rem; ">
+						<h2>
+						<span>超值拼团</span>
+						<a href="{:U('Pingoods/index')}">
+						全部拼团
+						</a>
+						</h2>
+						
+						<div class="wrapinner" id="best_pintuan_wrap">
+							
+						</div>
+						
+					</div>
+					<a href="{:U('Pingoods/index')}">
+					</a>
+					<a href="{:U('Pingoods/index')}" class="more">全部超值拼团</a>
+				</div>
+				<input type="hidden" class="num" value="5">
+			</div>
+		</div>
+		
+		
+		<?php 
+			if(!empty($index_ad_list)){ 
+		?> 
+			<div class="module_row module_row_450739 MOD_ID_130039">
+				<?php foreach($index_ad_list as $val){  ?>
+				<div style="margin-bottom:5px;" onclick="location='<?php echo $val['url']; ?>'">
+					<img src="__ROOT__/Uploads/image/<?php echo $val['image']; ?>" width="100%">
+				</div>
+				<?php } ?>	
+			</div>
+		<?php } ?>
+		
+		
+		<?php 
+			if(!empty($spike_info) && !empty($best_goods_list)){ 
+		?>
+		<div class="module_row module_row_450739 MOD_ID_130039" data-mid="450739" data-versionid="1274641" id="m450739" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_450739">
+			<div class="mod_row MCUBE_MOD_ID_130039">
+				<style>
+		
+				</style>
+				<div class="top-timeline" style="background-color:white;">
+					<div class="top-content">
+						<hr>
+						<div class="content-wrap">
+							限时特惠距活动结束仅剩
+						</div>
+					</div>
+					<div class="time-content clock_div" endtime="<?php echo date('m/d/Y H:i:s', $spike_info['end_time']);?>">
+						
+					</div>
+				</div>
+				
+				
+				<script>
+					$(function(){
+						
+						lxfEndtime();
+					})
+					function lxfEndtime(){
+						 $(".clock_div").each(function(){
+							  var lxfday=$(this).attr("endtime");
+							  var endtime = new Date(lxfday).getTime();
+							  var nowtime = new Date().getTime();
+							  var youtime = endtime-nowtime;
+							  var seconds = youtime/1000;
+							  var mc = youtime/100;
+							  
+							  mc = Math.floor(mc % 10);
+								
+								
+							  var minutes = Math.floor(seconds/60);
+							  var hours = Math.floor(minutes/60);
+							  var days = Math.floor(hours/24);
+							  var CDay= days ;
+							  var CHour= hours % 24;
+							  var CMinute= minutes % 60;
+							  var CSecond= Math.floor(seconds%60);
+							  
+							  if(endtime<=nowtime){
+									$(this).html('<span class="label-wrap">已过期</span>')
+								}else{
+									
+									
+									var s_time = "";
+									if(days > 0){
+										if(days >=10)
+										{
+											var day_1 = parseInt(days/10);
+											var day_2 = days % 10;
+											s_time+= '<span class="day1 detail-wrap">'+day_1+'</span>';
+											s_time+= '<span class="day2 detail-wrap">'+day_2+'</span>';
+											s_time+= '<span class="label-wrap">天</span>';
+											
+										}else{
+											s_time+= '<span class="day1 detail-wrap">'+days+'</span>';
+											s_time+= '<span class="label-wrap">天</span>';
+										}
+									}
+									if(CHour >0){
+										
+										var hour_1 = parseInt(CHour/10);
+										var hour_2 = CHour % 10;
+										
+										s_time+= '<span class="hh1 detail-wrap">'+hour_1+'</span>';
+										s_time+= '<span class="hh2 detail-wrap">'+hour_2+'</span>';
+										s_time+= '<span class="label-wrap">时</span>';
+						
+									}
+									if(CMinute > 0){
+									
+										var min_1 = parseInt(CMinute/10);
+										var min_2 = CMinute % 10;
+										
+										s_time+= '<span class="mm1 detail-wrap">'+min_1+'</span>';
+										s_time+= '<span class="mm2 detail-wrap">'+min_2+'</span>';
+										s_time+= '<span class="label-wrap">分</span>';
+										
+									}
+									
+									var miao_1 = parseInt(CSecond/10);
+									var miao_2 = CSecond % 10;
+									
+									s_time+= '<span class="ss1 detail-wrap">'+miao_1+'</span>';
+									s_time+= '<span class="ss2 detail-wrap">'+miao_2+'</span>';
+									s_time+= '<span class="label-wrap">秒</span>';
+									
+									
+									
+									var li_1 = mc % 10;
+									
+									s_time+= '<span class="ms1 detail-wrap">'+li_1+'</span>';
+						
+									
+									
+									$(this).html(s_time);
+								}
+						 });
+						setTimeout("lxfEndtime()",100);
+					}
+				</script>
+				
+			</div>
+		</div>
+		
+		<div class="module_row module_row_450734 MOD_ID_446806" data-mid="450734" data-versionid="1611247" id="m450734" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_450734">
+			<div class="mod_row MCUBE_MOD_ID_446806">
+				<div class="lazyData" data-source-type="" data-source-key="42287" data-manual="true">
+					<div class="goods_list slide_box">
+						
+						<?php 
+							if(!empty($spike_info)){ 
+						?>
+						<?php foreach($best_goods_list as $sp_val){ ?>
+						<a href="<?php echo $sp_val['url']; ?>" class="goods_item">
+							<figure class="goods_img J_dynamic_imagebox" >
+								<img class="J_dynamic_img fill_img" src="<?php echo $sp_val['fan_image']; ?>" alt="">
+							</figure>
+							<figcaption class="goods_info">
+								<p>
+									￥<?php echo $sp_val['danprice']; ?><del><?php echo $sp_val['price']; ?></del>
+								</p>
+								<button>立即抢购</button>
+							</figcaption>
+						</a>
+						<?php } ?>
+						
+						<?php } ?>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+		<?php if(!empty($subject_list)){  ?>
+		<div class="module_row module_row_119267 MOD_ID_117044" data-mid="119267" data-versionid="1827976" id="m119267" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_119267">
+			<div class="mod_row MCUBE_MOD_ID_117044">
+				
+				<div class="highquality_wraper">
+					<div class="lazyData shops">
+						
+						
+						
+						<?php foreach($subject_list as $subject){ ?>
+						<a class="fine-img img-box J_dynamic_imagebox" href="{:U('Subject/index',array('id' => $subject['id']) )}">
+							<img class="J_dynamic_img fill_img" src="__ROOT__/Uploads/image/<?php echo $subject['banner']; ?>" alt="">
+						</a>
+						
+						<div class="goods_list silde_box">
+							<?php  foreach($subject['goods_list'] as $goods){ ?>
+							<a class="goods_item" href="<?php echo $goods['url']; ?>">
+								<figure class="J_dynamic_imagebox">
+								<img class="J_dynamic_img fill_img" src="<?php echo $goods['fan_image']; ?>" alt="">
+								</figure>
+								<figcaption>
+								<p class="goods_item_title">
+									<?php echo $goods['name']; ?>
+								</p>
+								<p class="goods_item_price">
+									￥<?php echo $goods['danprice']; ?>
+								</p>
+								</figcaption>
+							</a>
+							<?php } ?>
+						</div>
+						<?php } ?>
+						
+						
+						
+						
+					</div>
+					<p class="more __clickOpenApp">
+						查看更多 
+						<i class="arrow"></i>
+					</p>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+		<div class="module_row module_row_123585 MOD_ID_116894" data-mid="123585" data-versionid="1208234" id="m123585" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_123585">
+			<div class="mod_row MCUBE_MOD_ID_116894">
+				<div class="fake-nav" style="height: 0px;">
+				</div>
+				<div class="nav-wrap clearfix" style="top: 0rem; left: 0px; width: 100%;">
+					<label class="nav-item fl active" style="width:33.333333333333%" data-rid="1">
+					<span>流行
+					</span>
+					</label>
+					<label class="nav-item fl" style="width:33.333333333333%" data-rid="2">
+					<span>新款
+					</span>
+					</label>
+					<label class="nav-item fl" style="width:33.333333333333%" data-rid="3">
+					<span>精选
+					</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="module_row module_row_116980 MOD_ID_116891">
+			<div class="mod_row MCUBE_MOD_ID_116891">
+				<div class="wall-wrap waterfall-container" id="goods_content">
+					<p class="hint" style="display: none;">
+						数据加载中...
+					</p>
+					
+				</div>
+				
+			</div>
+		</div>
+		
+		
+		<div class="module_row module_row_123585 MOD_ID_116894" style="display:none;" data-mid="123585" data-versionid="1208234" id="m123585" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_123585">
+			<div class="mod_row MCUBE_MOD_ID_116894">
+				<div class="fake-nav" style="height: 0px;">
+				</div>
+				<div class="nav-wrap clearfix" id="guss_box" style="display:none; top: 0rem; left: 0px; width: 100%;">
+					<label class="nav-item fl " style="width:33.333333333333%" data-rid="1">
+					<span>猜你喜欢
+					</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="module_row module_row_116980 MOD_ID_116891">
+			<div class="mod_row MCUBE_MOD_ID_116891">
+				<div class="wall-wrap waterfall-container" id="suiji_goods_content2">
+					<p class="hint" style="display: none;">
+						数据加载中...
+					</p>
+				</div>
+			</div>
+		</div>
+		  
+		
+		<div class="module_row module_row_423645 MOD_ID_60139" data-mid="423645" data-versionid="1680364" id="m423645" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_423645">
+			<div class="mod_row MCUBE_MOD_ID_60139">
+				<a class="to-top-btn J_toTop" href="javascript:;" style="display: none;"></a>
+			</div>
+		</div>
+		
+		<include file="Public:foot_pinduoduo" />
+		<style>
+			.go-top{display:none;}
+			.footer .nav-controller i{margin-bottom: 6px;}
+			.footer a.active {
+				color: #df2127;
+			}
+		</style>
+		<div class="module_row module_row_118905 MOD_ID_45043" data-mid="118905" data-versionid="1206647" id="m118905" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_118905">
+			<div class="mod_row MCUBE_MOD_ID_45043">
+			</div>
+		</div>
+		<div class="module_row module_row_144077 MOD_ID_144060" data-mid="144077" data-versionid="1827980" id="m144077" data-editable="0" data-acm="3.mf.1_0_0.0.0.0.mf_11248_144077">
+			<div class="mod_row MCUBE_MOD_ID_144060">
+				<div class="maskWrap">
+				</div>
+				<input type="hidden" class="popConfig" data-pop="1">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="popup-mask" style="display: none;position: fixed; width: 100%;height: auto;top: 50%;z-index: 999999999; background: rgba(0, 0, 0, 0);">
+	<div class="popup-main" style="     max-width: 50%;  height: auto;margin: auto;background-color: rgba(0,0,0,.8);color: #f0f0f0;font-size: 16px;padding: 10px;text-align: center;border-radius: 5px;box-shadow: 0 0 24px -1px #383838;  background: rgba(41, 49, 61, 0.701961);">
+		<div class="popup-content"><div style="color:#fff;font-size:0.4rem;margin:0"></div>
+		</div>
+	</div>
+</div>
+  
+<include file="Widget:pin_notify" />
+<include file="Public:foot_lazy" />
+{~W('Share/common_share')}
+<script>
+function show_mask(title)
+{
+	$('.popup-content div').html(title);
+	
+	$('.popup-mask').fadeIn(1500,function(){
+		$('.popup-mask').fadeOut(1500);
+	})
+	
+}
+$('.show-log-item a').click(function(){
+	
+})
+
+$('#js-search-input').focus(function(){
+	
+	$('.home_btn').hide();
+	$('.mb_go2pre').show();
+	$('#js-hotwords').show();
+})
+
+
+$('.mb_go2pre').click(function(){
+	
+	$('.mb_go2pre').hide();
+	$('.home_btn').show();
+	$('#js-hotwords').hide();
+})
+
+</script>
+
+</block>

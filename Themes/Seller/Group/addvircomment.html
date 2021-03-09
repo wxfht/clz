@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->  
+
+<link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+<link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+<script type="text/javascript">
+            window.sysinfo = {
+            <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+			
+            <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+			
+            <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+			
+            <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+			
+            'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+			
+            'siteroot': '{$_W['siteroot']}',
+                    'siteurl': '{$_W['siteurl']}',
+                    'attachurl': '{$_W['attachurl']}',
+                    'attachurl_local': '{$_W['attachurl_local']}',
+                    'attachurl_remote': '{$_W['attachurl_remote']}',
+                    'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+            'cookie' : {'pre': ''},
+            'account' : {:json_encode($_W['account'])},
+            };
+        </script>
+		
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+  <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+   <link href="/static/css/snailfish.css" rel="stylesheet">
+   
+
+</head>
+<body layadmin-themealias="default">
+
+<div class="layui-fluid">
+	<div class="layui-card">
+		<div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text">添加虚拟评价</span></div>
+		<div class="layui-card-body" style="padding:15px;">
+			<form action="" method="post" class="layui-form" lay-filter="component-layui-form-item" enctype="multipart/form-data" >
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">评价内容</label>
+					<div class="col-sm-9 subtitle">
+						<textarea name="data[content]" id="content" rows="5"  class="form-control" data-parent=".subtitle" maxlength="200" data-rule-maxlength="200"></textarea>
+						<div class="help-block">评论内容请控制在200字以内</div>
+					</div>
+				</div>
+				
+				 <div class="layui-form-item">
+					<label class="layui-form-label">描述等级</label>
+					<div class="layui-input-block" id="param-items">
+						<label class="radio-inline">
+							<input type="radio" name='data[star]' value="1" title="1星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star]' value="2" title="2星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star]' value="3" title="3星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star]' value="4" title="4星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star]' value="5" checked title="5星" /> 
+						</label>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">价格合理等级</label>
+					<div class="layui-input-block" id="param-items">
+						<label class="radio-inline">
+							<input type="radio" name='data[star2]' value="1" title="1星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star2]' value="2" title="2星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star2]' value="3" title="3星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star2]' value="4" title="4星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star2]' value="5" checked title="5星" /> 
+						</label>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">质量满意等级</label>
+					<div class="layui-input-block" id="param-items">
+						<label class="radio-inline">
+							<input type="radio" name='data[star3]' value="1" title="1星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star3]' value="2" title="2星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star3]' value="3" title="3星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star3]' value="4" title="4星" /> 
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name='data[star3]' value="5" checked title="5星" /> 
+						</label>
+					</div>
+				</div>
+				
+				 <div class="layui-form-item">
+					<label class="layui-form-label must">选择机器人</label>
+					<div class="layui-input-block">
+						
+						<div class="input-group " style="margin: 0;">
+							<input type="text" disabled value="" class="form-control valid" name="jiaid" placeholder="" id="member_id">
+							<span class="input-group-btn">
+								<span data-input="#member_id" id="chose_member_id"  class="btn btn-default">选择会员</span>
+							</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">选择评价商品</label>
+					<div class="layui-input-block">
+						<div class="input-group " style="margin: 0;">
+							<input type="text" disabled value="{$agent_saler['member_id']}" class="form-control valid" name="goods_id" placeholder="" id="agent_id">
+							<span class="input-group-btn">
+								<span data-input="#agent_id" id="chose_agent_id"  class="btn btn-default">选择商品</span>
+							</span>
+						</div>
+						
+					</div>
+					<div class="layui-input-block" style="display:none;">
+					{php echo tpl_selector('goods_id',array('key'=>'gid',  'text'=>'goodsname', 'thumb'=>'thumb',
+					'placeholder'=>'选择商品','buttontext'=>'请输入商品标题 ', 
+					'items'=>$saler,'url'=>U('goods/query_normal') ))}
+						
+						
+						  <span class='help-block'></span>
+					</div>
+				</div>
+				
+				<div class="layui-form-item" >
+					<label class="layui-form-label">评价时间</label>
+					<div class="layui-input-block"> 
+						<span class="input-group-btn">
+							{:tpl_form_field_date('time', '',true);}
+						</span>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">评价图片</label>
+					<div class="layui-input-block gimgs">
+						{:tpl_form_field_multi_image3('goods_image')}
+						<span class="help-block">您可以拖动图片改变其显示顺序 </span>
+					</div>
+				</div>
+				
+				
+				
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label"> </label>
+					<div class="layui-input-block">
+						<input type="submit" value="提交" lay-submit lay-filter="formDemo" class="btn btn-primary"  />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a class="btn btn-default" style='margin-left:10px;' href="{:U('group/goodsvircomment', array('ok' => 1))}">返回列表</a>
+						
+					</div>
+				</div>
+			</form>
+		</div>
+</div>
+</div>
+
+<script src="/layuiadmin/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/jquery-migrate-1.1.1.js"></script>
+<script src="/static/js/jquery-ui.min.js"></script>
+<style>
+.multi-img-details{width:100%;}
+</style>
+<script>
+	layui.config({
+		base: '/layuiadmin/' //静态资源所在路径
+	}).extend({
+		index: 'lib/index' //主入口模块
+	}).use('index');
+</script>
+
+<script>
+//由于模块都一次性加载，因此不用执行 layui.use() 来加载对应模块，直接使用即可：
+var layer = layui.layer;
+var $;
+
+var cur_open_div;
+
+layui.use(['jquery', 'layer','form'], function(){ 
+  $ = layui.$;
+  var form = layui.form;
+  
+	form.on('radio(linktype)', function(data){
+		if (data.value == 2) {
+			$('#typeGroup').show();
+		} else {
+			$('#typeGroup').hide();
+		}
+	});  
+
+	$('#chose_member_id').click(function(){ 
+		cur_open_div = $(this).attr('data-input');
+		$.post("{:U('user/query', array('ok' => 1))}", {}, function(shtml){
+		 layer.open({
+			type: 1,
+			area: '930px',
+			content: shtml //注意，如果str是object，那么需要字符拼接。
+		  });
+		});
+	})
+	$('#chose_agent_id').click(function(){
+		cur_open_div = $(this).attr('data-input');
+		$.post("{:U('goods/query_normal', array('type' => 'pin'))}", {}, function(shtml){
+		 layer.open({
+			type: 1,
+			area: '930px',
+			content: shtml //注意，如果str是object，那么需要字符拼接。
+		  });
+		});
+	})
+	$('#chose_link').click(function(){
+		cur_open_div = $(this).attr('data-input');
+		$.post("{:U('util.selecturl', array('ok' => 1))}", {}, function(shtml){
+		 layer.open({
+			type: 1,
+			area: '930px',
+			content: shtml //注意，如果str是object，那么需要字符拼接。
+		  });
+		});
+	})
+	
+		
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+	
+	 $.ajax({
+		url: data.form.action,
+		type: data.form.method,
+		data: data.field,
+		dataType:'json',
+		success: function (info) {
+		  
+			if(info.status == 0)
+			{
+				layer.msg(info.result.message,{icon: 1,time: 2000});
+			}else if(info.status == 1){
+				var go_url = location.href;
+				if( info.result.hasOwnProperty("url") )
+				{
+					go_url = info.result.url;
+				}
+				
+				layer.msg('操作成功',{time: 1000,
+					end:function(){
+						location.href = info.result.url;
+					}
+				}); 
+			}
+		}
+	});
+	
+    return false;
+  });
+})
+
+
+function cancle_bind(obj,sdiv)
+{
+	$('#'+sdiv).val('');
+	$(obj).parent().parent().remove();
+}
+
+</script> 
+
+
+<script>
+    $(function () {
+        // 拖拽时开始滚动的间距
+        var scrollingSensitivity = 20
+        // 拖拽时滚动速度
+        let scrollingSpeed = 20
+        // 拖拽前的父级节点
+        let dragBeforeParentNode = null
+        // 初始化拖拽函数
+        $('.multi-img-details').sortable({
+            // 自适应placeholder的大小
+            forceHelperSize: true,
+            // 拖拽时的鼠标形状
+            cursor: '-webkit-grabbing',
+            // 拖拽的父级节点(该节点一定要注意，配置错误会导致当前屏幕外的元素没法自动滚动拖拽，两列之间拖拽的滚动也会出问题)
+            appendTo: '.layui-form-item',
+            // 拖拽时的倾斜度
+            rotate: '5deg',
+            // 延迟时间(毫秒)，避免和click同时操作时出现的冲突
+            delay: 0,
+            // 以clone方式拖拽
+            // 拖拽到边框出现滚动的间距，
+            scrollSensitivity: scrollingSensitivity,
+            // 应用于拖拽空白区域的样式
+            placeholder: 'portlet-placeholder ui-state-highlight',
+            // 允许拖拽预留空白区域
+            forcePlaceholderSize: false,
+            // 多个列表之间的拖拽的dom元素
+            connectWith: '.multi-img-details',
+            // 鼠标到区域则填充
+            tolerance: "pointer",
+            // 可以拖拽的项
+            items: '.multi-item',
+            // 填充动画
+            revert: 0,
+            // 拖拽结束函数
+            stop: (e, ui) => {
+                // 当前拽入的元素
+                let item = $(ui.item)
+                // 当前拽入元素的下标
+                let index = item.index()
+                let kid = ''
+                // xxxx 这里面可以操作数据更新
+            },
+            // 开始拖拽时的函数
+            start: (e, ui) => {
+                // 拖拽前的父级节点
+                dragBeforeParentNode = ui.item[0].parentNode
+                // 让placeholder和源高度一致
+                ui.helper.addClass('item').width(110)
+                // xxxx  这里可以记录一些拖拽前的元素属性
+            },
+            // 处理两列滚动条问题
+            sort: function (event, ui) {
+                var scrollContainer = ui.placeholder[0].parentNode
+                // 设置拽入的列表的滚动位置
+                var overflowOffset = $(scrollContainer).offset()
+                if ((overflowOffset.top + scrollContainer.offsetHeight) - event.pageY <
+                    scrollingSensitivity) {
+                    scrollContainer.scrollTop = scrollContainer.scrollTop + scrollingSpeed
+                } else if (event.pageY - overflowOffset.top < scrollingSensitivity) {
+                    scrollContainer.scrollTop = scrollContainer.scrollTop - scrollingSpeed
+                }
+            }
+        }).disableSelection()
+    })
+</script>
+
+
+</body>

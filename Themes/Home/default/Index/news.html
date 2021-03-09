@@ -1,0 +1,39 @@
+<extend name="Public:computerbase" />
+<block name="content">  
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/news_v2_c42442884e1e6eeff4cfb7500facfc08.css">
+<style>
+.pdd-head .ph-tab{float:left;}
+.pdd-news-outer{margin-top:1.2rem;}
+</style>
+
+<div class="pdd-news-outer">
+	<div class="pdd-news-wrapper">
+		<div class="pdd-news-banner">
+			<img src="/Uploads/image/<?php echo $pc_news['image']; ?>" alt="banner">
+		</div>
+		
+		<div class="pdd-other-news">
+			<div class="pn-cat pn-other-cat">
+				<p>关于我们</p>
+			</div>
+			<ul class="pn-other-list">
+				
+				<?php foreach($blog_list as $blog){ ?>	
+				<li class="pn-other-item">
+					<a target="_blank" href="{:U('Index/new_detail', array('blog_id' => $blog['blog_id']))}">
+						<p class="pn-other-title"><?php echo $blog['title']; ?></p>
+					</a>
+					<span><?php echo $blog['author']; ?></span>
+					<span class="pn-other-time"><?php echo $blog['create_time'];  ?></span>
+				</li>
+				<?php } ?>
+				
+			</ul>
+		</div>
+		
+	</div>
+</div>
+
+<include file="Public:foot_computer" />
+</block>
+

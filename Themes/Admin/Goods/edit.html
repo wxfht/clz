@@ -1,0 +1,1160 @@
+<extend name="Public:base" />
+<block name="content">
+<link rel="stylesheet" href="__CSS__/dialog.css" />	
+<link rel="stylesheet" href="Common/css/chosen.css" />	
+<link rel="stylesheet" href="Common/css/select2.css" />	
+
+<style>
+.chosen-container-single .chosen-search:after{display:none;}
+.add-sku {
+    display: inline-block;
+    padding: 0 5px;
+    margin: 9px 5px 0 5px;
+    vertical-align: top;
+}
+</style>
+
+	<div class="ks-ext-mask" style="position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 999; display:none"></div>
+	<div id="dialog" class="dialog" style="z-index: 9999; display:none">
+    <div class="ks-contentbox">
+      <div class="title"><span>新增菜单</span><a class="ks-ext-close" href="javascript:void(0)">X</a></div>
+      <input type="hidden" name="action" value="" />	
+   		<div class="row">
+   			<div class="col-xs-12" id="ks_shipping">
+   				
+   			</div>
+   		</div>   
+    </div>
+  </div>  
+	<div class="page-header" style="">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+			<div style="right:10%;position: fixed;z-index: 999999;background-color: #fff;width: 100px;top:100px;">
+				<button name="send" form="form-goods" id="submit" type="submit" style="width:100px;"  class="btn btn-sm btn-primary">提交</button>
+			</div>
+		</h1>
+	</div>
+	<div style="height:58px;"></div>
+	<div class="row">
+	<div class="col-xs-12">	
+		<div class="panel-body">
+        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-goods" class="form-horizontal">
+        <input type="hidden" value="{$goods_option_mult_str}" name="mult_option_zuhe" id="mult_option_zuhe" />
+        <notempty name="Think.get.id">
+			<input name="goods_id" type="hidden" value="{$Think.get.id}" />
+		</notempty>
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">常规项</a></li>      
+          </ul>
+          <div class="tab-content">
+          	<!-- 常规 START -->
+	          	<div class="tab-pane active" id="tab-general">
+	          		<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">商品名称：</label>
+						<div class="col-sm-10">
+							<input id="input-name2" class="form-control" type="text" placeholder="商品名称：" value="{$goods.name|default=''}" name="goods_description[name]">
+						</div>
+					</div>
+					
+					<div class="form-group">
+	                    <label class="col-sm-2 control-label" for="input-description">商品简介：</label>
+	                    <div class="col-sm-10">
+	                      <textarea name="goods_description[summary]" class="form-control" rows="5">{$description.summary|default=''}</textarea>	
+	                    </div>
+                  	</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">分享标题：</label>
+						<div class="col-sm-10">
+							<input id="input-name2" class="form-control" type="text" placeholder="自定义分享标题" value="{$description.share_title|default=''}" name="goods_description[share_title]">
+							<span class="help-inline ">
+								<span class="middle red">不填写，默认使用商品标题分享</span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">分享描述：</label>
+						<div class="col-sm-10">
+							<input id="input-name2" class="form-control" type="text" placeholder="自定义分享描述" value="{$description.share_descript|default=''}" name="goods_description[share_descript]">
+							<span class="help-inline ">
+								<span class="middle red">不填写，默认使用商品简介分享</span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group required">
+		                <label class="col-sm-2 control-label" for="input-image">
+		                <span title="" data-toggle="tooltip" data-original-title="上传750x352的图片">首页横条展示图：</span>
+		                </label>
+		                
+		                <div class="col-sm-10" id="thumb">
+		                  <a href="#" data-toggle="image" class="img-thumbnail">
+		                  	<img osctype="image" <if condition="$goods['image']"> 
+								src="__ROOT__/{$goods.thumb_image}" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_100x100.jpg" 
+								</if>  />
+								</a>
+		                  <input osctype="image_input" type="hidden" name="image" value="{$goods.image|default=''}" id="input-image" />
+						  <span class="help-inline ">
+								<span class="middle red">参考图片尺寸：750*352</span>
+							</span>
+		            	</div>
+		            </div> 
+					
+					<div class="form-group required" id="goods-image-row9999">
+		                <label class="col-sm-2 control-label" for="input-image">
+		                <span title="" data-toggle="tooltip" data-original-title="上传400*400的图片">方形高清缩略图：</span>
+		                </label>
+		                
+		                <div class="col-sm-10" id="image-row9999">
+		                  <a href="#" data-toggle="image" class="img-thumbnail" type="goods" id="thumb-image9999" num="9999">
+		                  	<img osctype="goods_image9999" <if condition="$goods['fan_image']"> 
+								src="__ROOT__/{$goods.fan_image_thumb}" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_100x100.jpg" 
+								</if>  />
+								</a>
+							<input osctype="goods_image_input9999" type="hidden" name="fan_image" value="{$goods.fan_image|default=''}" id="input-image9999" />
+							<span class="help-inline ">
+								<span class="middle red">参考图片尺寸：400*400</span>
+							</span>
+						</div>
+		            </div> 	
+
+	
+		            <div class="form-group required">
+		            	<label class="col-sm-2 control-label" for="input-meta-title2">商品轮播图：</label>
+		            	<div class="col-sm-10">
+			            	<div class="table-responsive">
+			                	<table id="images" class="table table-striped table-bordered table-hover">
+				                  <thead>
+				                    <tr>
+				                      <td class="text-left">商品图片</td>
+				                      <td class="text-right">选项排序</td>
+				                      <td></td>
+				                    </tr>
+				                  </thead>
+				                  <tbody>
+				                     <?php $image_row = 0; ?>
+				                     <?php if(isset($goods_images)){ ?>
+					                    <?php foreach ($goods_images as $goods_image) { ?>
+						                    <tr id="gallery-image-row<?php echo $image_row; ?>">
+						                      <td class="text-left"><a href="" id="thumb-image<?php echo $image_row; ?>" num="<?php echo $image_row; ?>" type="gallery" data-toggle="image" class="img-thumbnail"><img osctype="gallery_image<?php echo $image_row; ?>" src="<?php echo $goods_image['thumb']; ?>" alt="" title="" /></a><input osctype="gallery_image_input<?php echo $image_row; ?>" type="hidden" name="goods_image[<?php echo $image_row; ?>][image]" value="<?php echo $goods_image['image']; ?>" id="input-image<?php echo $image_row; ?>" /></td>
+						                      <td class="text-right"><input type="text" name="goods_image[<?php echo $image_row; ?>][sort_order]" value="<?php echo $goods_image['sort_order']; ?>" class="form-control" /></td>
+						                      <td class="text-left"><button type="button" onclick="$('#gallery-image-row<?php echo $image_row; ?>').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="icon-trash"></i></button></td>
+						                    </tr>
+					                    <?php $image_row++; ?>
+					                    <?php } ?>
+					                 <?php } ?>
+				                  </tbody>
+				         	 	</table>
+			                <div>
+			                	<a  onclick="addImage();" class="add_image btn btn-primary ">添加图片</a>
+								<br/>
+				                <span class="help-inline ">
+									<span class="middle red">参考图片尺寸：640宽度最佳，高度不限。参考尺寸：640*400，800*800 （支持任何大于等于640宽度的高宽比为8：5，或者1：1的图）</span>
+								</span>
+			                </div>
+		                  </div>
+	                  </div>
+	                  
+		            </div> 
+		            
+		            <div class="form-group required" >
+						<label class="col-sm-2 control-label" for="input-meta-title2">商家编号：</label>
+						<div class="col-sm-10">
+							<input id="input-meta-title2" class="form-control" type="text" placeholder="商家编号" value="{$goods.model|default=''}" name="model" >
+							<span class="help-inline ">
+								<span class="middle red">商品的一个编号</span>
+							</span>
+						</div>
+						
+					</div>
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label"><b class="red">选择分类：</b></label>
+						<div class="col-sm-10" id="cateclass">
+							<span class="help-inline">
+							<volist name="goods_categories" id="cate_one" empty="$empty">
+									{$cate_one.name}&nbsp;
+								</volist>
+							</span>
+							<select id="class_1" class="checkbox-inline" name="class_1" rel="1">
+								<option value="0">请选择类目</option>
+								<volist name="cate_data" id="cate" empty="$empty">
+									<option value="{$cate.id}">{$cate.name}</option>
+								</volist>	
+							</select>
+						</div>
+						
+					</div>
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-meta-title2">市场价格：</label>
+						<div class="col-sm-4">
+							<input id="input-meta-title2" <?php if($goods['lock_price'] == 1){ ?> disabled <?php } ?> class="form-control" type="text" placeholder="市场价格" value="{$goods.price|default=''}" name="price">
+						</div>
+						
+						<label class="col-sm-2 control-label" for="input-meta-title2">单独购买价格：</label>
+						<div class="col-sm-4">
+							<input id="input-meta-title2" class="form-control" type="text" placeholder="单独购买价格" value="{$goods.danprice|default=''}" name="danprice">
+						</div>
+					</div>
+					
+					<div class="form-group required">
+						
+						<label class="col-sm-2 control-label" for="input-meta-title2">商品库存：</label>
+						<div class="col-sm-4">
+							<input id="input-meta-title2" class="form-control" type="text" placeholder="商品库存" value="{$goods.quantity|default=''}" name="quantity">
+						</div>
+						
+						<label class="col-sm-2 control-label" for="input-meta-title2">商品重量(kg)：</label>
+						<div class="col-sm-4">
+							<input id="input-meta-title2" class="form-control" type="text" placeholder="商品重量" value="{$goods.weight|default=''}" name="weight">
+						</div>
+					</div>
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-meta-title2">排序：</label>
+						<div class="col-sm-4">
+							<input id="input-meta-title2" class="form-control" type="text" placeholder="排序" value="{$goods.sort_order|default=''}" name="sort_order">
+						</div>
+						<label class="col-sm-2 control-label" for="input-tag2">
+							<span title="" data-toggle="tooltip" data-original-title="使用逗号分开">商品标签：</span>
+						</label>
+						<div class="col-sm-4">
+							<input id="input-tag2" class="form-control" type="text" placeholder="商品标签：" value="{$description.tag|default=''}" name="goods_description[tag]">
+						</div>
+					</div>
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-tag2">
+							虚拟销量：
+						</label>
+						<div class="col-sm-4">
+							<input id="input-tag2" class="form-control" type="text" placeholder="虚拟销量" value="{$goods.virtual_count|default='0'}" name="virtual_count">
+						</div>
+						<label class="col-sm-2 control-label">商品状态：</label>
+						<div class="col-sm-4">
+							<label class="radio-inline">
+							<input type="radio" checked="checked" value="1" name="status">上架</label>
+							<label class="radio-inline">
+							<input type="radio" value="0" name="status">下架</label>
+						</div>
+					</div>
+					
+					
+					
+					
+					<div class="form-group">
+						<div class="row">
+							
+							<?php if(!empty($pick_up_list)){ ?>
+							<label class="col-sm-2 control-label">仅自提：</label>
+							<div class="col-sm-4" id="pick_just">
+								<label class="radio-inline">
+								<input type="radio" <?php if(empty($goods) || $goods['pick_just'] ==0){ ?> checked="checked" <?php } ?> value="0" name="pick_just">否</label>
+								<label class="radio-inline" >
+								<input type="radio" value="1" <?php if(!empty($goods) && $goods['pick_just'] ==1){ ?> checked="checked" <?php } ?> name="pick_just">是</label>
+							</div>
+							<?php } ?>
+						</div>
+						
+					</div>
+					
+					
+					<div class="form-group">
+						<div class="row">
+							<label class="col-sm-2 control-label">运费：</label>
+							<div class="col-sm-10" id="shipping">
+								<label class="radio-inline">
+								<input type="radio" checked="checked" value="1" name="shipping">固定运费</label>
+								<label class="radio-inline" >
+								<input type="radio" value="2" name="shipping">使用运费模板</label>
+							</div>
+						</div>
+						
+					</div>
+					<div class="form-group" id="shipping_tp">
+							<label class="col-sm-2 control-label">&nbsp;</label>
+							<div class="col-sm-10" id="shipping_temp">
+								<div class="col-sm-12" <if condition="!empty($goods) && $goods.shipping eq 2">style="display:none;"</if>>
+									<input id="input-goods_freight"  class="col-sm-4" type="text" placeholder="" value="{$goods.goods_freight|default='0'}" name="goods_freight">
+								
+									<span class="help-inline col-sm-8">
+										<span class="middle">(元)0表示免运费</span>
+									</span>
+								</div>
+								<div class="col-sm-4" <?php if( empty($goods) || $goods['shipping'] == 1 ){ ?> style="display:none;" <?php }else{ ?> style="display:block;" <?php } ?> >
+									<span id="transport_name" class="help-inline">
+									<notempty name="transport">
+										{$transport['title']}
+									</notempty>
+									</span>
+									<span class="btn btn-info btn-sm popover-info" id="shipping_chose">
+									<i class="icon-truck"></i>选择运费模板
+									</span>
+									<input type="hidden" name="transport_id" id="transport_id" value="{$goods.transport_id}" />
+								</div>
+							</div>
+					</div>
+					
+					
+					<div class="form-group required" id="guige_list">
+						<label class="col-sm-2 control-label">商品规格：</label>
+						<div class=" col-sm-2">
+							<div style="form-group col-md-2">
+								<select  class="chosen-select form-control" data-placeholder="添加规格项目">
+									<option value="">  </option>
+									<?php foreach($options_list as $option){  ?>
+									<option value="<?php echo $option['option_id']; ?>"><?php echo $option['name']; ?></option>		
+									<?php } ?>
+								</select>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="row" style="margin-top:15px;">
+						<label class="col-sm-2 control-label"></label>
+						<div class="col-sm-10" id="mult_option_new">
+							<?php if(!empty($goods_option_mult_value)){ ?>
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<?php foreach ($goods_options as $goods_option) { ?>
+												<td class="text-left"><?php echo $goods_option['name']; ?></td>
+												<?php } ?>
+												<td class="text-right">库存数量</td>
+												
+												<td class="text-right">单价</td>
+												<td class="text-right">重量(kg)</td>
+												<td class="text-left">图片</td>
+											</tr>
+										</thead>
+									<tbody>
+										<?php foreach($goods_option_mult_value as $goods_mul_op){ ?>
+										<tr>
+											<?php foreach($goods_mul_op['option_name_list'] as $mul_name){ ?>
+											<td class="text-left"><?php echo $mul_name; ?></td>
+											<?php } ?>
+											
+											<td class="text-left">
+												<input type="text" name="<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>" value="<?php echo $goods_mul_op['quantity']; ?>" class="form-control mult_option_zuhe">
+											</td>
+											<td class="text-left">
+												<input type="text" id="<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>_price" value="<?php echo $goods_mul_op['dan_price']; ?>" class="form-control ">
+											</td>
+											<td class="text-left">
+												<input type="text" id="<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>_weight" value="<?php echo $goods_mul_op['weight']; ?>" class="form-control ">
+											</td>
+											<td class="text-left">
+												<a href="#" id="option-image-row<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>" data-toggle="image" num="<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>" type="option" class="img-thumbnail">
+												<?php if(!empty($goods_mul_op['image'])){ ?>
+												<img osctype="option_image<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>" width="100" height="100" src="/Uploads/image/<?php echo $goods_mul_op['image'];?>" />
+												<?php }else{ ?>
+												<img osctype="option_image<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>" src="/Common/image/no_image_100x100.jpg" />
+												<?php } ?>
+												<input osctype="option_image_input<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>" type="hidden" name="#" value="<?php echo $goods_mul_op['image']; ?>" id="input-image<?php echo $goods_mul_op['rela_goodsoption_valueid']; ?>"></a>
+											</td>
+										</tr>
+										<?php } ?>
+										
+									    </tbody>
+									</table>
+									<?php } ?>
+						</div>
+					</div>
+					
+					<input type="hidden" name="goods_option" id="goods_option" value="" />
+					<div class="form-group">
+	                    <label class="col-sm-2 control-label" for="input-description">商品详情：</label>
+	                    <div class="col-sm-10">
+	                     
+	                      <textarea id="editor" name="goods_description[description]" id="description">{$description.description|default=''}</textarea>	
+	                    </div>
+                  	</div>
+					
+	          	</div>
+	          	<!-- 常规 END -->
+	          	<!-- 基本信息 START -->
+	          	<div class="tab-pane" id="tab-data">
+	          		
+	          		
+		            
+	          	</div>
+	          	<!-- 基本信息 END -->
+	          	
+	          	<!-- 图片 START -->
+	          	<div class="tab-pane" id="tab-image">
+	          		
+	          	</div>
+	          	<!-- 图片 END -->
+	          	
+	          
+	       
+	       		<!-- 选项 START -->
+	       		<div class="tab-pane" id="tab-option">
+	       			<div class="row">
+	       				
+	       			</div>
+	       		</div>
+	       		<!-- 选项 END -->
+        
+          </div>
+        </form>
+        	
+	</div>
+	
+	</div>
+</div>
+<style>
+.guige_name{background-color:#f8f8f8;padding:10px;}
+.select2-container-multi .select2-choices .select2-search-choice{border:none;}
+.select2-container-multi .select2-choices{background:none;}
+.tag-input-style{color:#07d;}
+.select2-default {
+    color: #07d !important;
+}
+.select2-container-multi.tag-input-style .select2-choices .select2-search-choice {
+    background-image: none;
+    background-color: #91b8d0;
+    color: #FFFFFF;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 3px;
+    margin-right: 0;
+    padding: 6px 22px 7px 9px;
+    position: relative;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease 0s;
+    vertical-align: baseline;
+    white-space: nowrap;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+.select2-container-multi.tag-input-style .select2-choices .select2-search-choice{padding-left:18px;}
+.select2-container-multi .select2-choices .select2-search-choice {
+    line-height: 16px;
+    padding-bottom: 4px;
+}
+</style>
+
+</block>
+<block name="javascript">
+<script src="Common/js/chosen.jquery.js"></script>
+<script src="Common/js/select2.js"></script>
+
+
+<script language="JavaScript">
+var s= 2;
+
+$(document).ready(function(){
+	
+	$('.chosen-select').chosen({allow_single_deselect:true,allowClear:true }); 
+	
+	<?php if(!empty($goods)){ ?>
+	$.ajax({
+		url:"{:U('Option/get_goodsajax_option_value')}",
+		type:'post',
+		data:{goods_id:<?php echo $goods['goods_id']; ?>},
+		dataType:'json',
+		success:function(ret){
+			if(ret.code ==1)
+			{
+				var option_data = ret.data;
+				
+				for(var i in option_data)
+				{
+					var s_template = '';
+					s_template += '<div class="col-sm-10 col-sm-offset-2 guige_name">	';
+					
+					
+					s_template += '	<div class="tags" style="border:none;width:100%;">';
+					s_template += '	<span class="tag option_new" rel_sku_name="'+option_data[i].option_name+'" rel_sku_id="'+option_data[i].option_id+'">'+option_data[i].option_name+'<button type="button" class="close">×</button></span>';
+					s_template += '	</div>';
+									
+					s_template += '<select multiple="" name="goods_option_value[]" id="state"  class="select_mult select_mult_'+option_data[i].option_id+' select'+s+'" data-placeholder="+添加属性">';
+					s_template += '<option value="">&nbsp;</option>';
+					
+					var goods_option_value_list = option_data[i].goods_option_value_list;
+					
+					
+					for(var j in goods_option_value_list)
+					{
+						s_template += '<option '+goods_option_value_list[j].selected+' value="'+goods_option_value_list[j].option_value_id+'">'+goods_option_value_list[j].value_name+'</option>';
+					}
+					s_template += '</select>';
+
+					
+					s_template +='</div>';
+					$('#guige_list').append(s_template);
+					
+					$('.select'+s).select2({allowClear:true });
+					
+					s++;
+					
+				}
+				//get_option_mult_info_new();
+			}
+		}
+	
+	})
+	<?php } ?>
+	
+	$('.chosen-select').change(function(e){
+		//console.log($(this).val());
+		
+		var option_arr = [];
+		var option_ids_arr = [];
+		
+		
+		$('.option_new').each(function(){
+			if($(this).text() != '')
+			{
+				option_arr.push($(this).attr('rel_sku_name')); 
+				option_ids_arr.push($(this).attr('rel_sku_id'));
+			}
+		})
+	
+		var se_text = $(this).find("option:selected").text();
+		
+		
+		var se_val = $(this).val();
+		
+		if(se_val == undefined || se_val =='')
+		{
+			return false;
+		}else {
+			
+			if( $.inArray(se_val,option_ids_arr) > -1)
+			{
+				return false;
+			}
+		}
+		//添加规格项目
+		$.ajax({
+			url:"{:U('Option/get_ajax_option_value')}",
+			type:'post',
+			data:{option_id:se_val},
+			dataType:'json',
+			success:function(ret){
+				if(ret.code ==1)
+				{
+					var s_template = '';
+					s_template += '<div class="col-sm-10 col-sm-offset-2 guige_name">	';
+		
+					s_template += '	<div class="tags" style="border:none;width:100%;">';
+					s_template += '	<span class="tag option_new" rel_sku_name="'+se_text+'" rel_sku_id="'+se_val+'">'+se_text+'<button type="button" class="close">×</button></span>';
+					s_template += '	</div>';
+									
+					s_template += '<select multiple="" name="goods_option_value[]" id="state"  class="select_mult select_mult_'+se_val+' select'+s+'" data-placeholder="+添加属性">';
+					s_template += '<option value="">&nbsp;</option>';
+					
+					for(var i in ret.data)
+					{
+						s_template += '<option value="'+ret.data[i].option_value_id+'">'+ret.data[i].value_name+'</option>';
+					}
+					s_template += '</select>';
+
+					
+					s_template +='</div>';
+					$('#guige_list').append(s_template);
+					
+					$('.select'+s).select2({allowClear:true });
+					get_option_mult_info_new();
+					s++;
+				}
+			}
+		})
+		
+	})
+	//chosen-select  change  option_new close
+	//select2-search-choice  option_new
+	
+	$(document).delegate('#guige_list .option_new .close', 'click', function(e) {
+		$(this).parent().parent().parent().remove();
+		get_option_mult_info_new();
+	})
+	
+	$(document).delegate('#guige_list .select_mult', 'change', function(e) {
+		get_option_mult_info_new();
+	})
+	
+	
+	//checkbox
+	 $(".prochk").click(function () {
+            var chk = ($($(this).closest("tr").find("td")[2]).find("input"));
+            var bl = true;
+            if ($(this).attr("checked")!="checked") {
+            	$(this).removeAttr("checked");
+                bl = false;
+            }else{
+            	$(this).attr("checked", "checked");
+                bl = true;
+            }
+           
+            chk.each(function (i,e) {
+                $(e).prop("checked", bl);
+                if(bl){
+                	$(e).attr("checked",true);
+                }else{
+                	$(e).removeAttr("checked");
+                }
+            })
+        });
+       	$("#pktype_check").click(function(){
+       		var bl = true;
+            if ($(this).attr("checked")!="checked") {
+            	$(this).removeAttr("checked");
+                bl = false;
+            }else{
+            	$(this).attr("checked", "checked");
+                bl = true;
+            }
+       		$(".scrollable-area input[type=checkbox]").each(function (i,e) {
+                $(e).prop("checked", bl);
+                if(bl){
+                	$(e).attr("checked",true);
+                }else{
+                	$(e).removeAttr("checked");
+                }
+            })
+       	});
+        $("input[name='citychk[]']").click(function () {           
+            var prochk = ($($(this).closest("tr").find("td")[0]).find("input"));
+            
+            if ($(this).attr("checked")!='checked') {
+                $(this).removeAttr("checked");
+                 var citychk = ($($(this).closest("tr").find("td")[2]).find("input"));
+                var bl = true;
+                citychk.each(function (i, e) {                    
+                    if ($(e).attr("checked")=='checked') {
+                        bl = true;
+                        return false;
+                    }
+                    else {
+                        bl= false;
+                    }
+                })
+                if(bl){
+                	$(prochk).attr("checked", "checked");
+                }else{
+                	$(prochk).removeAttr("checked");
+                }
+                prochk.prop("checked", bl);
+            }
+            else {
+            	$(this).attr("checked",true);
+            	$(prochk).attr("checked", "checked");
+               	prochk.prop("checked", true);
+            }
+        });
+	
+});
+</script>
+<style>
+.table thead > tr > td, .table tbody > tr > td {
+    vertical-align: middle;
+}	
+.table thead td span[data-toggle="tooltip"]:after, label.control-label span:after {
+	font-family: FontAwesome;
+	color: #1E91CF;
+	content: "\f059";
+	margin-left: 4px;
+}
+.select2-container-multi .select2-choices{min-width:100px;}
+</style>	
+
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+$(function(){
+	
+	var ue = UE.getEditor('editor',{
+		initialFrameHeight:500,
+		serverUrl: "__PUBLIC__/ueditor/php/controller.php",
+		scaleEnabled:true
+		});
+})
+
+
+var option_row = '<?php echo $option_row; ?>';
+
+	
+var option_value_row = '<?php echo $option_value_row; ?>';
+
+
+function get_option_mult_info_new()
+{
+
+	var option_arr = [];
+	var option_ids_arr = [];
+	
+	
+	$('.option_new').each(function(){
+		if($(this).text() != '')
+		{
+			option_arr.push($(this).attr('rel_sku_name')); 
+			option_ids_arr.push($(this).attr('rel_sku_id'));
+		}
+	})
+	
+	var op_html = '<table class="table table-striped table-bordered table-hover">';
+	op_html += '<thead><tr>';
+	
+	if(option_arr.length >0)
+	{
+		for(var i in option_arr)
+		{
+			
+		}
+		//价格（元）  库存数量 图片
+		
+		var option_count = option_arr.length;
+		var option_value_arr = new Array();
+		
+		for(var i=0;i<option_count;i++)
+		{
+			var option_value0 =[];
+			
+			//$('select.select_mult').length  select_mult_ option_ids_arr[i]
+			
+			$('select.select_mult_'+option_ids_arr[i]+' option:selected').each(function(){
+				var tp_str = $(this).val()+'@@'+$(this).text();
+				option_value0.push(tp_str);
+			})
+			if(option_value0.length > 0)
+			{
+				option_value_arr.push(option_value0.join(','));
+				op_html += '<td class="text-left">'+option_arr[i]+'</td>';
+			}
+		}
+		//<td class="text-right">价格（元）</td>
+		op_html += '<td class="text-right">库存数量</td><td class="text-left">图片</td></tr></thead><tbody>';
+		
+		//叠加属性数组
+		if(option_value_arr.length >=1)
+		{
+			var need_result = [];
+			for(var j =0;j < option_value_arr.length; j++)
+			{
+				need_result = compare_arr_juz(need_result,option_value_arr[j]);
+			}
+			for(var k =0;k < need_result.length; k++)
+			{
+				var vl_arr = need_result[k].split('*_*');
+				op_html += '<tr>';
+				var op_ids_arr = [];
+				for(var ki =0;ki<vl_arr.length;ki++)
+				{
+					var t_arr = vl_arr[ki].split('@@');
+					op_ids_arr.push(t_arr[0]);
+					op_html += '<td class="text-left">'+t_arr[1]+'</td>';
+				}
+				var op_ids_str = op_ids_arr.join('_');
+				//op_html += '<td class="text-left"><input type="text" name="'+op_ids_str+'_price" value="0" class="form-control mult_option_zuhe"></td>';
+				
+				op_html += '<td class="text-left"><input type="text" name="'+op_ids_str+'" value="0" class="form-control mult_option_zuhe"></td>';
+				
+				op_html += '<td class="text-left"><a href="#" id="option-image-row'+op_ids_str+'" data-toggle="image" num="'+op_ids_str+'" type="option" class="img-thumbnail"><img osctype="option_image'+op_ids_str+'" src="/Common/image/no_image_100x100.jpg" alt="" title=""><input osctype="option_image_input'+op_ids_str+'" type="hidden" name="#" value="" id="input-image'+op_ids_str+'"></a></td>';
+				
+				op_html += '</tr>';
+			}
+			$('#mult_option_new').html(op_html);
+		} else {
+			$('#mult_option_new').html('');
+		}
+	}else {
+		$('#mult_option_new').html('');
+	}
+}
+$(document).delegate('#option-list select', 'change', function() {
+	get_option_mult_info();
+})	
+
+function compare_arr_juz(need_result,cha_str)
+{
+	var new_need_result = [];
+	var cha_arr = cha_str.split(',');
+	if(need_result.length>0)
+	{
+		for(var i=0;i< need_result.length;i++)
+		{
+			for(var j=0; j< cha_arr.length;j++)
+			{
+				new_need_result.push(need_result[i]+'*_*'+cha_arr[j]);
+			}
+		}
+	} else {
+		for(var i=0;i< cha_arr.length;i++)
+		{
+			new_need_result.push(cha_arr[i]);
+		}
+	}
+	return new_need_result;
+}	
+$('input[name=\'category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: '{:U("GoodsCategory/autocomplete")}' +'/filter_name/'+  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'category\']').val('');
+		
+		$('#goods-category' + item['value']).remove();
+		
+		$('#goods-category').append('<div id="goods-category' + item['value'] + '"><i class="icon-ban-circle"></i> ' + item['label'] + '<input type="hidden" name="goods_category[]" value="' + item['value'] + '" /></div>');	
+	}
+});	
+$('#goods-category').delegate('.icon-ban-circle', 'click', function() {
+	$(this).parent().remove();
+});	
+$(document).delegate('#submit', 'click', function() {
+	
+	
+	if ( $("select[name=\'class_2\']").length > 0){
+		var class_2 = $("select[name=\'class_2\']").val();
+		if(parseInt(class_2) == 0){
+			alert('请选择分类');
+			return false;
+		}
+	}
+	if ( $("select[name=\'class_3\']").length > 0){
+		var class_3 = $("select[name=\'class_3\']").val();
+		if(parseInt(class_3) == 0){
+			alert('请选择分类');
+			return false;
+		}
+	}
+	
+	var mult_option_zuhe = '';
+	var mult_option_zuhe_arr = [];
+	$('.mult_option_zuhe').each(function(){
+		var mult_id = $(this).attr('name');
+		var mult_qu = $(this).val();
+		var mult_image = $('#input-image'+mult_id).val();
+		mult_option_zuhe_arr.push( 'mult_id:'+mult_id+'@@'+'mult_qu:'+mult_qu+'@@mult_image:'+mult_image);
+	})
+	if(mult_option_zuhe_arr.length >0)
+	{
+		$('#mult_option_zuhe').val(mult_option_zuhe_arr.join(','));
+	}
+	var goods_option_arr = [];
+	var goods_option_str = '';
+	$('.option_new').each(function(){
+		
+		goods_option_arr.push( $(this).attr('rel_sku_id') );
+	})
+	if(goods_option_arr.length >0)
+	{
+		$('#goods_option').val(goods_option_arr.join(','));
+	}
+	
+	//goods_option
+	return true;
+});	
+	
+	var image_row = '<?php echo $image_row; ?>';
+
+	function addImage() {
+		html  = '<tr id="gallery-image-row' + image_row + '">';
+		html += '  <td class="text-left"><a href="#" id="thumb-image' + image_row + '"data-toggle="image" type="gallery" num="'+image_row+'" class="img-thumbnail"><img osctype="gallery_image'+image_row+'" src="__ROOT__/Common/image/no_image_100x100.jpg" alt="" title="" /><input osctype="gallery_image_input'+image_row+'" type="hidden" name="goods_image[' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
+		html += '  <td class="text-right"><input type="text" name="goods_image[' + image_row + '][sort_order]" value="'+image_row+'" class="form-control" /></td>';
+		html += '  <td class="text-left"><button type="button" onclick="$(\'#gallery-image-row' + image_row  + '\').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="icon-trash"></i></button></td>';
+		html += '</tr>';
+		
+		$('#images tbody').append(html);
+		
+		image_row++;
+	}
+
+	var discount_row ={$discount_row|default='0'};
+
+	function addDiscount() {
+		html  = '<tr id="discount-row' + discount_row + '">'; 
+		html += '  <td class="text-left"><input type="text" name="goods_discount[' + discount_row + '][quantity]" value="" class="form-control" /></td>';
+		html += '  <td class="text-left"><input type="text" name="goods_discount[' + discount_row + '][price]" value="" class="form-control" /></td>';
+		html += '  <td class="text-left"><button type="button" onclick="$(\'#discount-row' + discount_row  + '\').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="icon-trash"></i></button></td>';
+		html += '</tr>';
+		
+		$('#discount tbody').append(html);
+		
+		discount_row++;
+	}
+	
+$(function(){
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("status", {$goods.status|default=1});		
+			Oscshop.setValue("subtract",{$goods.subtract|default=1});		
+			Oscshop.setValue("shipping",{$goods.shipping|default=1});
+	</present>
+	
+	
+	// tooltips on hover button-upload
+	$('[data-toggle=\'tooltip\']').tooltip({container: 'body', html: true});
+
+	// Makes tooltips work on ajax generated content
+	$(document).ajaxStop(function() {
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	});	
+	
+	$(document).delegate('input[name=\'shipping\']', 'click', function(e) {
+		var index = $(this).val()-1;
+		$('#shipping_temp').children().hide();
+		$('#shipping_temp').children().eq(index).show();
+	})
+	
+	
+	//关闭弹出层
+	$('#dialog').on('click','.ks-ext-close',function(){	
+	    $("#dialog").css('display','none');
+	    $('.ks-ext-mask').css('display','none');
+	    return false;
+	});
+	//关闭弹出层
+	$('#dialog').on('click','.J_Cancel',function(){	
+	    $("#dialog").css('display','none');
+	    $('.ks-ext-mask').css('display','none');
+	    return false;
+	});
+	//shipping_btn $('#dialog').on('click')
+	
+	$(document).delegate('.shipping_btn', 'click', function(e) {
+		var transport_id = $(this).attr('rel');
+		var relname = $(this).attr('relname');
+		$('#transport_id').val(transport_id);
+		$('#transport_name').html(relname);
+		
+	  	$("#dialog").css('display','none');
+	    $('.ks-ext-mask').css('display','none');
+	    return false;
+	})
+	
+	$(document).delegate('#cateclass select', 'change', function(e) {
+	e.preventDefault();
+	var thisobj =$(this);
+	var pid =thisobj.val();
+	thisobj.nextAll().remove();
+	var cur_rel =parseInt( thisobj.attr('rel'))+1;
+	if(pid ==0)
+		return ;
+	
+	$.ajax({
+		url:"{:U(Goods/get_json_category_tree)}",
+		type:'get',
+		data:{pid:pid,is_ajax:1},
+		dataType:'json',
+		success:function(result){
+			
+			if(result.code == 1)
+			{
+				var after_html = '<select name="class_'+cur_rel+'" class="checkbox-inline" rel="'+cur_rel+'">';
+				
+				after_html += '<option value="0">请选择类目</option>';
+				for(var i in result.list)
+				{
+					after_html += '<option value="'+result.list[i].id+'">'+result.list[i].name+'</option>'
+				}
+				after_html += '</select>';
+				thisobj.after(after_html)
+			}
+		}
+	})
+	
+	
+	
+});
+	$(document).delegate('#shipping_chose', 'click', function(e) {
+		
+		$.ajax({
+			url: '{:U("Transport/getTransportList")}',
+			dataType: 'json',
+			type:'get',
+			data:{store_id:"<?php echo $goods['store_id']; ?>"},
+			success: function(result) {
+				if(result.code == 1)
+				{
+					var shipping_html = '<table id="simple-table" class="table table-striped table-bordered table-hover"><thead><tr><th>运费模板ID</th><th>运费模板名称</th><th></th></tr></thead><tbody>';
+					for(var i in result.list){
+						shipping_html += '<tr><td>'+result.list[i].id+'</td>';
+						shipping_html += '<td>'+result.list[i].title+'</td>';
+						shipping_html += '<td><div class="btn-group shipping_btn" relname="'+result.list[i].title+'" rel="'+result.list[i].id+'"><button class="btn btn-xs btn-success"><i class="ace-icon fa icon-check bigger-120"></i></button></div></td></tr>';
+					}
+					shipping_html += '</tbody></table>';
+					
+					$('#ks_shipping').html(shipping_html);
+					$("#dialog").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
+				} else{
+					alert('请先添加运费模板');
+				}
+			}
+		});
+		
+		
+	})
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+		var type=$(this).attr('type');
+		//alert(index);
+		
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> ';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'" t="'+type+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> ';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		//商品图片
+		$('#thumb-image').on('click', function() {
+			
+			//alert('333');
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'product'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_goods_image:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;
+	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__/'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+			
+		//商品相册
+		$('.button-image').on('click', function() {
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			var i=$(this).attr('n');
+			var type=$(this).attr('t');
+						
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image/dir')}"+'/'+type,
+	            add: function(e, data) {
+	                $parent = $('#image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                var old_name='old_'+type+'_image';
+	                data.formData = {old_name:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#'+type+'-image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__/'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+			
+		});
+		
+
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+});
+	$('#option a:first').tab('show');
+</script>
+</block>

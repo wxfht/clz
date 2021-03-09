@@ -1,0 +1,83 @@
+<script src="__PUBLIC__/pinduoduo/js/TouchSlide.1.1.js"></script>
+<style>
+#banner{height:auto;}
+.banner-focus {
+	width: 100%;
+	height: 10px;
+	position: relative;
+	bottom: 15px;
+	overflow: hidden;
+	z-index: 10000
+}
+
+.banner-focus .banner-hd {
+	width: 100%;
+	height: 10px;
+	bottom: 0;
+	position: absolute;
+	content: "";
+	text-align: right;
+	z-index: 100000
+}
+
+.banner-focus .banner-hd ul,.banner-focus .banner-hd ul li {
+	display: inline-block;
+	height: 10px;
+	vertical-align: top
+}
+
+.banner-focus .banner-hd ul li {
+	width: 10px;
+	background: #fff;
+	margin: 0 3px;
+	overflow: hidden;
+	border-radius: 100%;
+	-moz-border-radius: 100%;
+	-webkit-border-radius: 100%;
+	-o-border-radius: 100%;
+	color: #fff
+}
+
+.banner-focus .banner-hd ul .on {
+	background: red;
+	color: red
+}
+</style>
+<div class="tuanc" id="banner">
+	<div class="bd">
+		<ul  id="slider">
+			<volist name="slider" id="v">
+               	<li><a href="{$v.url}"><img src="__ROOT__/Uploads/image/{$v.image}" /></a></li>
+            </volist> 
+		</ul>
+	</div>
+	<div class="banner-focus">
+		<div class="banner-hd">
+			<ul>
+				<?php 
+				$count = count($slider);
+				for($i=1;$i<=$count;$i++)
+				{
+				?>
+				<li <?php if($i == 1){ ?>class="on"<?php } ?>></li>
+				<?php } ?>
+			</ul>
+		</div>
+	</div>
+</div>
+<?php if(!empty($slider)){ ?>
+<script>
+$(function(){
+	TouchSlide({ 
+		slideCell:"#banner",
+		titCell:".banner-hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+		mainCell:".bd ul", 
+		delayTime:200,
+		interTime:5000,
+		autoPlay:true,
+		effect:"leftLoop", 
+		autoPage:true //自动分页
+	});
+})
+</script>
+<?php } ?>

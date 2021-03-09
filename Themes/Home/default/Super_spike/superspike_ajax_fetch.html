@@ -1,0 +1,51 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<li class="al-goods" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+      <div class="al-item-img">
+          <img class="al-item-logo" src="<?php $store = M('seller')->where( array('s_id' => $d['store_id']) )->find();echo resize($store['s_logo'], 100, 100); ?>">
+          <img class="al-item-pic" src="__UPLOAD__/{$d.image}">
+          <!--ms-if-->
+      </div>
+      <div class="al-item-name">
+          <span>{$d.name}</span>
+      </div>
+      <div class="al-item-info">
+          <div class="al-item-mk">
+              <div class="al-item-discount">
+                  <div class="al-item-circle"></div>
+                  <?php echo round(  ($d['pinprice']/$d['price']) * 10,1); ?>折
+              </div>
+              <div class="al-item-price">
+                  <span class="price-icon">￥</span>
+                  <span class="price">{$d.pinprice}</span>
+                  <del class="market-price">￥{$d.price}</del>
+                  <p class="al-item-sales">已团{$d.seller_count}件</p>
+              </div>
+          </div>
+          <div class="al-item-sale">
+          		    马上抢
+              <img src="__PUBLIC__/pinduoduo/assets/img/rightjian.png">
+          </div>
+          <!--ms-if-->
+      </div>
+  </li>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

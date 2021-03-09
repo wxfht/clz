@@ -1,0 +1,27 @@
+<form action="" method="post" class="form-horizontal form-validate" enctype="multipart/form-data" style="overflow-x:hidden;">
+	<input type="hidden" name="head_id" value="{$head_id}" /> 
+	<input type="hidden" name="searchtime" value="{$_GPC['searchtime']}" /> 
+	<input type="hidden" name="starttime" value="{$starttime}" /> 
+    <input type="hidden" name="endtime" value="{$endtime}" />
+	
+  
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>商品详情</legend>
+	</fieldset>
+	<div class="layui-form">
+	    <table class="layui-table">
+			<tr>
+				<th>商品标题</th>
+				<th>规格</th>
+				<th>数量</th>
+			</tr>
+			<?php foreach($show_goods_list as $val){ ?>
+			<tr>
+				<td><?php echo $val['name']; ?></td>
+				<td><?php echo $val['sku_name']; ?></td>
+				<td><?php echo $val['quantity']; ?></td>
+			</tr>
+			<?php } ?>
+		</table>
+	</div> 
+</form>

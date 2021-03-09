@@ -1,0 +1,127 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/bonus_bonusIndex-9810a4839d.css">
+<link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css"/>
+<div class="text">
+	<div class="arrow_mask"></div>
+	<div class="pending_confirmation">
+		<ul>
+			<li>
+				<div class="header">
+					<div>今日收入（元）</div>
+					<div class="bill"><a href="{:U('Sharebonus/listorder')}"><span class="bill_text">账单</span>
+					<img class="arrow_img" src="__PUBLIC__/image/arrow-aa73bc1779.png" alt=""></a></div>
+				</div>
+			</li>
+			<li class="mengtuan_earn">
+				<div>{$today_commiss}</div>
+			</li>
+			<li>
+				<div class="header_bottom">
+					<div class="header_month_income">
+						<div class="month_income">本月收入（元）</div>
+						<div class="income_data_mes">{$month_commiss}</div>
+					</div>
+					<div></div>
+					<div class="header_total_revenue">
+						<div class="total_revenue">累计收入（元）</div>
+						<div class="income_data_mes">{$total_commiss}</div>
+					</div>
+				</div>
+			</li>
+			<li>
+				<div class="body_top"> 
+					<div>
+						<div class="money_text">待确认收入（元）
+							&nbsp;<a href="{:U('Sharebonus/listorder', array('state' => 0))}" style="color:#000;">订单明细</a>
+						</div>
+						<div class="data">{$total_wait_commiss}</div>
+					</div>
+					<div class="shou_dialog">
+						<img src="__PUBLIC__/image/btn_question-869f7b1576.png" class="question1" alt="">
+						<div class="arrow">此金额在购买团员收到货并超过7天维权期后，即可成为可提现金额</div>
+					</div>
+				</div>
+			</li>
+			<div class="blank_line1"></div>
+			<li>
+				<div class="body_bottom" > 
+					<div>
+						<div class="money_text">可提现金额（元）
+						&nbsp;<a href="{:U('Sharebonus/listorder', array('state' => 1))}" style="color:#000;">订单明细</a>
+						&nbsp;|&nbsp;<a href="{:U('Sharebonus/tixian')}" style="color:#000;">提现记录</a>
+						
+						</div>
+						<div class="data">{$can_tixian_money}</div>
+					</div>
+					<div class="shou_dialog1">
+						<img src="__PUBLIC__/image/btn_question-869f7b1576.png" class="question2" alt="">
+						<div class="arrow2">收入已进账，正式团长能够直接提现哦！</div>
+					</div>
+					<div></div>
+				</div>
+			</li>
+			<div class="blank_line2"></div>
+		</ul>
+	</div>
+	<div id="toast" style="display: none;">
+		<div class="weui_mask_transparent"></div>
+		<div class="weui_toast">
+			<i class="weui_icon_toast"></i>
+			<p class="weui_toast_content">申请成功</p>
+		</div>
+		
+		</form>
+	</div>
+	<?php if($comsiss_flag == 1){ ?>
+	<footer>
+			<div class="footer_bonus">
+				<div class="btn_mes">
+					<a href="{:U('Sharebonus/tixian')}">
+						<input type="button"  class="withdrawals"  value="佣金提现">
+					</a>
+				</div>
+				<div class="money_record"></div>
+			</div>
+	</footer>
+	
+	<?php }?>
+	<footer>
+			<div class="footer_bonus">
+				
+				<div class="money_record"></div>
+			</div>
+	</footer>
+</div>
+<script>
+var can_sub = true;
+$(function(){
+	
+	$('#btn2').click(function(){
+		if(!can_sub)
+		{
+			return false;
+		}
+		can_sub = false;
+		$('#btn2').val('申请中....');
+		$.ajax({
+			url:"{:U('Sharebonus/apply')}",
+			type:'get',
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					$('#toast').show();
+					 setTimeout(function () {
+		                    $('#toast').hide();
+		             }, 2500);
+				} else {
+					alert(ret.msg);
+				}
+			}
+		});
+		
+	});
+})
+</script>
+</block>

@@ -1,0 +1,227 @@
+<section class="main-view tuan-index" id="goods_list">
+	<div class="base-list-wrapper" id="tuan_list">
+		
+		<volist name="list" id="d">
+		<div class="single-list-item" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+			<div class="goods-image">
+				<img src="{$index_ly_image}" data-echo="__UPLOAD__/{$d.image}" class="scrollLoading" data-url="__UPLOAD__/{$d.image}" width="100%">
+				
+			</div>
+			<p class="goods-name" data-log="" data-reactid="89">
+				{$d.name}
+			</p>
+			<div class="detail" style="height: .5rem;">
+				<div class="local-groups">
+					<span></span>
+					<?php foreach($d['avatar_list'] as $avatar){ ?>
+					<div class="avatar">
+						<img src="<?php echo $avatar['avatar']; ?>">
+					</div>
+					<?php } ?>
+				</div>
+				
+			</div>
+			<div class="detail" data-reactid="90">
+				<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAMAAAANmfvwAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAEIUExURUxpcZSUlJCQkJaWlpmZmZWVlZmZmZSUlJSUlJSUlJSUlJOTk5WVlZSUlJSUlJSUlJSUlJWVlZaWlpSUlJWVlZWVlZSUlJSUlJSUlJSUlJWVlZSUlJWVlZWVlX9/f5SUlJWVlZWVlZ+fn5aWlpSUlJSUlJKSkpWVlZmZmZWVlZOTk5WVlZWVlZWVlZaWlpSUlJSUlJWVlZWVlaqqqpSUlJmZmZWVlZOTk5SUlJWVlZSUlJOTk////5WVlZOTk5WVlZWVlZOTk5WVlZWVlZSUlJWVlZaWlpSUlJWVlZycnJSUlJKSkpaWlpSUlJWVlZSUlJWVlZSUlJWVlZOTk5SUlJSUlJSUlJWVlZnIn4UAAABXdFJOUwD3FxYKdgWL+lRlQNDODOvwsD2xmDqN/jxxRm77lgJ68aIIM93VIYAZgy10Y/0s/Hx7xAOlHoxY0eDMZAHvOT9oMqzs7Z9mocgNyTsnMLyg6p5XJrtWJJVjJAMAAAFFSURBVDjL3ZHVloNAEEQbEogQiLu7u7usu2///5/sSCA5yWHfd+ulq5o7Q9MA/GH5/B70+H2/ENEwUoWjpkQEdUXMEK+BeM2QjIFkTIgcHpQzYewGYT97FkxLeVKKBlIkKS+lgwYRoN0ygM1AbABlWgN7IsbbNSjpb7KXoMZdjCMhnuqHa8glde5CHEny1AWwFpgrWAG6vJnkSJwnB7GOE4dxjogCDW5yFCqsXyHO6qZOEPfzdmiaU1dlSJXaOXUd/aPlKeJsAdq4tx+3N9ZgMUOcyjrSn+Bytd4JRz9A2K1XS5z0OWBpuBA3Ep5K2iC6GhZC2Ni+tuoZom7ZFsmOEix/vZwhb++sJACyzHx+uE+I1+9nVq8AUs77JnGj4aB9BLQHwxEpzdvrFBtYe3xQWjKIzhvXBelfqlmnBeSWojzdwb/UDwOrhGgcYFPiAAAAAElFTkSuQmCC">
+				<a class="group-desc" data-reactid="92">
+					{$d.pin_count}人团
+				</a>
+				<a class="sale-price" data-reactid="95">
+					<i data-reactid="96">￥</i>
+					{$d.pinprice}
+				</a>
+				<a class="normal-price" >
+					已团{$d.seller_count}
+				</a>
+			</div>
+			<div class="core" data-log="" data-reactid="101">
+				<span data-reactid="102">去开团</span>
+				<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAASBAMAAACdhyI/AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAnUExURf///0xpcf///////////////////////////////////////////+nkmRIAAAAMdFJOUx0AA9zdqt4eH6mPHIvMvyYAAABaSURBVAjXYxCsFgQCBvFkRhBVdsYARK05cxjIZVA9A+IyCMWAuAyCYC6DIJjLIAjmAinNM2ccgIJzzhxhBCtxAGs4wgjW7gA27AjIsDYQR5BBIgVskWADyFoA69EgN3WDDasAAAAASUVORK5CYII=" data-reactid="103">
+			</div>
+		</div>
+		</volist>
+		
+		<?php if(!empty($sublist_list)){  ?>
+		<volist name="sublist_list" id="sd">
+		<div class="tuan_recommend" style="height: 355.6px;">
+			<div class="tuan_recommend_head">
+			{$sd.name}
+			</div>
+			<div class="tuan_read_more" onclick="location.href='{:U('Subject/index',array('id' => $sd['id']) )}'; ">
+				<span>查看更多</span>
+				<i class="arrow"></i>
+			</div>
+			<ul class="subject-scroll-goods_list_item-24 tuan_bd">
+				
+				<?php  foreach($sd['goods_list'] as $sdcv){ ?>
+				
+				<li onclick="location.href='{:U('/goods/'.$sdcv['goods']['goods_id'])}'">
+					
+					<img src="{$fan_ly_image}" data-echo="<?php echo $sdcv['goods']['image']; ?>"  class="scrollLoading tuan_recommand_forward" style="width: 220px;height:220px;" >
+					
+					<div class="tuan_recommend_title" style="width: 220px;">
+					<?php echo $sdcv['goods']['name']; ?>
+					</div>
+					<div class="tuan_recommend_price">
+						￥
+						<span><?php echo $sdcv['goods']['pinprice']; ?></span>
+					</div>
+				</li>
+				<?php } ?>
+			</ul>
+			<div class="fugai"></div>
+		</div>
+		</volist>
+		<?php } ?>
+		
+	</div>
+</section>
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<style>
+.single-list-item .detail{margin-right: 0.2rem;}
+.local-groups {
+    height: .24rem;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.local-groups .avatar, .local-groups .local-groups-bubble {
+    float: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.local-groups .avatar {
+    width: .25rem;
+    height: .25rem;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAXVBMV…fRwbg/co8Nc+QRXxMP4THEFtBwYLX9c2niOr7fbvfQOv4Co6SCa8C40ooAAAAASUVORK5CYII=);
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+}
+ .local-groups .avatar {
+    width: .32rem;
+    height: .32rem;
+}
+.local-groups .avatar:nth-child(n+1) {
+    margin-left: -.09rem;
+}
+.local-groups .avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+	margin:0px;
+}
+
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Index/index')}";
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	var best_url = cur_url+'&page='+_pa;
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'get',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+					bindImgEvent();
+				} else if(result.code == 0) {
+					$('#center_pullup').hide();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+<?php foreach($list as $goods){ ?>
+	   <li role="button" class="cb-order-item">
+		<img class="scrollLoading" src="{$fan_ly_image}" data-echo="__UPLOAD__/<?php echo $goods['image']; ?>" alt="order" />
+        <div class="order-right">
+         <p class="goods-name"><?php echo $goods['name']; ?></p>
+         
+										
+		 <?php if($goods['state'] == 0 && $goods['end_time'] > time() ){ ?>							
+		 <div class="bargain-order-item-countdown clock_div" endtime="<?php echo date('m/d/Y H:i:s', $goods['end_time']);?>">
+          <span></span>
+         </div>
+		
+		 <?php } ?>
+		 
+		 <?php if($goods['state'] == 0 && $goods['end_time'] > time() ){ ?>	
+         <div class="remain">
+          <p class="remain-desc">离免费领取</p>
+          <p class="remain-price">
+           还差
+           <i><?php echo $goods['deal_money']; ?></i>
+           元
+           </p>
+         </div> 
+         <button class="button" onclick="location.href='{:U('Subject/assist_bargain_coupon_detail', array('id' =>$goods[id] ) )}';">继续砍价</button>
+		 
+		  <?php }else if($goods['state'] == 1){ ?>
+		  <button class="button">砍价成功</button>
+		  <?php }else if( ($goods['state'] == 0 && $goods['end_time'] <  time()) || $goods['state'] == 2 ){ ?>
+		  <div class="remain">
+			  <p class="remain-desc"></p>
+			  <p class="remain-price">
+			   砍价失败
+			  </p>
+		  </div>
+          <button class="button" onclick="location.href='{:U('Subject/assist_bargain_coupon')}';">重砍一个</button>
+		  <?php } ?>
+		 
+        </div>
+		</li>
+<?php } ?>

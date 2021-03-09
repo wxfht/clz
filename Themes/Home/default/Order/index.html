@@ -1,0 +1,373 @@
+<extend name="Public:base" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/css/orders-64a960fa.css?v=2" >
+
+  <div class="wrapper" style="display: block;">
+   <ul class="category-bar">
+	    <li class="J_cate-item <?php if($type == 0){ ?>s-selected<?php } ?>"  onclick="location.href='{:U('Order/index', array('type' => 0))}'"><span><span>全部</span></span></li>
+	    <li class="J_cate-item <?php if($type == 3){ ?>s-selected<?php } ?>" onclick="location.href='{:U('Order/index', array('type' => 3))}'"><span><span>待付款</span></span></li>
+		<li class="J_cate-item <?php if($type == 1){ ?>s-selected<?php } ?>" onclick="location.href='{:U('Order/index', array('type' => 1))}'"><span><span>待发货</span></span></li>
+	    <li class="J_cate-item <?php if($type == 4){ ?>s-selected<?php } ?>" onclick="location.href='{:U('Order/index', array('type' => 4))}'"><span><span>待收货</span></span></li>
+	    <li class="J_cate-item J_remain-comment <?php if($type == 6){ ?>s-selected<?php } ?>" onclick="location.href='{:U('Order/index', array('type' => 6))}'"><span><span>待评价</span></span></li>
+	    <li class="J_cate-item J_remain-comment <?php if($type == 12){ ?>s-selected<?php } ?>" onclick="location.href='{:U('Order/index', array('type' => 12))}'"><span><span>售后</span></span></li>
+   </ul>
+   <section class="list J_list">
+    <ul class="J_list-content orders" id="tuan_list"> 
+     
+     <volist name="list" id="d">
+     <li class="item"> 
+      <div class="time">
+       <span></span>
+      </div> 
+      <div class="oneOrder"> 
+       <div class="title">
+        <span class="status"><span>{$d.status_name}</span></span>
+       </div> 
+       <ul class="goods" onclick="location.href='{:U('Order/info', array('id' => $d['order_id']))}';"> 
+       		<?php foreach($d['goods_list'] as $goods){ ?>
+	        <li class="oneGood" > 
+		         <div class="img-wrapper"> 
+		          	<img class="icon" src="<?php echo $goods['goods_images']; ?>" /> 
+		         </div> 
+		         <div class="title">
+		          	<?php if($goods['is_pin'] ==1) { ?>
+		          	<span class="pintuan">拼团</span>
+		          	<?php } ?>
+		          	<?php echo $goods['name']; ?>
+		         </div> 
+		         <div class="sku">
+		         	 <?php echo $goods['option_str']; ?>
+		         </div> 
+		         <div class="money">
+		          <span class="price"><strong>&yen; <?php echo round($goods['price'],2); ?></strong></span>
+		          <span class="num">x <?php echo $goods['quantity']; ?></span>
+		         </div> 
+	        </li>
+	        <?php } ?>
+       </ul> 
+      </div> 
+      <div class="total"> 
+      		<?php if($d['shipping_fare']>0){?>
+      		<div class="info">
+      			运费：<?php echo $d['shipping_fare']; ?>
+      		</div>
+      		<?php } ?>
+       		<div class="info">
+        		共{$d.quantity}件商品 总计：
+        		<strong>&yen;{$d.total}</strong>
+       		</div> 
+       <div class="btns"> 
+       		
+       		<!-- 待付款 -->
+            <?php if($d['order_status_id'] == 3){ ?>
+           		<div class="btn " onclick="order_cancel(this)" data-o-id="{$d.order_id}" >
+		         	<span> 取消订单</span>
+		        </div> 
+		        <div class="btn highlight" onclick="location.href='{:U('Payment/order_pay', array('order_id' => $d['order_id']))}';">
+		         <span>去支付</span>
+		        </div> 
+            <?php } ?>
+            
+           	<!-- 拼团中 -->
+               <?php if($d['order_status_id'] == 2){ ?>
+               <div class="btn " onclick="location.href='{:U('Group/info', array('group_order_id' => $d['hash_order_id']))}';">
+         			<span>邀请好友拼团</span>
+        		</div> 
+            <?php } ?>
+            
+            <!-- 待收货 -->
+           <?php if( in_array($d['order_status_id'], array(4,12))){ ?>
+           
+           		<div class="btn highlight" onclick="order_receive(this)" rel="确认收货" data-o-id="{$d.order_id}">
+		         <span>确认收货</span>
+		        </div> 
+		        
+		        <div class="btn " onclick="location.href='{:U('Order/goods_express', array('id' => $d['order_id']))}';" rel="查看物流" data-o-id="{$d.order_id}">
+		         <span>查看物流 </span>
+		        </div> 
+		        <a class="_order_btn_shipping" onclick="location.href='{:U('Order/goods_express', array('id' => $d['order_id']))}';"></a>
+		        
+            <?php } ?>
+                 
+            <!-- 待评价-->
+            <?php if($d['order_status_id'] == 6){ ?>
+                 <div class="btn highlight" onclick="location.href='{:U('Order/comment', array('order_id' => $d['order_id']))}';">
+		         	<span>立即评价</span>
+		         </div> 
+            <?php } ?> 
+       </div> 
+      </div> 
+     </li>
+      </volist>
+      
+    </ul>
+   </section>
+   <?php if(empty($list)){ ?>
+   <style>
+	.recommend {
+		border-top: .32rem solid #f4f4f4;
+		background: #fff;
+	}
+	.recommend-hd {
+    margin: 0 .4rem;
+    font-size: .52rem;
+    position: relative;
+    line-height: 1.6rem;
+    color: #666;
+}
+.recommend-hd span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: .48rem;
+    color: #999;
+}
+.recommend-bd {
+    margin: auto .4rem;
+}
+.recommend .goods-item {
+    display: block;
+    float: left;
+    width: 48%;
+    margin-right: 2%;
+}
+.recommend .goods-item {
+    margin-bottom: .2rem;
+}
+.recommend .goods-cover {
+    background-color: #fcfcfc;
+    position: relative;
+}
+.recommend .goods-props {
+    margin-top: .2rem;
+    overflow: hidden;
+    height: 1.4rem;
+}
+.recommend .goods-props span {
+    float: left;
+    margin: 0 .2rem .2rem 0;
+    padding: 0 .2rem;
+    line-height: .7rem!important;
+    font-size: .5rem;
+    background: #f2f5f8;
+    color: #9394a6;
+}
+.recommend .goods-price {
+    margin-top: .3rem;
+    color: #333;
+    font-size: .48rem;
+}
+.cart .empty-cart {
+    text-align: center;
+    margin: 1.856rem 0 .85333333rem;
+}
+.cart .empty-cart .cart-img {
+    display: inline-block;
+    width: 4.43733333rem;
+    height: 4.544rem;
+}
+.cart .empty-cart .cart-hint {
+    padding: .512rem 0;
+    color: #3d3d3d;
+    font-size: .59733333rem;
+    line-height: .85333333rem;
+}
+.cart .empty-cart .cart-btn {
+    display: inline-block;
+    border: 1px solid #f7afbc;
+    border-radius: .17066667rem;
+    padding: .46933333rem .68266667rem;
+    background-color: #fff;
+    color: #ff4965;
+    font-size: .59733333rem;
+    line-height: .59733333rem;
+}
+   </style>
+   <section class="grid-wrap cart" id="cart-info">
+	<div class="empty-cart">             
+	<i class="cart-img"></i>             
+	<p class="cart-hint">订单空空如也，马上去挑选哦~</p>             
+	<a class="cart-btn J_go2login" href="{:U('Index/index')}">去挑选</a>         
+	</div></section>
+
+   {~W('Product/related_usecenter_goods_list')}
+   <?php } ?>
+  </div>
+
+<div class="popup-mask" style="display: none;position: fixed; width: 100%;height: auto;top: 50%;z-index: 999999999; background: rgba(0, 0, 0, 0);">
+	<div class="popup-main" style="     max-width: 50%;  height: auto;margin: auto;background-color: rgba(0,0,0,.8);color: #f0f0f0;font-size: 16px;padding: 10px;text-align: center;border-radius: 5px;box-shadow: 0 0 24px -1px #383838;  background: rgba(41, 49, 61, 0.701961);">
+		<div class="popup-content"><div style="color:#fff;font-size:0.6rem;margin:0"></div>
+		</div>
+	</div>
+</div>
+	
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/images/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+
+
+<style>
+.category-bar{
+	padding: 0 .8rem;
+	overflow-x:auto;
+	overflow-y: hidden;
+    white-space: nowrap;
+}
+.category-bar li{
+	float:none;
+	width:auto;
+	display: inline-block;
+    margin-left: .8rem;
+}
+.wrapper{
+	width:100%;
+	overflow:hidden;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+
+</block>
+<block name="foot_script">
+
+<script>
+function show_mask(title)
+{
+	$('.popup-content div').html(title);
+	
+	$('.popup-mask').fadeIn(1500,function(){
+		$('.popup-mask').fadeOut(1500);
+	})
+	
+}
+
+//确认收货
+function order_receive(obj)
+{
+	var order_id = $(obj).attr('data-o-id');
+	
+	$.ajax({
+		url:"{:U('Order/receive_order')}",
+		type:'post',
+		data:{order_id:order_id},
+		dataType:'json',
+		success:function(result){
+			if(result.code == 1){
+				show_mask('收货成功');
+				$(obj).hide();
+			} else {
+				show_mask(result.msg);
+			}
+			
+		}
+	})
+}
+
+//取消订单
+function order_cancel(obj)
+{
+	var order_id = $(obj).attr('data-o-id');
+	if(!confirm('确认取消订单吗？'))
+	{
+		return false;
+	}
+	
+	$.ajax({
+		url:"{:U('Order/cancel_order')}",
+		type:'post',
+		data:{order_id:order_id},
+		dataType:'json',
+		success:function(result){
+			if(result.code == 1){
+				show_mask('取消成功');
+				$(obj).parent().parent().fadeOut();
+			} else {
+				show_mask(result.msg);
+			}
+			
+		}
+	})	
+}
+
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Order/index',array('type' => $type))}";
+var req_step = 1;
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		console.log(3);
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	}
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+	
+	
+})
+</script>
+</block>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->  
+
+<link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+<link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+<script type="text/javascript">
+	window.sysinfo = {
+	<?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+	
+	<?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+	
+	<?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+	
+	<?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+	
+	'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+	
+	'siteroot': '{$_W['siteroot']}',
+			'siteurl': '{$_W['siteurl']}',
+			'attachurl': '{$_W['attachurl']}',
+			'attachurl_local': '{$_W['attachurl_local']}',
+			'attachurl_remote': '{$_W['attachurl_remote']}',
+			'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+	'cookie' : {'pre': ''},
+	'account' : {:json_encode($_W['account'])},
+	};
+</script>
+
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+<link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+<link href="/static/css/snailfish.css" rel="stylesheet">
+<style type="text/css">
+	.block-box {
+		color: #ffffff;
+		cursor: pointer;
+		display: inline-block;
+		margin-right: 25px;
+		height: 280px;
+		width: 300px;
+		border: 1px solid #D4D4D4;
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+		position: relative;
+	}
+	.opacity {
+		position: absolute;
+		height: 250px;
+		width: 280px;
+		bottom: 0;
+		left: 10px;
+		z-index: 5;
+		background-color: rgba(0, 0, 0, .3);
+		display: none;
+	}
+	.block-img {
+		width: 280px;
+		height: 250px;
+		position: absolute;
+		bottom: 0px;
+		left: 10px;
+	}
+	.select {
+		display: none;
+	}
+	.block-box.active {
+		border: 2px solid #409EFF;
+	}
+	.active .select {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 80px;
+		width: 80px;
+		z-index: 10;
+	}
+	.choose-button {
+		border: 0;
+		position: absolute;
+		height: 30px;
+		width: 80px;
+		padding: 0;
+		text-align: center;
+		background-color: #409EFF;
+		top: 50%;
+		left: 0;
+		right: 0;
+		margin: -15px auto 0;
+		z-index: 10;
+		display: none;
+		font-size: 12px;
+		border-radius: 3px;
+	}
+	.block-box:hover .choose-button,
+	.block-box:hover .opacity {
+		display: block;
+	}
+	.active.block-box:hover .choose-button,
+	.active.block-box:hover .opacity {
+		display: none;
+	}
+	.cctip {
+		position: absolute;
+		bottom: 5px;
+		left: 10px;
+		right: 10px;
+		font-size: 14px;
+		color: #333;
+	}
+	.w100 {
+		width: 100px!important;
+	}
+	.ml100 {
+		margin-left: 100px!important;
+	}
+</style>
+</head>
+<body layadmin-themealias="default">
+
+<div class="layui-fluid">
+	<div class="layui-card">
+		<div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text">
+		<?php if( !empty($item['id']) ){ ?>编辑<?php }else{ ?>添加<?php } ?>魔方图片<?php if( !empty($item['id']) ){ ?>({$item['advname']})<?php } ?>
+		</span>
+		</div>
+		<div class="layui-card-body" style="padding:15px;">
+			<form action="" method="post" class="layui-form" enctype="multipart/form-data">
+				<input type="hidden" name="data[id]" value="{$item['id']}" />
+				<div class="layui-form-item">
+					<label class="layui-form-label">名称</label>
+					<div class="layui-input-block ">
+						<input type="text" id='advname' lay-verify="required" name="data[name]" class="form-control" value="{$item['name']}" />
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">排序</label>
+					<div class="layui-input-block">
+						<input type="text" name="data[displayorder]" class="form-control"
+							value="{$item['displayorder']}" />
+						<span class='help-block'>数字越大，排名越靠前</span>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">状态</label>
+					<div class="layui-input-block">
+						<label class='radio-inline'>
+							<input type='radio' name='data[enabled]' title="显示" value=1 <?php if( $item['enabled']==1 || empty($item) ){ ?>checked<?php } ?> />
+						</label>
+						<label class='radio-inline'>
+							<input type='radio' name='data[enabled]' title="隐藏" value=0 <?php if( $item['enabled']==0 && !empty($item) ){ ?>checked<?php } ?> />
+						</label>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">样式选择</label>
+					<div class="layui-input-block" id="selectBox">
+						
+						<div class="block-box <?php if( empty($item['type']) || $item['type']==1 ){ ?>active<?php } ?>" data-type="1" data-num="1">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-1.png" class="block-img">
+							<div class="cctip">
+									建议尺寸: 宽度710，高度无限制
+							</div>
+						</div>
+						<div class="block-box" <?php if($item['type']==2){ ?>active<?php } ?>" data-type="2" data-num="2">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-2.png" class="block-img">
+							<div class="cctip">
+									建议尺寸: 1，275*365；<br/>2，430*365(或同等比例)
+							</div>
+						</div>
+						<div class="block-box" <?php if($item['type']==3){ ?>active<?php } ?>" data-type="3" data-num="3">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-3.png" class="block-img">
+							<div class="cctip">
+								建议尺寸: 1，275*365；<br/>2、3、430*180(或同等比例)
+							</div>
+						</div>
+						<div class="block-box" <?php if($item['type']==4){ ?>active<?php } ?>" data-type="4" data-num="4">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-4.png" class="block-img">
+							<div class="cctip">
+								建议尺寸: 1，275*365；<br/>2、430*180；3、4、212.5*180(或同等比例)
+							</div>
+						</div>
+						<div class="block-box" <?php if($item['type']==5){ ?>active<?php } ?>" data-type="5" data-num="2">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-7.png" class="block-img">
+							<div class="cctip">
+								建议尺寸: 所有图片等尺寸或等比例
+							</div>
+						</div>
+						<div class="block-box" <?php if($item['type']==6){ ?>active<?php } ?>" data-type="6" data-num="3">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-8.png" class="block-img">
+							<div class="cctip">
+								建议尺寸: 所有图片等尺寸或等比例
+							</div>
+						</div>
+						<div class="block-box" <?php if($item['type']==7){ ?>active<?php } ?>" data-type="7" data-num="4">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-5.png" class="block-img">
+							<div class="cctip">
+								建议尺寸: 所有图片等尺寸或等比例
+							</div>
+						</div>
+						<div class="block-box" <?php if($item['type']==8){ ?>active<?php } ?>" data-type="8" data-num="4">
+							<img src="/static/images/select.png" class="select">
+							<div class="opacity"></div>
+							<button type="button" class="choose-button">
+								<span>启用该样式</span>
+							</button>
+							<img src="/static/images/1-6.png" class="block-img">
+							<div class="cctip">
+								建议尺寸: 所有图片等尺寸或等比例
+							</div>
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">板块设置</label>
+					<div class="layui-input-block" id="bkbox">
+						<div class="row" style="margin-bottom: 20px;">
+							<div class="layui-form-item">
+								<label class="layui-form-label text-left w100">链接类型</label>
+								<div class="layui-input-block ml100">
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_0]' title="本小程序链接" value="1" lay-filter="linktype" 
+											<?php if( $item['thumb']['linktype'][0]==1 || !isset($item['thumb']['linktype'][0]) ){ ?>checked<?php } ?> data-idx="0" />
+									</label>
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_0]' title="webview外链" lay-filter="linktype" 
+											value="0" <?php if( $item['thumb']['linktype'][0]==0 && isset($item['thumb']['linktype'][0]) ){ ?>checked<?php } ?> data-idx="0" />
+									</label>
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-bottom: 20px;">
+								<div class="input-group url-group" style="display:<?php if( $item['thumb']['linktype'][0]==1 || !isset($item['thumb']['linktype'][0]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link0-1">
+									<input type="text" class="form-control valid" name="data[link_0]" value="{$item['thumb']['link'][0]}" readonly id="advlink1">
+									<span class="input-group-btn">
+										<span data-input="#advlink1" class="btn btn-default chose_link">选择链接</span>
+									</span>
+								</div>
+								<!-- webview -->
+								<div class="url-group layui-input-block " style="margin-left:0;display:<?php if( $item['thumb']['linktype'][0]==0 && isset($item['thumb']['linktype'][0]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link0-0">
+									<input type="text" class="form-control" name="data[webview_0]" value="{$item['thumb']['webview'][0]}" placeholder="请输入webview链接" value="{$item['thumb']['webview'][0]}">
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-bottom: 20px;">
+								{:tpl_form_field_image2('data[thumb_0]', $item['thumb']['cover'][0], '', array('extras'=>array('text'=>'placeholder="必选"')))}
+							</div>
+							<hr>
+						</div>
+						<div class="row" style="margin-bottom: 20px;<?php if($item['num']<2){ ?>display: none;<?php } ?>">
+							<div class="layui-form-item">
+								<label class="layui-form-label text-left w100">链接类型</label>
+								<div class="layui-input-block ml100">
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_1]' title="本小程序链接" value="1" lay-filter="linktype" 
+											<?php if( $item['thumb']['linktype'][1]==1 || !isset($item['thumb']['linktype'][1]) ){ ?>checked<?php } ?> data-idx="1" />
+									</label>
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_1]' title="webview外链" lay-filter="linktype" 
+											value="0" <?php if( $item['thumb']['linktype'][1]==0 && isset($item['thumb']['linktype'][1]) ){ ?>checked<?php } ?> data-idx="1" />
+									</label>
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-bottom: 20px;">
+								<div class="input-group url-group" style="display:<?php if( $item['thumb']['linktype'][1]==1 || !isset($item['thumb']['linktype'][1]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link1-1">
+									<input type="text" class="form-control valid" name="data[link_1]" value="{$item['thumb']['link'][1]}" readonly id="advlink2">
+									<span class="input-group-btn">
+										<span data-input="#advlink2" class="btn btn-default chose_link">选择链接</span>
+									</span>
+								</div>
+								<!-- webview -->
+								<div class="url-group layui-input-block " style="margin-left:0;display:<?php if( $item['thumb']['linktype'][1]==0 && isset($item['thumb']['linktype'][1]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link1-0">
+									<input type="text" class="form-control" name="data[webview_1]" value="{$item['thumb']['webview'][1]}" placeholder="请输入webview链接" value="{$item['thumb']['webview'][1]}">
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-bottom: 20px;">
+								{:tpl_form_field_image2('data[thumb_1]', $item['thumb']['cover'][1], '')}
+							</div>
+							<hr>
+						</div>
+						<div class="row" style="margin-bottom: 20px;<?php if( $item['num']<3 ){ ?>display: none;<?php } ?>">
+							<div class="layui-form-item">
+								<label class="layui-form-label text-left w100">链接类型</label>
+								<div class="layui-input-block ml100 radioBox">
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_2]' title="本小程序链接" value="1" lay-filter="linktype" 
+											<?php if( $item['thumb']['linktype'][2]==1 || !isset($item['thumb']['linktype'][2]) ){ ?>checked<?php } ?> data-idx="2" />
+									</label>
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_2]' title="webview外链" lay-filter="linktype" 
+											value="0" <?php if( $item['thumb']['linktype'][2]==0 && isset($item['thumb']['linktype'][2]) ){ ?>checked<?php } ?> data-idx="2" />
+									</label>
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-bottom: 20px;">
+								<div class="input-group url-group" style="display:<?php if( $item['thumb']['linktype'][2]==1 || !isset($item['thumb']['linktype'][2]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link2-1">
+									<input type="text" class="form-control valid" name="data[link_2]" value="{$item['thumb']['link'][2]}" readonly id="advlink3">
+									<span class="input-group-btn">
+										<span data-input="#advlink3" class="btn btn-default chose_link">选择链接</span>
+									</span>
+								</div>
+								<!-- webview -->
+								<div class="url-group layui-input-block " style="margin-left:0;display:<?php if( $item['thumb']['linktype'][2]==0 && isset($item['thumb']['linktype'][2]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link2-0">
+									<input type="text" class="form-control" name="data[webview_2]" value="{$item['thumb']['webview'][2]}" placeholder="请输入webview链接" value="{$item['thumb']['webview'][2]}">
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-bottom: 20px;">
+								{:tpl_form_field_image2('data[thumb_2]', $item['thumb']['cover'][2], '', array('extras'=>array('text'=>'placeholder="必选"')))}
+							</div>
+							<hr>
+						</div>
+						<div class="row" style="margin-bottom: 20px;<?php if( $item['num']<4 ){ ?>display: none;<?php } ?>">
+							<div class="layui-form-item">
+								<label class="layui-form-label text-left w100">链接类型</label>
+								<div class="layui-input-block ml100">
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_3]' title="本小程序链接" value="1" lay-filter="linktype" 
+											<?php if( $item['thumb']['linktype'][3]==1 || !isset($item['thumb']['linktype'][3]) ){ ?>checked<?php } ?> data-idx="3" />
+									</label>
+									<label class='radio-inline'>
+										<input type='radio' name='data[linktype_3]' title="webview外链" lay-filter="linktype" 
+											value="0" <?php if( $item['thumb']['linktype'][3]==0 && isset($item['thumb']['linktype'][3]) ){ ?>checked<?php } ?> data-idx="3" />
+									</label>
+								</div>
+							</div>
+							<div class="col-md-12"  style="margin-bottom: 20px;">
+								<div class="input-group url-group" style="display:<?php if( $item['thumb']['linktype'][3]==1  || !isset($item['thumb']['linktype'][3]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link3-1">
+									<input type="text" class="form-control valid" name="data[link_3]" value="{$item['thumb']['link'][3]}" readonly id="advlink4">
+									<span class="input-group-btn">
+										<span data-input="#advlink4" class="btn btn-default chose_link">选择链接</span>
+									</span>
+								</div>
+								<!-- webview -->
+								<div class="url-group layui-input-block" style="margin-left:0;display:<?php if( $item['thumb']['linktype'][3]==0 && isset($item['thumb']['linktype'][3]) ){ ?>block<?php }else{ ?>none<?php } ?>;" id="tabs-link3-0">
+									<input type="text" class="form-control" name="data[webview_3]" value="{$item['thumb']['webview'][3]}" placeholder="请输入webview链接" value="{$item['thumb']['webview'][3]}">
+								</div>
+							</div>
+							<div class="col-md-12">
+								{:tpl_form_field_image2('data[thumb_3]', $item['thumb']['cover'][3], '', array('extras'=>array('text'=>'placeholder="必选"')))}
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				
+				
+
+				<div class="layui-form-item">
+					<label class="layui-form-label"> </label>
+					<div class="layui-input-block">
+						<input type="hidden" name="data[type]" value="<?php if($item['type']){ ?>{$item['type']}<?php }else{ ?>1<?php } ?>" id="cubeType">
+							<input type="hidden" name="data[num]" value="<?php if($item['num']){ ?>{$item['num']}<?php }else{ ?>1<?php } ?>" id="cubeNum">
+							
+						<input type="submit" value="提交" lay-submit lay-filter="formDemo" class="btn btn-primary" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<script src="/layuiadmin/layui/layui.js"></script>
+
+<script>
+	layui.config({
+		base: '/layuiadmin/' //静态资源所在路径
+	}).extend({
+		index: 'lib/index' //主入口模块
+	}).use('index');
+	
+	$('#selectBox').on('click', '.block-box', function(){
+		$(this).addClass('active').siblings().removeClass('active');
+		var type = $(this).data('type');
+		var num = $(this).data('num');
+		$('#cubeType').val(type);
+		$('#cubeNum').val(num);
+		$('#bkbox').find('.row').filter(":lt(" + num +")").show();
+		$('#bkbox').find('.row').filter(":gt(" + (num-1) +")").hide();
+	})
+</script>
+<script>
+	//由于模块都一次性加载，因此不用执行 layui.use() 来加载对应模块，直接使用即可：
+	var layer = layui.layer;
+	var $;
+
+	layui.use(['jquery', 'layer', 'form'], function () {
+		$ = layui.$;
+		var form = layui.form;
+
+		form.on('radio(linktype)', function (data) {
+			var idx = $(data.elem).data('idx');
+			var val = data.value;
+			console.log(val);
+			$('#tabs-link'+ idx + '-' + val).show().siblings('.url-group').hide();
+		});
+			
+		$('.chose_link').click(function () {
+				cur_open_div = $(this).attr('data-input');
+				$.post("{:U('util/selecturl', array('ok' => 1))}", {}, function (shtml) {
+					layer.open({
+						type: 1,
+						area: '930px',
+						content: shtml //注意，如果str是object，那么需要字符拼接。
+					});
+				});
+			})
+			
+		$('.deldom').click(function () {
+			var s_url = $(this).attr('data-href');
+			layer.confirm($(this).attr('data-confirm'), function (index) {
+				$.ajax({
+					url: s_url,
+					type: 'post',
+					dataType: 'json',
+					success: function (info) {
+
+						if (info.status == 0) {
+							layer.msg(info.result.message, {
+								icon: 1,
+								time: 2000
+							});
+						} else if (info.status == 1) {
+							var go_url = location.href;
+							if (info.result.hasOwnProperty("url")) {
+								go_url = info.result.url;
+							}
+
+							layer.msg('操作成功', {
+								time: 1000,
+								end: function () {
+									location.href = info.result.url;
+								}
+							});
+						}
+					}
+				})
+			});
+		})
+
+		$('.btn-operation').click(function () {
+			var ids_arr = [];
+			var obj = $(this);
+			var s_toggle = $(this).attr('data-toggle');
+			var s_url = $(this).attr('data-href');
+
+
+			$("input[name=item_checkbox]").each(function () {
+
+				if ($(this).prop('checked')) {
+					ids_arr.push($(this).val());
+				}
+			})
+			if (ids_arr.length < 1) {
+				layer.msg('请选择要操作的内容');
+			} else {
+				var can_sub = true;
+				if (s_toggle == 'batch-remove') {
+					can_sub = false;
+
+					layer.confirm($(obj).attr('data-confirm'), function (index) {
+						$.ajax({
+							url: s_url,
+							type: 'post',
+							dataType: 'json',
+							data: {
+								ids: ids_arr
+							},
+							success: function (info) {
+
+								if (info.status == 0) {
+									layer.msg(info.result.message, {
+										icon: 1,
+										time: 2000
+									});
+								} else if (info.status == 1) {
+									var go_url = location.href;
+									if (info.result.hasOwnProperty("url")) {
+										go_url = info.result.url;
+									}
+
+									layer.msg('操作成功', {
+										time: 1000,
+										end: function () {
+											location.href = info.result
+												.url;
+										}
+									});
+								}
+							}
+						})
+					});
+				} else {
+					$.ajax({
+						url: s_url,
+						type: 'post',
+						dataType: 'json',
+						data: {
+							ids: ids_arr
+						},
+						success: function (info) {
+
+							if (info.status == 0) {
+								layer.msg(info.result.message, {
+									icon: 1,
+									time: 2000
+								});
+							} else if (info.status == 1) {
+								var go_url = location.href;
+								if (info.result.hasOwnProperty("url")) {
+									go_url = info.result.url;
+								}
+
+								layer.msg('操作成功', {
+									time: 1000,
+									end: function () {
+										location.href = info.result.url;
+									}
+								});
+							}
+						}
+					})
+				}
+			}
+		})
+
+		form.on('switch(statewsitch)', function (data) {
+			var s_url = $(this).attr('data-href')
+			var s_value = 1;
+			if (data.elem.checked) {
+				s_value = 1;
+			} else {
+				s_value = 0;
+			}
+
+			$.ajax({
+				url: s_url,
+				type: 'post',
+				dataType: 'json',
+				data: {
+					value: s_value
+				},
+				success: function (info) {
+
+					if (info.status == 0) {
+						layer.msg(info.result.message, {
+							icon: 1,
+							time: 2000
+						});
+					} else if (info.status == 1) {
+						var go_url = location.href;
+						if (info.result.hasOwnProperty("url")) {
+							go_url = info.result.url;
+						}
+
+						layer.msg('操作成功', {
+							time: 1000,
+							end: function () {
+								location.href = info.result.url;
+							}
+						});
+					}
+				}
+			})
+		});
+		form.on('checkbox(checkboxall)', function (data) {
+
+			if (data.elem.checked) {
+				$("input[name=item_checkbox]").each(function () {
+					$(this).prop("checked", true);
+				});
+				$("input[name=checkall]").each(function () {
+					$(this).prop("checked", true);
+				});
+
+			} else {
+				$("input[name=item_checkbox]").each(function () {
+					$(this).prop("checked", false);
+				});
+				$("input[name=checkall]").each(function () {
+					$(this).prop("checked", false);
+				});
+			}
+
+			form.render('checkbox');
+		});
+
+		//监听提交
+		form.on('submit(formDemo)', function (data) {
+			
+			var cubeNum = $('#cubeNum').val() ? $('#cubeNum').val() : 1;
+			var thumb_0 = $("input[name='data[thumb_0]']").val();
+			var thumb_1 = $("input[name='data[thumb_1]']").val();
+			var thumb_2 = $("input[name='data[thumb_2]']").val();
+			var thumb_3 = $("input[name='data[thumb_3]']").val();
+
+			if(cubeNum==1) {
+				if(thumb_0=='') {
+					layer.msg('图片必须上传', {icon: 5});
+					return false;
+				}
+			} else if(cubeNum==2) {
+				if(thumb_0=='' || thumb_1=='') {
+					layer.msg('图片必须上传', {icon: 5});
+					return false;
+				}
+			} else if(cubeNum==3) {
+				if(thumb_0=='' || thumb_1=='' || thumb_2=='') {
+					layer.msg('图片必须上传', {icon: 5});
+					return false;
+				}
+			} else if(cubeNum==4) {
+				if(thumb_0=='' || thumb_1=='' || thumb_2=='' || thumb_3=='') {
+					layer.msg('图片必须上传', {icon: 5});
+					return false;
+				}
+			}
+
+			
+			$.ajax({
+				url: data.form.action,
+				type: data.form.method,
+				data: data.field,
+				dataType: 'json',
+				success: function (info) {
+
+					if (info.status == 0) {
+						layer.msg(info.result.message, {
+							icon: 1,
+							time: 2000
+						});
+					} else if (info.status == 1) {
+						var go_url = location.href;
+						if (info.result.hasOwnProperty("url")) {
+							go_url = info.result.url;
+						}
+
+						layer.msg('操作成功', {
+							time: 1000,
+							end: function () {
+								location.href = info.result.url;
+							}
+						});
+					}
+				}
+			});
+
+			return false;
+		});
+	})
+</script>
+</body>

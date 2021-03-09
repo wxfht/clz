@@ -1,0 +1,380 @@
+<extend name="Public:base" />
+<block name="content">
+<link rel="stylesheet" href="__PUBLIC__/css/special.css" />	
+<div class="page-header">
+	<h1>
+		{$breadcrumb2}
+		<small>
+			<i class="icon-double-angle-right"></i>
+			{$crumbs}
+		</small>
+		
+	</h1>
+</div>
+<link rel="stylesheet" href="__CSS__/dialog.css" />	
+	
+	
+<div class="ks-ext-mask" style="position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 999; display:none"></div>
+<div id="dialog" class="dialog" style="z-index: 9999; display:none;top:110px;">
+	<div class="ks-contentbox">
+	  <div class="title"><span id="ks-contentbox-title">新增分类</span><a class="ks-ext-close" href="javascript:void(0)">X</a></div>
+		<input type="hidden" name="action" value="" />	
+		<div class="s-tips margintop" style="margin:10px;"><i></i>请按提示尺寸制作上传图片，已达到手机客户端及Wap手机商城最佳显示效果。</div>
+		
+		<div class="upload-thumb"> <img style="display:none;" id="dialog_item_image" src="" alt=""></div>
+		  <input id="dialog_item_image_name" type="hidden">
+		  <input id="dialog_type" type="hidden">
+		<dl>
+			<dt>
+				<span title="" data-toggle="tooltip" data-original-title="">选择要上传的图片</span>
+			</dt>
+			<dd id="thumb">
+				<a href="#" data-toggle="image" class="img-thumbnail">
+					<img osctype="image" data-placeholder="__ROOT__/Common/image/no_image_100x100.jpg"  src="__ROOT__/Common/image/no_image_100x100.jpg"  />
+					</a>
+				 <input osctype="image_input" type="hidden" name="image" value="" id="input-image" />
+				<span class="help-inline ">
+					<span class="middle red" id="dialog_image_desc"></span>
+				</span>
+			</dd>
+			
+			<dt>操作类型</dt>
+			<dd>
+				<div>
+					<select id="dialog_item_image_type" name="" class="vatop">
+						<option value="">-请选择-</option>
+						<option value="goods">商品编号</option>
+						<option value="url">链接</option>
+					</select>
+					<input id="dialog_item_image_data" type="text" class="txt w200 marginright marginbot vatop"><br />
+					<span id="dialog_item_image_desc" class="dialog-image-desc"></span>
+				</div>
+			</dd>
+			
+		</dl>
+		
+		<div class="J_DefaultMessage"></div>
+		 <div class="bottom">
+			 <a id="btn_save_item" class="J_SubmitPL ncsc-btn ncsc-btn-green" href="javascript:;"><span>保存</span></a>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="page"> 
+	  <!-- 页面导航 -->
+	 
+	  <div class="fixed-empty"></div>
+	  <form id="form_item" action="{:U('Special/special_item_save')}" method="post">
+		<input type="hidden" name="special_id" value="{$item_info.special_id}">
+		<input type="hidden" name="item_id" value="{$item_info.item_id}">
+		<table class="table tb-type2 nohover">
+		  <include file="Widget:pin_toast" />
+		   <tbody>
+			<?php $item_data = $item_info['item_data'];?>
+			<?php $item_edit_flag = true;?>
+			<tr class="noborder">
+				<td style="height: auto; padding: 0;">
+					<div id="item_edit_content" class="mb-item-edit-content">
+						
+						<?php 
+						if($item_info['item_type'] == 'adv_list'){
+						?>
+						<include file="Special:mb_special_item.module_adv_list" />
+						<?php 
+						}else if($item_info['item_type'] == 'home1'){ 
+						?>
+						<include file="Special:mb_special_item.module_home1" />
+						<?php 
+						} else if($item_info['item_type'] == 'home2'){ 
+						?>
+						<include file="Special:mb_special_item.module_home2" />
+						<?php 
+						} else if($item_info['item_type'] == 'home3'){ 
+						?>
+						<include file="Special:mb_special_item.module_home3" />
+						<?php 
+						} else if($item_info['item_type'] == 'home4'){ 
+						?>
+						<include file="Special:mb_special_item.module_home4" />
+						<?php 
+						}else if($item_info['item_type'] == 'goods'){ 
+						?>
+						<include file="Special:mb_special_item.module_goods" />
+						<?php 
+						}
+						?>
+					</div>
+				</td>
+			</tr>
+		  </tbody>
+		  <tfoot>
+			<tr class="tfoot">  <input type="hidden" name="special_id" value="{$item_info.special_id}">
+			  <td colspan="2"><a id="btn_save" class="btn" href="javascript:;"><span>保存编辑</span></a>
+							<a id="btn_back" href="{:U('Special/addGoods', array('special_id' => $item_info['special_id']))}" class="btn"><span>返回上一级</span></a>
+				</td>
+			</tr>
+		  </tfoot>
+		</table>
+	  </form>
+	</div>
+	
+
+	
+</div>
+</block>
+<block name="javascript">
+<script id="item_image_template" type="text/html">
+    <div nctype="item_image" class="item">
+        <img nctype="image" src="<%=image%>" alt="">
+        <input nctype="image_name" name="item_data[item][<%=image_name%>][image]" type="hidden" value="<%=image_name%>">
+        <input nctype="image_type" name="item_data[item][<%=image_name%>][type]" type="hidden" value="<%=image_type%>">
+        <input nctype="image_data" name="item_data[item][<%=image_name%>][data]" type="hidden" value="<%=image_data%>">
+        <a nctype="btn_del_item_image" href="javascript:;">删除</a>
+    </div>
+</script> 
+<script type="text/javascript" src="__PUBLIC__/js/jquery.ui.js"></script> 
+
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/template.min.js" charset="utf-8"></script> 
+
+<script type="text/javascript">
+	
+    $(document).ready(function(){
+        var $current_content = null;
+        var $current_image = null;
+        var $current_image_name = null;
+        var $current_image_type = null;
+        var $current_image_data = null;
+        var old_image = '';
+        var $dialog_item_image = $('#dialog_item_image');
+        var $dialog_item_image_name = $('#dialog_item_image_name');
+        var special_id = {$item_info.special_id};
+		
+		//关闭弹出层
+		$('#dialog').on('click','.ks-ext-close',function(){	
+			$("#dialog").css('display','none');
+			$('.ks-ext-mask').css('display','none');
+			return false;
+		});
+		//关闭弹出层
+		$('#dialog').on('click','.J_Cancel',function(){	
+			$("#dialog").css('display','none');
+			$('.ks-ext-mask').css('display','none');
+			return false;
+		});
+		
+        //保存
+        $('#btn_save').on('click', function() {
+            $('#form_item').submit();
+        });
+
+        //编辑图片
+        $('[nctype="btn_edit_item_image"]').on('click', function() {
+            //初始化当前图片对象
+            $item_image = $(this).parents('[nctype="item_image"]');
+            $current_image = $item_image.find('[nctype="image"]');
+            $current_image_name = $item_image.find('[nctype="image_name"]');
+            $current_image_type = $item_image.find('[nctype="image_type"]');
+            $current_image_data = $item_image.find('[nctype="image_data"]');
+
+            $('#dialog_item_image').attr('src', $current_image.attr('src'));
+            $('#dialog_item_image_name').val($current_image_name.val());
+            $('#dialog_item_image_type').val($current_image_type.val());
+            $('#dialog_item_image_data').val($current_image_data.val());
+            $('#dialog_image_desc').text('推荐图片尺寸' + $(this).attr('data-desc'));
+            $('#dialog_type').val('edit');
+            change_image_type_desc($('#dialog_item_image_type').val());
+			$("#dialog").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
+			$('#ks-contentbox-title').html('编辑');
+        });
+
+        //添加图片
+        $('[nctype="btn_add_item_image"]').on('click', function() {
+            $dialog_item_image.hide();
+            $dialog_item_image_name.val('');
+            $current_content = $(this).parent().find('[nctype="item_content"]');
+            $('#dialog_image_desc').text('推荐图片尺寸' + $(this).attr('data-desc'));
+            $('#dialog_type').val('add');
+            change_image_type_desc($('#dialog_item_image_type').val());
+            $("#dialog").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
+			$('#ks-contentbox-title').html('添加');
+        });
+
+        //删除图片
+        $('#item_edit_content').on('click', '[nctype="btn_del_item_image"]', function() {
+            $(this).parents('[nctype="item_image"]').remove();
+        });
+
+        $('#btn_save_item').on('click', function() {
+            var type = $('#dialog_type').val();
+            if(type == 'edit') {
+                edit_item_image_save();
+            } else {
+                if($dialog_item_image_name.val() == '') {
+                    alert('请上传图片');
+                    return false;
+                }
+                add_item_image_save();
+            }
+            $('#dialog_item_edit_image').hide();
+        });
+
+        function edit_item_image_save() {
+            $current_image.attr('src', $('#dialog_item_image').attr('src'));
+            $current_image_name.val($('#dialog_item_image_name').val());
+            $current_image_type.val($('#dialog_item_image_type').val());
+            $current_image_data.val($('#dialog_item_image_data').val());
+			$("#dialog").css('display','none');
+			$('.ks-ext-mask').css('display','none');
+        }
+
+        function add_item_image_save() {
+            var $html_item_image = $('#html_item_image');
+            var item = {};
+            item.image = $('#dialog_item_image').attr('src');
+            item.image_name = $('#dialog_item_image_name').val();
+            item.image_type = $('#dialog_item_image_type').val();
+            item.image_data = $('#dialog_item_image_data').val();
+			
+			
+			 var item = {};
+            item.image = $('#dialog_item_image').attr('src');
+            item.image_name = $('#dialog_item_image_name').val();
+            item.image_type = $('#dialog_item_image_type').val();
+            item.image_data = $('#dialog_item_image_data').val();
+            $current_content.append(template.render('item_image_template', item));
+
+			$("#dialog").css('display','none');
+			$('.ks-ext-mask').css('display','none');
+        }
+		
+		$('#btn_mb_special_goods_search').on('click', function() {
+            var url = '{:U("Special/goods_list")}';
+            var keyword = $('#txt_goods_name').val();
+            if(keyword) {
+                $('#mb_special_goods_list').load(url, {keyword: keyword});
+            }
+        });
+
+        $('#mb_special_goods_list').on('click', '[nctype="btn_add_goods"]', function() {
+            var item = {};
+            item.goods_id = $(this).attr('data-goods-id');
+            item.goods_name = $(this).attr('data-goods-name');
+            item.goods_price = $(this).attr('data-goods-price');
+            item.goods_image = $(this).attr('data-goods-image');
+           // var html = template.render('item_goods_template', item);
+            $('[nctype="item_content"]').append(html);
+        });
+
+        $('#dialog_item_image_type').on('change', function() {
+            change_image_type_desc($(this).val());
+        });
+
+        function change_image_type_desc(type) {
+            var desc_array = {};
+            var desc = '操作类型一共四种，对应点击以后的操作。';
+            if(type != '') {
+                desc_array['keyword'] = '关键字类型会根据搜索关键字跳转到商品搜索页面，输入框填写搜索关键字。';
+                desc_array['special'] = '专题编号会跳转到指定的专题，输入框填写专题编号。';
+                desc_array['goods'] = '商品编号会跳转到指定的商品详细页面，输入框填写商品编号。';
+                desc_array['url'] = '链接会跳转到指定链接，输入框填写完整的URL。';
+                desc = desc_array[type];
+            }
+            $('#dialog_item_image_desc').text(desc);
+        }
+		
+		$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+			e.preventDefault();
+			
+			var index=$(this).attr('num');
+					
+			var element = this;
+			
+			if(index==undefined){
+				$(element).popover({
+					html: true,
+					placement: 'right',
+					trigger: 'manual',
+					content: function() {
+						return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+					}
+				});
+			}else{
+				$(element).popover({
+					html: true,
+					placement: 'right',
+					trigger: 'manual',
+					content: function() {
+						return '<button type="button" n="'+index+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+					}
+				});
+			}
+			
+
+			
+			$(element).popover('toggle');	
+			
+			//图片
+			$('#thumb-image').on('click', function() {		
+				
+				$('#modal-image').remove();
+				
+				$('#form-upload').remove();
+				
+				$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+		
+				$('#form-upload input[name=\'file\']').trigger('click');
+				
+				$(element).popover('hide');
+				
+				$('[osctype="btn_upload_image"]').fileupload({
+					
+					dataType: 'json',
+					url: "{:U('Image/upload_image',array('dir'=>'blog2'))}",
+					add: function(e, data) {
+						$parent = $('#thumb');
+						$input = $parent.find('[osctype="image_input"]');
+						$img = $parent.find('[osctype="image"]');
+						data.formData = {old_blog_images:$input.val()};
+						$img.attr('src', "__IMG__/loading.gif");
+						data.submit();
+					},
+					done: function (e,data) {
+						
+						var image=data.result;
+						
+						
+						
+						$parent = $('#thumb');
+						$input = $parent.find('[osctype="image_input"]');
+						$img = $parent.find('[osctype="image"]');
+						if(image) {
+						   // $img.prev('i').hide();
+							$img.attr('src', '__ROOT__'+image.image_thumb);
+							$img.show();
+							$input.val(image.image);
+							
+							$dialog_item_image.attr('src', '/Uploads/image/'+image.image);
+							//$dialog_item_image.show();
+							$dialog_item_image_name.val(image.image);
+						} else {
+							alert('上传失败');
+						}
+					}
+			 });
+			});
+		
+			$('#button-clear').on('click', function() {
+				$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+				
+				$(element).parent().find('input').attr('value', '');
+		
+				$(element).popover('hide');
+			});
+		});
+		
+    });
+    </script> 
+
+</block>

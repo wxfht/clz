@@ -1,0 +1,234 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+
+<div class="container con no-footer">
+
+	<div class="nav_fixed">
+        <a class="fixed_nav_item_groups" onclick="location.href='{:U('Pingoods/pinlist')}'">
+            <span class="nav_txt <?php if($type == 0){ ?>nav_cur<?php } ?>">全部</span>
+        </a>
+        <a class="fixed_nav_item_groups" onclick="location.href='{:U('Pingoods/pinlist',array('type' => 1))}'">
+            <span class="nav_txt <?php if($type == 1){ ?>nav_cur<?php } ?>" >拼团中</span>
+        </a>
+        <a class="fixed_nav_item_groups" onclick="location.href='{:U('Pingoods/pinlist',array('type' => 2))}'">
+            <span class=" <?php if($type == 2){ ?>nav_cur<?php } ?>" >已成团</span>
+        </a>
+        <a class="fixed_nav_item_groups" onclick="location.href='{:U('Pingoods/pinlist',array('type' => 3))}'">
+            <span class="<?php if($type == 3){ ?>nav_cur<?php } ?>" >拼团失败</span>
+        </a>
+    </div>
+    
+    <div class="mt_order" id="tuan_list">
+    	
+    	<volist name="list" id="d">
+    	<div class="groups">
+            <div class="groups_line"></div>
+            <div class="mt_g">
+                <div class="mt_g_wrap">
+                    <div class="mt_g_img">
+                        <img src="{$d.image}">
+                    </div>
+                    <div class="mt_g_info">
+                        <p class="mt_g_name">{$d.name}</p>
+                        <p class="mt_g_price">
+                            <span class="mt_g_number">{$d.need_count}人团</span>
+                            <span>
+                                <b>￥</b><span>{$d.price}</span>
+                            </span>
+                        </p>
+                     	<?php if($d['state'] == 0){ ?>	   
+                        <span class="mt_status_txt">拼团中</span>
+                        <?php }else if($d['state'] == 1){ ?>
+                        <span class="mt_status_txt">拼团成功 </span>
+                        <?php }else if($d['state'] == 2){ ?>
+                        <span class="mt_status_txt">拼团失败</span>
+                        <?php } ?>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="mt_status">
+            	<?php if($d['state'] == 0){ ?>	   
+                	<a href="{:U('Order/info', array('id' => $d['order_id']))}" class="mt_status_lk1">查看订单详情</a>
+                	<a href="{:U('Group/info', array('group_order_id' => $d['hash_order_id']))}" class="mt_status_lk1 marg_right on_going_group">邀请好友拼团</a>
+                <?php }else if($d['state'] == 1){ ?>
+               		<a href="{:U('Order/info', array('id' => $d['order_id']))}" class="mt_status_lk1">查看订单详情</a>
+                	<a href="{:U('Group/info', array('group_order_id' => $d['hash_order_id']))}" class="mt_status_lk1 marg_right">查看团详情</a>
+                <?php }else if($d['state'] == 2){ ?>
+               		<a href="{:U('Order/info', array('id' => $d['order_id']))}" class="mt_status_lk1">查看订单详情</a>
+               		<a href="{:U('Group/info', array('group_order_id' => $d['hash_order_id']))}" class="mt_status_lk1 marg_right">查看团详情</a>
+                <?php } ?>
+            </div>
+        </div>
+        </volist>
+        
+        
+        
+    </div>
+    
+      
+	
+	
+</div>
+
+
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<style>
+.bottom_tab {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.51rem;
+    border-top: 1px solid #f2f5f8;
+    font-size: .09rem;
+    display: -webkit-flex;
+    -webkit-flex-flow: row nowrap;
+    -webkit-align-items: center;
+    -webkit-justify-content: space-between;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+.bottom_tab, body {
+    background-color: #fff;
+}
+.page_activity a {
+    color: #666;
+    text-decoration: none;
+}
+.bottom_tab .tab {
+    text-align: center;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.normal {
+    background: url(__PUBLIC__/mogu/image/170821_7l5785llaikkj4e5al161lj49468e_72x72.png) no-repeat top center;
+}
+.cur .normal {
+    background: url(__PUBLIC__/mogu/image/170821_2ifi3kcb9j91jae76fc6jh00hc4fl_72x72.png) no-repeat top center;
+}
+.bottom_tab .tab span {
+    display: inline-block;
+    padding-top: .27rem;
+}
+
+.newman {
+    background: url(__PUBLIC__/mogu/image/170821_4caa2bah1797i0c1f1824hlih1g30_72x72.png) no-repeat top center;
+}
+.lottery {
+    background: url(__PUBLIC__/mogu/image/170821_5951l6h436ig1l7010fj37e05iehg_72x72.png) no-repeat top center;
+}
+
+</style>
+<div class="bottom_tab" a="1"> 
+	 <a href="{:U('pingoods/index', array('type' => 'all'))}" data-url="all" class="tab change_type "> 
+		<span class="normal" style=" background-size: .25rem;">
+		拼团首页 
+		</span> 
+	</a>
+	<a href="{:U('pingoods/index', array('type' => 'newman'))}" data-url="newman" class="tab change_type"> 
+		<span class="newman" style=" background-size: .25rem;">
+		1分拼团  
+		</span> 
+	</a> 
+	<a href="{:U('pingoods/index', array('type' => 'lottery'))}" data-url="lottery" class="tab change_type "> 
+		<span class="lottery" style=" background-size: .25rem;">
+		抽奖团 
+		</span> 
+	</a> 
+	<a href="{:U('Pingoods/pinlist')}" class="tab cur"> 
+		<span style="background: url(__PUBLIC__/mogu/image/170821_7a759fga0l98jjhjejigh94hj34ii_72x72.png) no-repeat top center; background-size: .25rem;">
+		我的拼团
+		</span> 
+	</a> 
+</div>
+<style>
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Group/pinlist',array('type' => $type))}";
+var req_step = 1;
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+
+</block>

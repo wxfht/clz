@@ -1,0 +1,60 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<div >
+	<div class="coupon-list-item">
+	    <div class="detail" style="<?php if($type == 1){ ?>color: rgb(255, 171, 51);<?php } ?><?php if($type == 2){ ?>color: rgb(150, 150, 150);<?php } ?>">
+	     <?php if($type == 1){ ?>
+	     <img class="" src="__PUBLIC__/pinduoduo/assets/img/mall_available_bg.png">
+	     <?php } ?>
+	     <?php if($type == 2){ ?>
+	      <img class="" src="__PUBLIC__/pinduoduo/assets/img/mall_expired_bg.png">
+	      <?php } ?>
+	     <p class="coupon-type"><?php if($d['type'] == 0){ ?>店铺券<?php }else{ ?>全网通用<?php } ?></p>
+	     <div class="discount">
+	         <div class="discount-value">
+	             <b>￥</b><?php echo round($d['credit']); ?>
+	         </div>
+	     </div>
+	     <div class="info">
+	         <div class="more-info">
+	             <p class="batch-name">
+	  				<?php if($d['limit_money'] >0) { ?>
+	  				满<?php echo round($d['limit_money']); ?>减<?php echo round($d['credit']); ?>
+	  				<?php } ?>           
+	             </p>
+	             <p class="scope scope-available">
+	             <?php if($d['type'] == 0){ ?>
+	            		 仅限{$d.store_name}
+	             <?php } ?>
+	             </p>
+	             <p class="duration">
+	             	<?php echo date('Y.m.d',$d['begin_time']); ?>
+	             	 - 
+	             	<?php echo date('Y.m.d',$d['end_time']); ?> 
+	             </p>
+	         </div>
+	     </div>
+	    <!--ms-if-->
+	   	 	</div>
+		</div>
+	</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,160 @@
+<extend name="Public:mogubase" />
+<block name="content">    
+<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script> 
+<script type="text/javascript">			window.use_screen_base = '640';			(function(a,b){var c="orientationchange"in b?"orientationchange":"resize",d=use_screen_base.indexOf("_mate"),e=parseInt(use_screen_base),f=a.documentElement,g=function(){var a=f.clientWidth,c=b.innerWidth;f.style.fontSize=100*(c/e)+"px"};if(/iPad.*OS|iPhone.*OS/.test(navigator.userAgent)&&d>0){var h=a.querySelectorAll("meta[name=viewport]"),i=b.devicePixelRatio;i=i!=1?2:1,h[0]&&h[0].setAttribute("content","width=device-width, user-scalable=no, minimum-scale="+1/i+", maximum-scale="+1/i+", initial-scale="+1/i)}g(),b.addEventListener(c,g,!1),delete use_screen_base})(document,window);		</script>
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/base-22357a5508.css" /> 
+<link rel="stylesheet" href="__PUBLIC__/mogu/myShop-6383ca9488.css" /> 
+
+
+
+
+  <header class="page_head"> 
+	   <div class="back_icon" id="back_btn" onclick="location.href='{:U('User/index')}';">
+			<img src="http://s17.mogucdn.com/p1/160922/idid_ie3wmnbvgftginzsmizdambqgayde_35x52.png" />
+	   </div> 
+		<a class="right_btn" href="{:U('Cart/show_cart_goods')}">购物车</a> 
+	    <div class="title">
+			<a href="{:U('Index/index')}">收藏的店铺</a>
+	    </div>
+  </header> 
+  
+  <div class="my_shop waterfall-container" id="tuan_list">
+		
+		<?php foreach($list as $vv){  $store = $vv['tp_store']; ?>
+	    <section class="shop_list waterfall-frame-0 waterfall-box waterfall-optimise-show" style=""> 
+			<a href="<?php echo U('Seller/info', array('seller_id' => $store['s_id'])); ?>"> <em> </em> 
+			 <dl class="shop_name"> 
+			  <dt> 
+			   <img src="<?php echo $store['logo']; ?>" /> 
+			  </dt> 
+			  <dd>
+					<?php echo $store['s_true_name']; ?>
+			  </dd> 
+			 </dl> 
+			 </a> 
+			<div class="tags_inner tags_scroll"> 
+				<?php foreach($vv['goods'] as $val ){ ?>
+				 <a href="<?php echo U('/goods/'.$val['goods_id']); ?>"> 
+					<span class="bs_load_img lazyTransition" style="background-size: cover; background-image: url('<?php echo resize($val['image'], 400, 400); ?>'); opacity: 1;"></span> 
+				</a> 
+				<?php } ?>
+				
+			</div> 
+	    </section>
+	    <?php } ?>
+	   
+  </div> 
+  
+  <div class="pullUp" status="stop" style="display:none;"></div>
+
+
+
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<div style="height:50px;"></div>
+
+<style>
+.container{background-color:#fff;}
+.coupon-tabbar .coupon-tab { 
+	width:49%;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('User/myfavshop')}";
+var req_step = 1;
+
+function del_fav(obj,goods_id)
+{
+
+	$.ajax({
+			url:"index.php?s=/Goods/fav_toggle",
+			type:'post',
+			data:{goods_id:goods_id},
+			dataType:'json',
+			success:function(ret){
+				$(obj).parent().parent().parent().remove();
+			}
+		})
+		return false;
+}
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

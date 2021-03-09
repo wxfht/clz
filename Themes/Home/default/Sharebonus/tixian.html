@@ -1,0 +1,310 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+
+<style>
+	.bro-spare {
+	  margin: 0px 0 0 0;
+	  padding: 20px 15px 0 15px;
+	  background: #1c5f97;
+	  border: 0;
+	  border-bottom: 1px solid #1c5f97;
+	  overflow: hidden;
+	}
+	.bro-spare p.tip-txt {
+	  margin-bottom: 0;
+	  font-size: 16px;
+	  color: #fff;
+	  line-height: 25px;
+	}
+	.icon-money {
+	  display: inline-block;
+	  background: url("/images/icon-addition.png") no-repeat;
+	  background-size: 300px 300px;
+	  vertical-align: middle;
+	  background-position: 0 -5px;
+	  width: 20px;
+	  height: 20px;
+	  margin: 8px;
+	}
+	.bro-spare p.tip-txt .icon-money {
+	  margin-left: 0;
+	  margin-right: 5px;
+	}
+	.bro-spare .number-big {
+	  display: block;
+	  margin: 0;
+	  font-size: 40px;
+	  color: #fff;
+	  text-shadow: 1px 2px 0 rgb(28,95,151);
+	}
+	.bro-spare .field-2 {
+	  margin: 10px 0 15px 0;
+	  font-size: 14px;
+	  color: #fff;
+	}
+	.address_new p{padding-left:10px;padding-right:10px;}
+	.address_new input{border-radius:2px;}
+	.wx_bar_tit{  line-height: 36px;padding-left: 10px;font-size:16px;}
+	.fixed {
+	  width: 100%;
+	  left: 0;
+	  position: fixed;
+	  top: 0;
+	  z-index: 99;
+	}
+	.tab-bar {
+	  -webkit-backface-visibility: hidden;
+	  background: #333333;
+	  color: white;
+	  height: 2.8125rem;
+	  line-height: 2.8125rem;
+	  position: relative;
+	}
+	.tab-bar {
+	  background: url("/images/topbar_bg1.png") center bottom;
+	  height: 45px;
+	  line-height: 45px;
+	}
+	.left-small {
+	  width: 2.8125rem;
+	  height: 2.8125rem;
+	  position: absolute;
+	  top: 0;
+	  border-right: solid 1px #1a1a1a;
+	  left: 0;
+	}
+	.left-small {
+	  border-right: 0;
+	  height: 40px;
+	  width: 40px;
+	}
+	.tab-bar .menu-icon {
+	  text-indent: 2.1875rem;
+	  width: 2.8125rem;
+	  height: 2.8125rem;
+	  display: block;
+	  line-height: 2.0625rem;
+	  padding: 0;
+	  color: white;
+	  position: relative;
+	  -ms-transform: translate(0, 0);
+	  -webkit-transform: translate3d(0, 0, 0);
+	  -moz-transform: translate3d(0, 0, 0);
+	  -ms-transform: translate3d(0, 0, 0);
+	  -o-transform: translate3d(0, 0, 0);
+	  transform: translate3d(0, 0, 0);
+	}
+	.tab-bar .menu-icon {
+	  height: 40px;
+	  width: 37px;
+	}
+	.tab-bar .menu-icon span {
+	  position: absolute;
+	  display: block;
+	  height: 0;
+	  width: 1rem;
+	  line-height: 1;
+	  top: 0.9375rem;
+	  left: 0.90625rem;
+	  box-shadow: 0 0px 0 1px white, 0 7px 0 1px white, 0 14px 0 1px white;
+	}
+	.tab-bar .menu-icon span {
+	  background: url("/images/icon-ps.png") no-repeat;
+	}
+	.tab-bar .menu-icon span {
+	  width: 8px;
+	  height: 13px;
+	  background-position: 0 0;
+	  box-shadow: 0 0 0 0;
+	  top: 16px;
+	}
+	.tab-bar-section {
+	  padding: 0 0.625rem;
+	  position: absolute;
+	  text-align: center;
+	  height: 2.8125rem;
+	  top: 0;
+	}
+	.tab-bar-section {
+	  height: 45px;
+	  margin-left: 20px;
+	}
+	.tab-bar-section.middle {
+	  left: 40px;
+	  right: 40px;
+	}
+	.tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4 {
+	  font-size: 16px;
+	  font-weight: normal;
+	  line-height: 45px;
+	}
+	.panel {
+	  border-style: solid;
+	  border-width: 1px;
+	  border-color: #d8d8d8;
+	  margin-bottom: 1.25rem;
+	  padding: 1.25rem;
+	  background: #f2f2f2;
+	}
+	.extract {
+	  margin: 60px 15px 0 15px;
+	  padding: 0;
+	  border: none;
+	  background: none;
+	}
+	.panel > :first-child {
+		  margin-top: 0;
+		}	
+	.commision-total .span-title {
+	  color: #999;
+	  font-size:16px;
+	}
+	.commision-total .number {
+	  color: #7bc351;
+	  font-size: 30px;
+	}
+	.extract-account {
+	  margin: 11px 0;
+	  padding: 0;
+	  background: #fff;
+	  overflow: hidden;
+	}
+	.panel > :last-child {
+	  margin-bottom: 0;
+	}
+	.extract-account .side-nav {
+	  padding: 0;
+	}
+	.extract-account .side-nav li {
+	  margin: 0;
+	}
+	.extract-account .account-none span {
+	  line-height: 45px;
+	  font-size: 18px;
+	  color: #999;
+	}
+	.extract-account .side-nav li span {
+	  float: left;
+	}
+	button, .button {
+	  border-style: solid;
+	  border-width: 0px;
+	  cursor: pointer;
+	  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+	  font-weight: normal;
+	  line-height: normal;
+	  margin: 0 0 1.25rem;
+	  position: relative;
+	  text-decoration: none;
+	  text-align: center;
+	  -webkit-appearance: none;
+	  -webkit-border-radius: 0;
+	  display: inline-block;
+	  padding-top: 1rem;
+	  padding-right: 2rem;
+	  padding-bottom: 1.0625rem;
+	  padding-left: 2rem;
+	  font-size: 1rem;
+	  background-color: #45a5cf;
+	  border-color: #2d88b0;
+	  color: white;
+	  transition: background-color 300ms ease-out;
+	}
+	button, .button {
+	  width: 100%;
+	  height: 50px;
+	  line-height: 50px;
+	  padding: 0;
+	  border: 1px solid #3396c2;
+	  border-radius: 3px;
+	  font-size: 20px;
+	  font-family: "微软雅黑","Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+	}
+	button.red, .button.red {
+	  background: #f37872;
+	  border: 1px solid #e86660;
+	}
+	table thead, table tfoot {
+	  background: whitesmoke;
+	}
+	table thead tr th, table thead tr td, table tfoot tr th, table tfoot tr td {
+	  padding: 0.5rem 0.625rem 0.625rem;
+	  font-size: 14px;
+	  font-weight: bold;
+	  color: #222222;
+	  text-align: left;
+	}
+	table thead tr th, table tfoot tr th, table tbody tr td, table tr td, table tfoot tr td {
+	  display: table-cell;
+	  line-height: 18px;
+	}
+	table tr th, table tr td{font-size:14px;  color: #222222;  padding: 0.5625rem 0.625rem;}
+</style>
+<div class="container">
+	<section class="main-view" style="">
+		<div class="bro-spare">
+			<p class="tip-txt"><i class="icon-money"></i>可提现奖金余额</p>
+			<span class="number-big">¥{$member_commiss.money}</span>
+			<p class="field-2">已打款奖金总额：<big>¥{$member_commiss.getmoney}</big></p>
+		</div>
+		<div class="wx_bar" style="">
+			<div class="wx_bar_back">
+			<a id="back" href="javascript:void(0);"></a>
+			</div>
+			<div class="wx_bar_tit">提现账号</div>
+		</div>
+		<div class="wx_wrap">
+			<form action="{:U('Sharebonus/bindcard')}" method="post" class="validator">
+				<div class="address_new">
+					<p>
+						<label for="name">
+							<input id="bankusername" type="text" name="bankusername" value="" placeholder="请输入真实姓名">
+						</label>
+					</p>
+					<p>
+					<label for="name">
+						<input id="bankname" type="text" name="bankname" value="" placeholder="请输入转账银行名称，如：支付宝、建行等">
+					</label>
+					</p>
+					<p>
+					<label for="name">
+						<input id="bankaccount" type="text" name="bankaccount" value="" placeholder="请输入转账账号">
+					</label>
+					</p>
+					<p class="action">
+						<input type="hidden" name="act" value="uptian" />
+						<button class="submit" id="subaddr">提交</button>
+					</p>
+				</div>
+			</form>
+		</div>
+	</section>
+</div>
+<script>
+	$(function(){
+		$('#subaddr').click(function(){
+			var bankusername  = $.trim($('#bankusername').val());
+			var bankname  = $.trim($('#bankname').val());
+			var bankaccount  = $.trim($('#bankaccount').val());
+			if(bankusername =='')
+			{
+				alert('请输入真实姓名');
+				return false;
+			}
+			if(bankname == '')
+			{
+				alert('请输入转账银行名称');
+				return false;
+			}
+			if(bankaccount =='')
+			{
+				alert('请输入转账账号');
+				return false;
+			}
+			
+		})
+	})
+</script>
+
+
+</block>

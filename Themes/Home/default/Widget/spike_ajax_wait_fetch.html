@@ -1,0 +1,193 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+		
+		<div class="spike-list-item-0" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+			<div avalonctrl="spike-list-item-0">
+				<?php 
+					$to_night = strtotime(date('Y-m-d')." 23:59:59");
+					$tomo_night = $to_night + 86400;
+					$aftmo_night = $to_night + 86400*2;
+					
+				?>
+			    <?php if(empty($cur_btime) ){ 
+			    	$cur_btime = $d['begin_time'];//首次进入
+					
+			    ?>
+				    <?php if($d['begin_time'] <= time() && $d['end_time'] > time() ){ 
+					
+				    $is_first = true;
+				    ?>
+				    <!-- 正在进行中,并且首次进入 -->
+				     <div class="time-line" style="display:none;">
+				        <!--ms-if-->
+				        <span class="icon"><div class="time-icon time-icon-current"></div><span>
+				        <span class="time-show time-show-current"> <?php echo date('H').':00'; ?> 正在进行中</span> 
+				   	 	</span></span>
+				    </div>
+			    	<?php } else if($d['begin_time'] < $to_night){ ?>
+			    		 <div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $to_night && $d['begin_time'] < $tomo_night){ ?>
+			    		<!-- 明日 -->
+			    		<div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">明日 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $tomo_night && $d['begin_time'] < $aftmo_night){ ?>
+			    		<!-- 后日 -->
+			    		<div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">后天 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>
+			    		<?php }else{ $is_first = false; ?>
+			    		<!-- 很多天以后 -->
+			    		<div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('Y-m-d H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>	
+			    		<?php } ?>
+			    <?php }else if($d['begin_time'] != $cur_btime){ 
+			    	$cur_btime = $d['begin_time'];
+					$is_first = false;
+			    ?>
+			    	  	<?php if($d['begin_time'] < $to_night){ ?>
+			    		 <div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $to_night && $d['begin_time'] < $tomo_night){ ?>
+			    		<!-- 明日 -->
+			    		<div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">明日 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $tomo_night && $d['begin_time'] < $aftmo_night){ ?>
+			    		<!-- 后日 -->
+			    		<div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">后天 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>
+			    		<?php }else{ ?>
+			    		<!-- 很多天以后 -->
+			    		<div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('Y-m-d H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>	
+			    		<?php } ?>
+			    <?php }else { 
+			   		 $cur_btime = $d['begin_time'];
+					 $is_first = false;
+			    ?>
+			   <?php } ?>
+			    <div class="spike-goods">
+			    	<?php if($is_first){ ?>
+			        <div class="line line-current" style="display:none;"></div>
+			        <?php }else { ?>
+			        <div class="line " style="display:none;"></div>
+			        <?php } ?>
+			        <img class="spike-img scrollLoading" src="{$fan_ly_image}" data-echo="{$d.image}">
+			        <div class="spike-info">
+			            <div class="spike-goods-name">{$d.name}</div>
+			            <div class="spike-buy">
+			                <div class="all-price">
+			                    <span class="sale-symbol">￥</span>
+			                    <span class="sale-price">{$d.pinprice}</span>
+			                    <span class="market-price">￥<span class="market">{$d.price}<span></span>
+			                </span></span></div>
+			                <?php if($d['quantity'] != 0 && $d['begin_time'] <= time() && $d['end_time'] > time()){ ?>
+			                <div class="left-time spike-button-on">
+			                    <div class="quantity">
+			                        <span class="head">剩余</span>
+			                        <div class="quantity-detail">
+			                            <span>{$d.quantity}件</span>
+			                        </div>
+			                    </div>
+			                    <span class="btnClass">马上抢</span>
+			                </div>
+			                 <?php } ?>
+			                <?php if($d['quantity'] == 0){ ?>
+			                <div class="left-time spike-button-off">
+			                    <div class="quantity">
+			                        <span class="head">剩余</span>
+			                        <div class="quantity-detail">
+			                            <span>{$d.quantity}件</span>
+			                        </div>
+			                    </div>
+			                    <span class="btnClass">已售罄</span>
+			                </div>
+			                <?php } ?>
+			                <?php if($d['end_time'] < time() ){ ?>
+			                <div class="left-time spike-button-off">
+			                    <div class="quantity">
+			                        <span class="head">剩余</span>
+			                        <div class="quantity-detail">
+			                            <span>{$d.quantity}件</span>
+			                        </div>
+			                    </div>
+			                    <span class="btnClass">已结束</span>
+			                </div>
+			                <?php } ?>
+			                <?php if($d['quantity'] != 0 && $d['begin_time'] > time()) { ?>
+			                <div class="left-time spike-button-coming">
+			                    <div class="quantity">
+			                        <span class="head">限量</span>
+			                        <div class="quantity-detail">
+			                            <span>{$d.quantity}件</span>
+			                        </div>
+			                    </div>
+			                    <span class="btnClass">即将开抢</span>
+			                </div>
+			                <?php } ?>
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <!--ms-if-->
+			    <?php if($is_first){ ?>
+			    <div class="view-more" id="more">
+			        <span>查看之前时间段已售罄商品</span>
+			    </div>
+			    <?php } ?>
+			    <div class="final-icon" style="display:none;"></div>
+			    <!--ms-if-->  
+			</div>
+		</div>
+		<?php $last_btime = $d['begin_time']; ?>
+		</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

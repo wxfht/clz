@@ -1,0 +1,12 @@
+<?php foreach($list as $val){ ?>
+			<li>
+				<span class="pic">
+					<img src="<?php echo $val['avatar']; ?>">
+				</span>
+				<div class="text">
+					<span class="pro-name">昵称：<?php echo $val['uname']; ?></span>
+					<div class="pro-pric"><span>关注时间：</span><?php echo $val['create_time'];?></div>
+					<div class="pro-pric"><span>推荐上级：</span><?php echo $val['parent_name']; ?></div>
+				</div>
+			</li>
+			<?php } ?>

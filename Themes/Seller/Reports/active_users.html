@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+  <link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+  <script type="text/javascript">
+      window.sysinfo = {
+        <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+        <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+        <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+        <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+        'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+        'siteroot': '{$_W['siteroot']}',
+        'siteurl': '{$_W['siteurl']}',
+        'attachurl': '{$_W['attachurl']}',
+        'attachurl_local': '{$_W['attachurl_local']}',
+        'attachurl_remote': '{$_W['attachurl_remote']}',
+        'module': {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+        'cookie': {'pre': ''},
+        'account': {:json_encode($_W['account'])},
+      };
+  </script>
+		
+  <script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+  <script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+  <script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+  <script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+  <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+  <link href="/static/css/snailfish.css" rel="stylesheet">
+  <style type="text/css">
+      .layui-btn-sm { line-height: 34px;height: 34px; }
+      .layui-btn-group .layui-btn:first-child {border-radius: 0;}
+      .text-green { color: #15d2b9 !important; }
+	  .daterangepicker select.ampmselect, .daterangepicker select.hourselect, .daterangepicker select.minuteselect {
+			width: auto!important;
+	  }
+  </style>
+</head>
+<body layadmin-themealias="default">
+
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text">会员活跃统计</span></div>
+        <div class="layui-card-body" style="padding:15px;">
+        <div class="page-content">
+            <form action="" method="get" class="form-horizontal form-search layui-form" role="form" id="search">
+        		<input type="hidden" name="c" value="reports" />
+                <input type="hidden" name="a" value="active_users" />
+                <div class="page-toolbar">
+                    <div class="layui-form-item">
+    					<span class="layui-input-inline" style="width: 285px;">
+    						{:tpl_form_field_daterange('time', array('starttime'=>date('Y-m-d H:i', $starttime),'endtime'=>date('Y-m-d H:i', $endtime)),true);}
+    					</span>
+                        <div class="layui-btn-group">
+                            <input type="hidden" name="export" id="export" value="0">
+                            <button class="layui-btn btn-submit layui-btn-sm" data-export="0" type="submit"> 搜索</button>
+    						<button data-export="1" type="submit" style="display: none;" class="layui-btn layui-btn-sm btn-submit layui-btn-primary">导出</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+	
+            <form action="" method="post" class="layui-form" role="form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="layui-table" lay-skin="line" lay-size="lg">
+                            <thead>
+                                <tr>
+            						<th style="width:25px;">
+                                        <input type='checkbox' name="checkall" lay-skin="primary" lay-filter="checkboxall" />
+                                    </th>
+                                    <th style="width: 10px;">ID</th>
+            						<th style="width: 180px;">姓名/手机号</th>
+            						<th style="">销售额(元)</th>
+            					</tr>
+                            </thead>
+                            <tbody>
+                               
+								<?php foreach($data as $item){ ?>
+                                <tr>
+                					<td style="width:25px;">
+                						<input type='checkbox' value="{$item['head_id']}" name="item_checkbox" lay-skin="primary" />
+                					</td>
+                                    <td>
+                						{$item['member_id']}
+                					</td>
+                					<td>
+                						{$item['username']}
+                					</td>
+                				
+                					<td>
+                						{$item['total']}
+                					</td>
+                                </tr>
+                                
+                                <?php } ?>
+                               
+                            </tbody>
+                           
+                        </table>
+                        {$pager}
+                    </div>
+					
+                </div>
+                
+            </form>
+		
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+	$(function () {
+        //赋值传递 是否导出
+        $('.btn-submit').click(function () {
+            var e = $(this).data('export');
+            $('#export').val(e);
+            $('#search').submit();   
+        })
+    })
+</script>
+
+
+</body>
+</html>

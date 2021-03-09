@@ -1,0 +1,410 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">  
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/addresses.css?v=321">
+<style>
+.add-btn .normal-add-btn{background-color: #f69;}
+.m-addr-main .m-addr-save{background-color: #f69;}
+</style>
+<div class="addresses-main">
+	<ul class="addresses-list">
+		<volist name="address" id="list">
+		<li class="address-item-use" data-address-id="{$list.address_id}">
+            <div class="address-item-wrap">
+                <div class="address-item-main <?php if($backcart == 1){ ?>aim-small<?php } ?>">
+                    <div class="contact-name">
+                        {$list.name}，{$list.telephone}
+                    </div>
+                    <div class="contact-address">
+                        <?php echo get_area_name($list['province_id']); ?>&nbsp;
+                        <?php echo get_area_name($list['city_id']); ?>&nbsp;
+                        <?php echo get_area_name($list['country_id']); ?>&nbsp;
+                        	{$list.address}
+                    </div>
+                </div>
+                <?php if($backcart == 1){ ?>
+                <div class="address-item-choose-btn"></div>
+                <?php } ?>
+            </div>
+            <div class="address-item-ops-1" onclick="defaultAddr(this)" >
+                <span class="address-item-set-default<?php if($list['is_default'] == 1){ ?> default <?php } ?>">
+                	<?php if($list['is_default'] == 1){ ?> 已设为默认<?php }else{ ?>设为默认<?php } ?>
+                </span>
+            </div>
+            <div class="address-item-ops-2">
+                <div class="address-item-edit" onclick="editAddr(this)"  data-address="{$list.address}" data-telephone="{$list.telephone}" data-name="{$list.name}"  data-pid="{$list.province_id}" data-cityid="{$list.city_id}" data-country-id="{$list.country_id}">
+                    <span>编辑</span>
+                </div>
+                <div class="address-item-delete" onclick="delAddr(this)">
+                    <span>删除</span>
+                </div>
+            </div>
+        </li>
+        </volist>
+        
+	</ul>
+	<div class="add-btn">
+        <div class="normal-add-btn btn-long">
+            <span>手动添加</span>
+        </div>
+        <!--ms-if-->
+    </div>
+</div>
+
+<div id="m-addr-mask" avalonctrl="edit_address" style="display:none;">
+    <div class="m-addr-main">
+        <div class="m-addr-title">添加新收货地址</div>
+        <div class="m-address-receiver">
+            <input class="m-addr-name" id="name" placeholder="名字" type="text">
+            <input class="m-addr-mobile" id="telephone" placeholder="电话" type="tel">
+        </div>
+        <div class="m-addr-region">
+            <div class="m-addr-province">
+                <select class="m-addr-select" id="areaprovince" data-duplex-changed="onProvinceEdited">
+                    <option value="0">选择省份</option>
+                </select>
+            </div>
+            <div class="m-addr-city">
+                <select class="m-addr-select" id="areacity" data-duplex-changed="onCityEdited">
+                    <option value="0">选择城市</option>
+                    <!--repeat757947232574--><!--repeat757947232574:end-->
+                </select>
+            </div>
+            <div class="m-addr-district">
+                <select class="m-addr-select" id="areadistrict" data-duplex-changed="onDistrictEdited">
+                    <option value="0">选择地区</option>
+                    <!--repeat749156095088--><!--repeat749156095088:end-->
+                </select>
+            </div>
+        </div>
+        <div class="m-addr-address">
+            <input placeholder="请填写详细街道地址" id="addr_address" type="text">
+            <input type="hidden" name="sub_address_id" id="sub_address_id" />
+        </div>
+        <div class="m-addr-save">保存</div>
+        <div class="m-addr-close">
+            <div class="ms-addr-close-icon"></div>
+        </div>
+        <!--ms-if-->
+    </div>
+</div>
+ <include file="Widget:pin_toast" />
+ 
+<script>
+var edit_url = "{:U('User/edit_address')}";
+var add_url = "{:U('User/add_address')}";
+var ajaxarea_url='{:U("/c_getarea")}';
+var chang_default_url = "{:U('User/change_default_address')}";
+
+$(function(){
+	
+	$('.address-item-choose-btn').click(function(){
+		var address_id = $(this).parent().parent().attr('data-address-id');
+		var back_cart_url = "{:U('User/back_choose_cart')}";
+		var cart_url = "{:U('cart/checkout', array('buy_type' =>$buy_type))}";
+		
+		$.ajax({
+			url:back_cart_url,
+			type:'post',
+			data:{address_id:address_id},
+			dataType:'json',
+			success:function(ret){
+				location.href = cart_url;
+				return false;
+			}
+		})
+	});	
+		
+		
+	$('.add-btn').click(function(){
+		
+		$('#sub_address_id').val('');
+		
+		$('.m-addr-title').html('添加收货地址');
+		
+        var areaId=0;
+        $.post(ajaxarea_url,{'areaId':areaId},function(data){                
+            
+            $('#areaprovince').html('<option value="0">选择省份</option>');
+            
+            $.each(data,function(no,items){
+               $('#areaprovince').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+            });
+            $('#m-addr-mask').show();
+        });
+	})
+	
+	$("#areaprovince").change(function(){
+		var areaId = $(this).val();
+		if(areaId == 0){
+			$('#areacity').html('<option value="0">选择城市</option>');
+			$('#areadistrict').html('<option value="0">选择地区</option>')
+		} else {
+			$.post(ajaxarea_url,{'areaId':areaId},function(data){    
+	            $('#areacity').html('<option value="0">选择城市</option>');
+	            $.each(data,function(no,items){
+	               $('#areacity').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+	            });
+	            
+	            $('#areadistrict').html('<option value="0">选择地区</option>');
+	        });
+		}
+			
+	})
+	
+	$("#areacity").change(function(){
+		var areaId = $(this).val();
+		if(areaId == 0){
+			$('#areadistrict').html('<option value="0">选择地区</option>')
+		} else {
+			$.post(ajaxarea_url,{'areaId':areaId},function(data){    
+                $('#areadistrict').html('<option value="0">选择地区</option>');
+                $.each(data,function(no,items){
+                   $('#areadistrict').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+                });
+                
+                
+            });
+		}
+			
+	})
+	
+	$('.m-addr-save').on('click',function(){
+		var name = $('#name').val();
+		var m_addr_mobile = $('.m-addr-mobile').val();
+		var areaprovince = $('#areaprovince').val();
+		var areaprovince_html = $('#areaprovince').find("option:selected").text();
+		
+		var areacity = $('#areacity').val();
+		var areacity_html = $('#areacity').find("option:selected").text();
+		
+		var areadistrict = $('#areadistrict').val();
+		var areadistrict_html = $('#areadistrict').find("option:selected").text();
+		
+		var addr_address = $('#addr_address').val();
+		
+		if($.trim(name) == ''){
+			showTip('请填写姓名');
+			return false;
+		}
+		if($.trim(m_addr_mobile) == ''){
+			showTip('请填写手机');
+			return false;
+		}
+		
+		if(!m_addr_mobile.match('^1[3|4|5|6|8|7|9][0-9]{9}$')){ 
+			showTip('请输入正确的手机号码');
+			return false; 
+		}
+		if(areaprovince <= 0)
+		{
+			showTip('请选择省份');
+			return false; 
+		}
+		if(areacity <= 0)
+		{
+			showTip('请选择城市');
+			return false; 
+		}
+		if(areadistrict <= 0)
+		{
+			showTip('请选择地区');
+			return false; 
+		}
+		
+		if($.trim(addr_address) == ''){
+			showTip('请填写详细街道地址');
+			return false;
+		}
+		var sub_address_id = $('#sub_address_id').val();
+		
+		var data_obj = {name:name,telephone:m_addr_mobile,is_default:0,province_id:areaprovince,city_id:areacity,country_id:areadistrict,address:addr_address};
+		
+		var edit_url = "{:U('User/edit_address')}";
+		var add_url = "{:U('User/add_address')}";
+		if(sub_address_id != '') {
+			var ajaxaddress_add_url = edit_url;
+			data_obj.address_id = sub_address_id;
+		} else {
+			var ajaxaddress_add_url = add_url;
+		}
+		
+		$.ajax({
+			url:ajaxaddress_add_url,
+			type:'post',
+			data:data_obj,
+			dataType:'json',
+			success:function(json){
+				
+				if(json.code == 1) {
+					alert('修改成功');
+					location.href = location.href;
+					return false;
+				} else {
+					showTip(json.msg);
+					return false;
+				}
+			}
+		})
+		
+	})
+	
+	$('.m-addr-close').click(function(){
+		$('#m-addr-mask').hide();
+	})
+})
+
+
+function getCountryList(parent_city_id,parent_country_id)
+{
+	var areaId = parent_city_id;
+	if(areaId == 0){
+		$('#areadistrict').html('<option value="0">选择地区</option>')
+	} else {
+		$.post(ajaxarea_url,{'areaId':areaId},function(data){    
+            $('#areadistrict').html('<option value="0">选择地区</option>');
+            $.each(data,function(no,items){
+            	if(parent_country_id >0 && parent_country_id == items.area_id){
+            		$('#areadistrict').append('<option value="'+items.area_id+'" selected>'+items.area_name+'</option>');
+                } else {
+                	$('#areadistrict').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+                }
+            });
+            if(parent_country_id > 0)
+            	$('#m-addr-mask').show();
+        });
+	}
+}
+
+function getCityList(parent_province_id,parent_city_id,parent_country_id)
+{
+	var areaId = parent_province_id;
+	if(areaId == 0){
+		$('#areacity').html('<option value="0">选择城市</option>');
+		$('#areadistrict').html('<option value="0">选择地区</option>')
+	} else {
+		$.post(ajaxarea_url,{'areaId':areaId},function(data){    
+            $('#areacity').html('<option value="0">选择城市</option>');
+            
+            $.each(data,function(no,items){
+            	if(parent_city_id > 0  && items.area_id == parent_city_id)
+            		$('#areacity').append('<option value="'+items.area_id+'" selected>'+items.area_name+'</option>');
+            	else {
+            		$('#areacity').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+            	} 
+            });
+            
+            if(parent_city_id == 0) {
+            	 $('#areadistrict').html('<option value="0">选择地区</option>');
+            } else {
+            	 getCountryList(parent_city_id,parent_country_id);
+            }
+        });
+	}	
+	
+}
+
+function getProvinceList(parent_province_id,parent_city_id,parent_country_id)
+{
+	var areaId=0;
+    $.post(ajaxarea_url,{'areaId':areaId},function(data){                
+        
+        $('#areaprovince').html('<option value="0">选择省份</option>');
+        
+        $.each(data,function(no,items){
+        	if(parent_province_id > 0 && items.area_id == parent_province_id){
+        		$('#areaprovince').append('<option value="'+items.area_id+'" selected >'+items.area_name+'</option>');
+        	} else {
+        		$('#areaprovince').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+        	}
+        });
+        if(parent_province_id == 0)
+        	$('#m-addr-mask').show()
+        else 
+        	getCityList(parent_province_id,parent_city_id,parent_country_id);
+    });	
+}
+
+
+
+
+//修改地址
+function editAddr(obj)
+{
+	var province_id = $(obj).attr('data-pid'); 
+	var city_id = $(obj).attr('data-cityid');
+	var country_id = $(obj).attr('data-country-id');
+	
+	var address_id = $(obj).parent().parent().attr('data-address-id');
+	var address = $(obj).attr('data-address');
+	var telephone = $(obj).attr('data-telephone');
+	var name = $(obj).attr('data-name');
+	
+	$('#name').val(name);
+	$('#telephone').val(telephone);
+	$('#addr_address').val(address);
+	$('#sub_address_id').val(address_id);
+	
+	$('.m-addr-title').html('编辑收货地址');
+	getProvinceList(province_id,city_id,country_id);
+}
+
+
+//delAddr删除地址
+function delAddr(obj)
+{
+	var del_url = "{:U('User/delete_address_ajax')}";
+	
+	var address_id = $(obj).parent().parent().attr('data-address-id');
+	
+	if(!confirm('确认删除地址吗？')) {
+		return false;
+	}
+	
+	$.ajax({
+		url:del_url,
+		data:{address_id:address_id},
+		type:'post',
+		dataType:'json',
+		success:function(res){
+			if(res.code == 1){
+				alert('删除成功');
+				location.href = location.href;
+				return false;
+			} else {
+				alert(res.msg);
+				return false;
+			}
+		}
+	})
+	
+}
+
+//设置为默认地址
+function defaultAddr(obj)
+{
+	if($(obj).children('.address-item-set-default').hasClass('default') ){
+		return false;
+	}
+	
+	var address_id = $(obj).parent().attr('data-address-id');
+	$.ajax({
+		url:chang_default_url,
+		type:'post',
+		data:{address_id:address_id},
+		dataType:'json',
+		success:function(res){
+			$('.address-item-use .address-item-set-default').removeClass('default');
+			$('.address-item-use .address-item-set-default').html('设为默认');
+			
+			$(obj).children('.address-item-set-default').addClass('default');
+			$(obj).children('.address-item-set-default').html('已设为默认');
+		}
+	})
+	
+}
+
+
+
+
+</script>
+</block>

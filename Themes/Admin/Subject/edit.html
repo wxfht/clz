@@ -1,0 +1,204 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			编辑{$subject.name}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="validation-form" method="post" action='{:U("Subject/update")}'>
+			<input type="hidden" name="id" value="{$subject.id}" />
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">主题活动名称：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="" name="name"  value="{$subject.name}" />
+				</div>
+			</div>
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">LOGO：</label>
+				<div class="col-sm-10" id="p-image-row1">
+					<a href="#" data-toggle="image" class="img-thumbnail">
+						
+                 		<img osctype="p_image1" <?php if(empty($subject['logo'])){ ?> src="__ROOT__/Common/image/no_image_100x100.jpg" <?php }else{ ?> src="./Uploads/image/{$subject.logo}" <?php } ?> width="100" height="100" />
+					</a>
+					<button type="button" n="1" t="p"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>
+					<input type="hidden" osctype="p_image_input1" name="logo" value="{$subject.logo}" />
+				</div>
+			</div>
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">BANNER广告图：</label>
+				<div class="col-sm-10" id="p-image-row2">
+					<a href="#" data-toggle="image" class="img-thumbnail">
+	                	<img osctype="p_image2" <?php if(empty($subject['banner'])){ ?> src="__ROOT__/Common/image/no_image_100x100.jpg" <?php }else{ ?> src="./Uploads/image/{$subject.banner}" <?php } ?> width="100" height="100"  />
+					</a>
+					<button type="button" n="2" t="p"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>
+					<input type="hidden" osctype="p_image_input2" name="banner" value="{$subject.banner}" />
+					
+				</div>
+			</div>
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">主题活动类型：</label>
+				<div class="col-sm-10">
+					<select name="type">
+						<?php foreach($subjecttype as $key => $val){ ?>
+						<option value="<?php echo $key; ?>" <?php if($subject['type'] == $key){ echo 'selected';} ?> ><?php echo $val; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+			
+			
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">统一价格：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="" name="price"  value="{$subject.price}" />
+				</div>
+				<p class="col-sm-2 control-label">&nbsp;</p>
+				<div class="col-sm-2" ><span class="blue bold">-1为不统一价格</span></div>
+			</div>
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">是否允许申请：</label>
+				<div class="col-sm-10">
+					<label><input type="radio" name="can_shenqing" <?php if( intval($subject['can_shenqing']) == 1){ ?> checked <?php } ?> value="1" />是</label>
+					&nbsp;&nbsp;
+					<label><input type="radio" name="can_shenqing" <?php if( intval($subject['can_shenqing']) == 0){ ?> checked <?php } ?> value="0" />否</label>
+				</div>
+			</div>
+			
+			
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">开始时间：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" id="begin_time" placeholder="开始时间" name="begin_time"  value="<?php echo date('Y-m-d H:i:s',$subject['begin_time']); ?>" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">结束时间：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" id="end_time" placeholder="结束时间" name="end_time"  value="<?php echo date('Y-m-d H:i:s',$subject['end_time']); ?>" />
+				</div>
+			</div>
+					
+			
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script src="__PUBLIC__/js/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+
+$(function(){
+	
+		
+	//商品相册
+	$('.button-image').on('click', function() {
+		$('#modal-image').remove();
+		
+		$('#form-upload').remove();
+		
+		var i=$(this).attr('n');
+		var type=$(this).attr('t');
+					
+		$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+
+		$('#form-upload input[name=\'file\']').trigger('click');
+		
+		
+		
+		$('[osctype="btn_upload_image"]').fileupload({
+			
+        	dataType: 'json',
+            url: "{:U('Image/upload_image/dir')}"+'/'+type,
+            add: function(e, data) {
+                $parent = $('#image-row'+i);
+                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+                console.log($img);
+                var old_name='old_'+type+'_image';
+                data.formData = {old_name:$input.val()};
+                $img.attr('src', "__IMG__/loading.gif");
+                data.submit();
+            },
+            done: function (e,data) {
+				
+            	var image=data.result;	            	
+            	console.log('#'+type+'-image-row'+i);
+                $parent = $('#'+type+'-image-row'+i);
+                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+                if(image) {
+                   // $img.prev('i').hide();
+                    $img.attr('src', '__ROOT__/'+image.image_thumb);
+                    $img.show();
+                    $input.val(image.image);
+                } else {
+                    alert('上传失败');
+                }
+            }
+		 });
+		
+	});
+		$('#begin_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+		$('#end_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+})
+</script>
+</block>

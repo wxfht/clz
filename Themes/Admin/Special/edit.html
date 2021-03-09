@@ -1,0 +1,286 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+			
+			<button name="send" form="form-blog" type="submit" style="float:right;"  class="btn btn-sm btn-primary">提交</button>
+			
+		</h1>
+	</div>
+	<div class="row">
+	<div class="col-xs-12">
+		<div class="alert alert-block alert-success">
+			1、背景颜色：可不填写。默认白色<br/>
+			2、背景图片：可不上传。默认无背景
+		</div>
+	</div>
+	
+	<div class="col-xs-12">	
+		<div class="panel-body">
+        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-blog" class="form-horizontal">
+        
+        <notempty name="Think.get.special_id">
+			<input name="special_id" type="hidden" value="{$Think.get.special_id}" />
+		</notempty>
+          <div class="tab-content">
+          	<!-- 常规 START -->
+	          	<div class="tab-pane active" id="tab-general">
+	          		
+	          		<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">专题名称：</label>
+						<div class="col-sm-10">
+							<input id="input-name2" class="form-control" type="text" placeholder="专题名称" name="special_desc"  value="{$special.special_desc|default=''}" />
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">背景颜色：</label>
+						<div class="col-sm-10">
+							<input id="input-special_bgcolor" class="form-control" type="text" placeholder="背景颜色" name="special_bgcolor"  value="{$special.special_bgcolor|default=''}" />
+							<span class="help-inline ">
+								<span class="middle red">请填写色值，例如：#fff </span>
+							</span>
+						</div>
+					</div>
+					
+					<div class="form-group required">
+		                <label class="col-sm-2 control-label" for="input-image">
+		                <span title="" data-toggle="tooltip" data-original-title="平铺页面">背景图片：</span>
+		                </label>
+		                
+		                <div class="col-sm-10" id="thumb">
+		                  <a href="#" data-toggle="image" class="img-thumbnail">
+		                  	<img osctype="image" <if condition="!empty($special['special_bgimage'])"> 
+								src="__ROOT__<?php echo resize($special['special_bgimage'],100,100); ?>" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_100x100.jpg" 
+								</if>  />
+								</a>
+		                  <input osctype="image_input" type="hidden" name="image" value="{$special.special_bgimage|default=''}" id="input-image" />
+						</div>
+		            </div>
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">分享标题：</label>
+						<div class="col-sm-10">
+							<input id="input-share_title" class="form-control" type="text" placeholder="分享标题" name="share_title"  value="{$special.share_title|default=''}" />
+							<span class="help-inline ">
+								<span class="middle red">不填写默认使用主题标题</span>
+							</span>
+						</div>
+					</div>
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">分享描述：</label>
+						<div class="col-sm-10">
+							<input id="input-share_descript" class="form-control" type="text" placeholder="分享描述" name="share_descript"  value="{$special.share_descript|default=''}" />
+							<span class="help-inline ">
+								<span class="middle red"></span>
+							</span>
+						</div>
+					</div>
+					
+					<div class="form-group" id="goods-image-row7">
+						<label class="col-sm-2 control-label no-padding-left">分享图片 </label>
+						<div class="col-sm-10" id="image-row7">
+						  <a href="#" data-toggle="image" class="img-thumbnail" type="goods" id="thumb-image7" num="7">
+							<img osctype="goods_image7" <if condition="$special['share_image']"> 
+								src="__ROOT__/<?php echo resize($special['share_image'],100,100); ?>" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_40x40.jpg" 
+								</if>  />
+								</a>
+								<input osctype="goods_image_input7" type="hidden" name="share_image" value="{$special.share_image=''}" id="input-image7" />
+							<span class="help-inline ">
+								正方形图片
+							</span>
+						</div>
+					</div>
+					
+					
+	          	</div>
+	          	<!-- 常规 END -->
+
+        
+          </div>
+        </form>
+	</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<style>
+.table thead > tr > td, .table tbody > tr > td {
+    vertical-align: middle;
+}	
+.table thead td span[data-toggle="tooltip"]:after, label.control-label span:after {
+	font-family: FontAwesome;
+	color: #1E91CF;
+	content: "\f059";
+	margin-left: 4px;
+}
+</style>	
+
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+
+<script>
+
+$(function(){
+	
+	
+	
+	
+	// tooltips on hover button-upload
+	$('[data-toggle=\'tooltip\']').tooltip({container: 'body', html: true});
+
+	// Makes tooltips work on ajax generated content
+	$(document).ajaxStop(function() {
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	});	
+	
+	
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+		var type=$(this).attr('type');
+		//alert(index);
+		
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'" t="'+type+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> ';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		//商品图片
+		$('#thumb-image').on('click', function() {
+			
+			//alert('333');
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'shop'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_goods_image:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+			
+		$('.button-image').on('click', function() {
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			var i=$(this).attr('n');
+			var type=$(this).attr('t');
+						
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image/dir')}"+'/'+type,
+	            add: function(e, data) {
+	                $parent = $('#image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                var old_name='old_'+type+'_image';
+	                data.formData = {old_name:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#'+type+'-image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__/'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+			
+		});
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+});
+	
+</script>
+</block>

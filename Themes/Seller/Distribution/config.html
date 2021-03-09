@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->  
+
+<link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+<link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+<script type="text/javascript">
+            window.sysinfo = {
+            <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+			
+            <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+			
+            <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+			
+            <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+			
+            'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+			
+            'siteroot': '{$_W['siteroot']}',
+                    'siteurl': '{$_W['siteurl']}',
+                    'attachurl': '{$_W['attachurl']}',
+                    'attachurl_local': '{$_W['attachurl_local']}',
+                    'attachurl_remote': '{$_W['attachurl_remote']}',
+                    'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+            'cookie' : {'pre': ''},
+            'account' : {:json_encode($_W['account'])},
+            };
+        </script>
+		
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+  <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+   <link href="/static/css/snailfish.css" rel="stylesheet">
+</head>
+<body layadmin-themealias="default">
+
+<div class="layui-fluid">
+	<div class="layui-card">
+		<div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text">分销设置</span></div>
+		<div class="layui-card-body" style="padding:15px;">
+			<form action="" method="post" class="layui-form" lay-filter="component-layui-form-item" enctype="multipart/form-data" >
+		
+				 <div class="layui-form-item">
+						<label class="layui-form-label">分销</label>
+						<div class="layui-input-block">
+						
+
+							<label class="radio-inline"><input type="radio" lay-filter="radi" class="radi"  name="data[commiss_level]" value="0" <?php if($data['commiss_level'] ==0){ ?> checked="checked"<?php } ?> title="不开启" /> </label>
+							<label class="radio-inline"><input type="radio" lay-filter="radi" class="radi"  name="data[commiss_level]" value="1" <?php if($data['commiss_level'] ==1){ ?> checked="checked"<?php } ?> title="一级分销" /> </label>
+							<label class="radio-inline"><input type="radio" lay-filter="radi" class="radi"  name="data[commiss_level]" value="2" <?php if($data['commiss_level'] ==2){ ?> checked="checked"<?php } ?> title="二级分销" /> </label>
+							<label class="radio-inline"><input type="radio" lay-filter="radi" class="radi"  name="data[commiss_level]" value="3" <?php if($data['commiss_level'] ==3){ ?> checked="checked"<?php } ?> title="三级分销" /> </label>
+							
+						</div>
+					</div> 
+					<div class="layui-form-item community_commiss1" <?php if( !empty($data) && $data['commiss_level'] >= 1 ){ ?> style="display:block;"<?php }else{ ?> style="display:none;"<?php } ?> >
+						<label class="layui-form-label">1级:</label>
+						<div class="layui-input-block fixmore-input-group">
+							<div class="input-group">
+								<input type="text" name="data[community_commiss1]" class="form-control valid" value="<?php echo empty($data['community_commiss1'])?0:$data['community_commiss1']; ?>" />
+								<span class="input-group-addon">% </span>
+							</div>
+							<div class="help-block">1级分佣比例</div>	
+						</div>
+					</div>
+					<div class="layui-form-item community_commiss2" <?php if( !empty($data) && $data['commiss_level'] >= 2 ){ ?> style="display:block;"<?php }else{ ?> style="display:none;"<?php } ?>>
+						<label class="layui-form-label">2级:</label>
+						<div class="layui-input-block fixmore-input-group">
+							<div class="input-group">
+								<input type="text" name="data[community_commiss2]" class="form-control valid" value="<?php echo empty($data['community_commiss2'])?0:$data['community_commiss2'];?>" />
+								<span class="input-group-addon">% </span>
+							</div>
+							<div class="help-block">2级分佣比例</div>	
+						</div>
+					</div>
+					<div class="layui-form-item community_commiss3" <?php if( !empty($data) && $data['commiss_level'] >= 3 ){ ?> style="display:block;"<?php }else{ ?> style="display:none;"<?php } ?>>
+						<label class="layui-form-label">3级:</label>
+						<div class="layui-input-block fixmore-input-group">
+							<div class="input-group">
+								<input type="text" name="data[community_commiss3]" class="form-control valid" value="<?php  echo empty($data['community_commiss3'])?0:$data['community_commiss3'];?>" />
+								<span class="input-group-addon">% </span>
+							</div>
+							<div class="help-block">3级分佣比例</div>	
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">分销内购</label>
+						<div class="layui-input-block">
+							<label class="radio-inline"><input type="radio"  name="data[commiss_selfbuy]" value="1" <?php if($data['commiss_selfbuy'] ==1){ ?> checked="checked"<?php } ?> title="开启" /> </label>
+							<label class="radio-inline"><input type="radio"  name="data[commiss_selfbuy]" value="0" <?php if($data['commiss_selfbuy'] ==0){ ?> checked="checked"<?php } ?> title="关闭" /> </label>
+							<span class='help-block'>开启分销内购，分销商自己购买商品，享受一级佣金，上级享受二级佣金，上上级享受三级佣金</span>
+						</div>
+					</div>
+					
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							<span class="layui-badge layui-bg-blue">第一条件：</span>
+						</label>
+					</div>
+					
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否需要分享</label>
+						<div class="layui-input-block">
+							<label class="radio-inline"><input type="radio" lay-filter="radi_share_form"  name="data[commiss_sharemember_need]" value="0" <?php if(!isset($data['commiss_sharemember_need']) ||  $data['commiss_sharemember_need'] ==0){ ?> checked="checked" <?php } ?> title="不需要" /> </label>
+							<label class="radio-inline"><input type="radio" lay-filter="radi_share_form" name="data[commiss_sharemember_need]" value="1" <?php if($data['commiss_sharemember_need'] ==1){ ?> checked="checked"<?php } ?> title="需要" /> </label>
+							
+							<span class='help-block'></span>
+						</div>
+					</div>
+					
+					<div class="layui-form-item" id="share_div" <?php if( !empty($data) && $data['commiss_sharemember_need'] == 1 ){ ?> style="display:block;"<?php }else{ ?> style="display:none;"<?php } ?>>
+						<label class="layui-form-label">分享</label>
+						<div class="layui-input-block">
+							<div class="input-group">
+								<input type="text" name="data[commiss_share_member_update]" class="form-control" value="<?php echo empty($data['commiss_share_member_update'])?0:$data['commiss_share_member_update'];?>" >
+								<span class="input-group-addon">人</span>
+							</div>
+							<span class="help-block">分享满指定会员数量才有机会申请成为分销商&nbsp;(达到分享人数后，依据下方表单、审核设置进行判断)</span>
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							<span class="layui-badge layui-bg-blue">第二条件：</span>
+						</label>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">填写表单</label>
+						<div class="layui-input-block">
+							<label class="radio-inline"><input type="radio" lay-filter="radi_form"  name="data[commiss_biaodan_need]" value="0" <?php if(!isset($data['commiss_biaodan_need']) ||  $data['commiss_biaodan_need'] ==0){ ?> checked="checked" <?php } ?> title="不需要" /> </label>
+							<label class="radio-inline"><input type="radio" lay-filter="radi_form" name="data[commiss_biaodan_need]" value="1" <?php if($data['commiss_biaodan_need'] ==1){ ?> checked="checked"<?php } ?> title="需要" /> </label>
+							
+						</div>
+					</div>
+					<div class="layui-form-item" id="form_div" <?php if( !empty($data) && $data['commiss_biaodan_need'] == 1 ){ ?> style="display:block;"<?php }else{ ?> style="display:none;"<?php } ?>>
+						<label class="layui-form-label"></label>
+						<div class="layui-input-block">
+							<a href="javascript:;" --lay-href="{:U('distribution/addForm')}" id="load_ifram_url" class="layui-btn layui-btn-sm"><i class="fa fa-plus"></i> 设置表单 </a>&nbsp;<font color="red">(*必填)</font>
+							
+							<span class="help-block text-danger" style="color:red;display:none;">如果已开启自动分享成为分销商，此处用户成为分销商时，需要再次填写表格</span>
+						</div>	
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							<span class="layui-badge layui-bg-blue">第三条件：</span>
+						</label>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否需要审核</label>
+						<div class="layui-input-block">
+							<label class="radio-inline"><input type="radio"  name="data[commiss_become_condition]" value="0" <?php if(!isset($data['commiss_become_condition']) ||  $data['commiss_become_condition'] ==0){ ?> checked="checked" <?php } ?> title="不需要" /> </label>
+							<label class="radio-inline"><input type="radio"  name="data[commiss_become_condition]" value="1" <?php if($data['commiss_become_condition'] ==1){ ?> checked="checked"<?php } ?> title="需要" /> </label>
+							
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"></label>
+						<div class="layui-input-block">
+							<hr>
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">分销名称:</label>
+						<div class="layui-input-block fixmore-input-group">
+							<div class="input-group">
+								<input type="text" name="data[commiss_diy_name]" class="form-control valid" value="{$data['commiss_diy_name']}" />
+							</div>
+							<div class="help-block">默认：分销</div>	
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"></label>
+						<div class="layui-input-block">
+							<hr>
+						</div>
+					</div>
+					
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">申请页面内容</label>
+						<div class="layui-input-block fixmore-input-group">
+							<div class="">
+								{:tpl_ueditor('data[communitymember_apply_page]',$data['communitymember_apply_page'],array('height'=>'300'))}
+							</div>
+						</div>
+					</div>
+		
+		
+					
+		
+		
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"> </label>
+                        <div class="layui-input-block">
+                            <input type="submit" value="提交" lay-submit lay-filter="formDemo" class="btn btn-primary"  />
+                        </div>
+                    </div>
+					
+			</form>
+		</div>
+</div>
+</div>
+
+<script src="/layuiadmin/layui/layui.js"></script>
+
+<script>
+	layui.config({
+		base: '/layuiadmin/' //静态资源所在路径
+	}).extend({
+		index: 'lib/index' //主入口模块
+	}).use('index');
+</script>
+
+  <script>
+    var layer = layui.layer;
+    var $;
+    var cur_open_div;
+    layui.use(['jquery', 'layer','form'], function(){ 
+      $ = layui.$;
+      var form = layui.form;
+      
+        form.on('radio(linktype)', function(data){
+            if (data.value == 2) {
+                $('#typeGroup').show();
+            } else {
+                $('#typeGroup').hide();
+            }
+        });
+		$('#load_ifram_url').click(function(){
+			console.log(12);
+			
+			layer.open({
+			  type: 2, 
+			  area: ['100%', '100%'],
+			  content: '{:U('distribution/addForm')}'
+			});
+		})
+		form.on('radio(radi_form)', function(data){
+            if (data.value == 1) {
+                $('#form_div').show();
+            } else {
+                $('#form_div').hide();
+            }
+        }); 
+		form.on('radio(radi_share_form)', function(data){
+            if (data.value == 1) {
+                $('#share_div').show();
+            } else {
+                $('#share_div').hide();
+            }
+        }); 		
+
+        
+       
+		form.on('radio(radi)', function(data){
+			var open_community_leve = data.value ;
+    		console.log(open_community_leve);
+    		if( open_community_leve == 0 )
+    		{
+    			$('.community_commiss1').hide();
+    			$('.community_commiss2').hide();
+    			$('.community_commiss3').hide();
+    		}else if( open_community_leve == 1 ){
+    			$('.community_commiss1').show();
+    			$('.community_commiss2').hide();
+    			$('.community_commiss3').hide();
+    		}else if(open_community_leve == 2){
+    			$('.community_commiss1').show();
+    			$('.community_commiss2').show();
+    			$('.community_commiss3').hide();
+    		}else if(open_community_leve == 3){
+    			$('.community_commiss1').show();
+    			$('.community_commiss2').show();
+    			$('.community_commiss3').show();
+    		}
+		});  
+
+        $('#chose_link').click(function(){
+            cur_open_div = $(this).attr('data-input');
+            $.post("{:U('util/selecturl', array('ok' => 1))}", {}, function(shtml){
+             layer.open({
+                type: 1,
+                area: '930px',
+                content: shtml //注意，如果str是object，那么需要字符拼接。
+              });
+            });
+        })
+
+        form.verify({
+          title: [
+            /^[\S]{1,}$/,'标题不能为空'
+          ] 
+        });
+            
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                url: data.form.action,
+                type: data.form.method,
+                data: data.field,
+                dataType:'json',
+                success: function (info) {
+                  
+                    if(info.status == 0)
+                    {
+                        layer.msg(info.result.message,{icon: 1,time: 2000});
+                    }else if(info.status == 1){
+                        var go_url = location.href;
+                        if( info.result.hasOwnProperty("url") )
+                        {
+                            go_url = info.result.url;
+                        }
+                        
+                        layer.msg('操作成功',{time: 1000,
+                            end:function(){
+                                var backurl = "{:U('distribution/config',array('ok'=>'1'))}";
+                                location.href = backurl;
+                                // location.href = info.result.url;
+                            }
+                        }); 
+                    }
+                }
+            });
+            return false;
+        });
+    })
+    </script>  
+    
+<script>
+$(function(){
+	
+	
+	
+	$('#clear_member_qrcode').click(function(){
+		$.ajax({
+			url:"{:U('distribution/clear_user_member_qrcode')}",
+			type:'get',
+			dataType:'json',
+			success:function(){
+				tip.msgbox.suc('清空成功');
+			}
+		})
+	})
+})
+    function addCategory(){
+        var html ='<tr>';
+        html+='<td style="width:200px;">';
+        html+='<input type="text" class="form-control" name="data[value][]" value="">';
+        html+='</td>';
+		html+='<td style="width: 45px;">';
+		html+='		<a href="javascript:void(0);" class="btn btn-default btn-del btn-op btn-operation" data-confirm="确认删除此标签?">';
+		html+='<span data-toggle="tooltip" data-placement="top" title="" data-original-title="删除">';
+		html+='<i class="icow icow-shanchu1"></i>';
+		html+='</span>';
+		html+='</a>';
+         html+='</td>';
+        html+='</tr>';
+        $('#tbody-items').append(html);
+    }
+    $(function(){
+		$(document).delegate('.btn-del','click',function(){
+			var $btntr = $(this).parents('tr');
+			$btntr.remove();
+		})
+    });
+</script> 
+</body>

@@ -1,0 +1,12 @@
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<div class="suggestion-one" onclick="location.href='{:U('User/quest_detail', array('blog_id' => $d['blog_id']))}';">
+	<div class="suggestion-title">{$d.title}</div>
+	<div class="suggestion-arrow">
+		<img src="__PUBLIC__/pinduoduo/assets/img/home_arrow-0417024bbe.png">
+	</div>
+</div>
+</volist>
+<?php } ?>

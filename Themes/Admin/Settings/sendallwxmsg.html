@@ -1,0 +1,190 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+	<h1>
+		{$breadcrumb2}
+		<small>
+			<i class="icon-double-angle-right"></i>
+			群发消息
+		</small>
+	</h1>
+</div>
+	
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="panel-body">
+			<ul class="nav nav-tabs">
+            <li <?php if($type == 1){ ?>class="active" <?php } ?>><a href="{:U('settings/wxtempmsg')}">参数配置</a></li>
+            <li <?php if($type == 2){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallwxmsg')}">消息群发</a></li>
+			<li <?php if($type == 3){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallcuswxmsg')}">客服消息群发</a></li> 
+			<li <?php if($type == 4){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallmodifywxmsg')}">自定义模板消息群发</a></li> 
+          </ul>
+		</div>
+	</div>
+	<div class="col-xs-12">
+		<div class="alert alert-block alert-success">
+				内容示例:<br/>
+				你好，你购买的商品已经到货。<br/>
+				商品名称：新鲜自家橙子<br/>
+				取货联系人：XXX<br/>
+				联系人电话：13311111111<br/>
+				取货地址：东方国际大厦<br/>
+				感谢你的使用。
+		</div>
+	</div>
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="form" method="post" action="{:U('Settings/sendallwxmsg_save')}">	
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 标题 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="title" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">原（你好，你购买的商品已经到货。）</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 标题色值 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="title_color" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">请填写色值例如：(#173177)</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 商品名称 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="goods_name" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">原（新鲜自家橙子）</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 名称色值 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="goods_name_color" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">请填写色值例如：(#173177)</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 取货联系人 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="lian_man" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">原（XXX）</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 联系人色值 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="lian_man_color" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">请填写色值例如：(#173177)</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 联系人电话 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="lian_mobile" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">原（13311111111）</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 电话色值 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="lian_mobile_color" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">请填写色值例如：(#173177)</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 取货地址 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="qv_address" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">原（东方国际大厦）</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 地址色值 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="qv_address_color" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">请填写色值例如：(#173177)</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 描述 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="description" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">原（感谢你的使用。）</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 描述色值 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="description_color" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">请填写色值例如：(#173177)</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 点击链接 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="url_link" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">如（http://pinduoduo.liofis.com/index.php?s=/goods/95.html）注意：http:// 这是必填的</span>
+						</span>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="form-group">
+			<label class="col-sm-1 control-label no-padding-left"> </label>	
+			<div class="col-sm-11">
+				<button form="form" type="submit"   class="btn btn-sm btn-primary">提交</button>		
+			</div>
+		</div>
+	</div>
+</div>
+</block>

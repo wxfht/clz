@@ -1,0 +1,22 @@
+<?php foreach($list as $vv){  $store = $vv['tp_store']; ?>
+	<section class="shop_list waterfall-frame-0 waterfall-box waterfall-optimise-show" style=""> 
+		<a href="<?php echo U('Seller/info', array('seller_id' => $store['s_id'])); ?>"> <em> </em> 
+		 <dl class="shop_name"> 
+		  <dt> 
+		   <img src="<?php echo $store['logo']; ?>" /> 
+		  </dt> 
+		  <dd>
+				<?php echo $store['s_true_name']; ?>
+		  </dd> 
+		 </dl> 
+		 </a> 
+		<div class="tags_inner tags_scroll"> 
+			<?php foreach($vv['goods'] as $val ){ ?>
+			 <a href="<?php echo U('/goods/'.$val['goods_id']); ?>"> 
+				<span class="bs_load_img lazyTransition" style="background-size: cover; background-image: url('<?php echo resize($val['image'], 400, 400); ?>'); opacity: 1;"></span> 
+			</a> 
+			<?php } ?>
+			
+		</div> 
+	</section>
+<?php } ?>

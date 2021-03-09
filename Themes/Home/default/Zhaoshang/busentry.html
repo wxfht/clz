@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商家入驻</title>
+    <meta name="keywords" content="商家入驻">
+    <meta name="description" content="商家入驻">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	
+	<link href="__PUBLIC__/pinduoduo/assets/css/common_8f20fc.css" rel="stylesheet">
+	<link href="__PUBLIC__/pinduoduo/assets/css/index_71bf9f.css" rel="stylesheet">
+	<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script>
+	<script src="__PUBLIC__/js/jquery/jquery-migrate-1.2.1.min.js"></script>
+	<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+	<script src="__PUBLIC__/js/typeahead-bs2.min.js"></script>
+	
+	<style type="text/css">.nb-modal{display:block}</style>
+	<style type="text/css">@media screen and (max-width:640px){body,html{background:#fff!important}header{background:#d12129;width:100%;height:60px}header .join-us{position:relative;z-index:9;width:40%;text-align:center;float:right}header .join-us .contact{margin-left:10px}header .join-us ul{background:#fff;padding:5px;text-align:left;position:absolute;font-size:14px;border:1px solid #ccc;margin-right:5px}header .join-us:hover{cursor:pointer}header .join-us p{padding:0;margin:0}header .join-us button{border:none;color:#fff;background:#d12129;padding:14px 20px;margin-top:12px;width:100%;outline:none;-webkit-filter:chroma(#000);filter:chroma(#000)}header img:hover{cursor:pointer}header .container{width:168px;margin:0;padding:10px 0 0 10px;float:left}header .container img{width:90%}header .container .login{margin-top:40px;color:#fff;position:relative;z-index:9}header .container .login span{display:inline-block;padding-right:10px;border-right:1px solid #fff}header .container .login button{border:none;background:none;border:1px solid #fff;color:#fff;padding:2px 5px}header .container .login button:nth-of-type(2){border:none}}@media screen and (min-width:650px){header{background:#d12129;width:100%;height:80px}header .join-us{position:relative;z-index:9;width:200px;text-align:center;float:right;margin-top:-59px;margin-right:2%}header .join-us .contact{margin-left:30px}header .join-us .active{background:#fff;color:#333}header .join-us ul{background:#fff;padding:20px;text-align:left;position:absolute}header .join-us:hover{cursor:pointer}header .join-us p{padding:0;margin-bottom:5px;line-height:2em}header .join-us button{border:none;color:#fff;background:#d12129;padding:14px 20px;margin-top:12px;outline:none;-webkit-filter:chroma(#000);filter:chroma(#000)}header img:hover{cursor:pointer}header .container .login{margin-top:40px;color:#fff;position:relative;z-index:9}header .container .login span{display:inline-block;padding-right:10px;border-right:1px solid #fff}header .container .login button{border:none;background:none;border:1px solid #fff;color:#fff;padding:2px 5px}header .container .login button:nth-of-type(2){border:none}}</style>
+	<style type="text/css">.container-new{height:103px;width:100%;background:#fff;position:fixed;left:0;top:0;z-index:23}.container-new .container-center{height:100%;width:1200px;margin-left:auto;margin-right:auto}.container-new .container-center img{margin-top:18px}.container-new .container-center #header-category-new{margin-bottom:0;float:right}.container-new .container-center #header-category-new li{display:inline-block;font-size:20px;border-right:1px solid #6c6c6c;width:140px;position:relative;text-align:center;margin-top:29px}.container-new .container-center #header-category-new li.active a{color:#fc475d;font-size:22px}.container-new .container-center #header-category-new li:nth-of-type(1){width:120px}.container-new .container-center #header-category-new li:nth-of-type(6){border-right:none}.container-new .container-center #header-category-new li a{color:#6c6c6c}</style>
+	<style type="text/css">#choose-entry .tips{margin-right:20px;font-size:14px;color:#ccc;text-decoration:underline}#choose-entry .jumbotron{background:#fff;margin-top:50px;padding-left:10px!important;padding-right:10px!important;height:340px}#choose-entry .jumbotron .fixed{position:absolute;bottom:94px;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%)}#choose-entry .jumbotron p{font-size:16px}#choose-entry .jumbotron p:nth-of-type(1){color:#d4d4d4}#choose-entry .jumbotron .btn{h:45px;background:#f5495e;color:#fff;width:140px;margin-top:20px;height:45px;line-height:45px;padding:0}</style>
+
+	<style type="text/css">#bus-entry{background:#fff}#bus-entry .image-btn{margin-top:40px}#bus-entry #detail-wraper{width:100%;position:relative}#bus-entry #detail-wraper .show-detail{position:absolute;right:-428px;top:-34px;z-index:222;width:400px;overflow:hidden}#bus-entry #detail-wraper img{width:100%;height:auto}#bus-entry .upload-btn{margin-top:10px}#bus-entry label{color:#626262}#bus-entry input[type=text]{border-color:#e5e5e5;color:#545454}#bus-entry h4{margin-left:20px;margin-right:20px;border-bottom:1px solid #ccc;padding:10px 20px 10px 0;margin-bottom:30px}#bus-entry h4 span{display:inline-block;width:6px;height:20px;background:#fd7c6d;vertical-align:middle;margin-right:5px}#bus-entry .submit-btn{margin-right:50px;margin-bottom:180px}#bus-entry .upload-pdf{position:relative;display:inline-block;background:#fe7c6d;border:none;border-radius:4px;overflow:hidden;color:#fff;text-decoration:none;text-indent:0}#bus-entry .upload-pdf input{position:absolute;font-size:100px;right:0;top:0;opacity:0}#bus-entry .submit-btn{margin-right:50px;margin-bottom:180px;width:148px;height:40px;background:#fe7c6d;border:none}</style>
+	<style type="text/css">.navigation{font-size:0;background:#fff;height:105px;margin-top:20px;margin-bottom:20px}.navigation li{font-size:18px;width:20%;text-align:center;display:inline-block;margin-top:27px;position:relative}.navigation li:last-child:before{display:none}.navigation li:before{content:'';position:absolute;top:10px;right:-46%;width:64%;height:9px;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAJCAYAAAClkKuSAAABc0lEQVRIicWW0W2DMBCGP1AGYASYoHQDskG7AZ2gZII0E7SdoN4g2YCYBegGeARG6MNdhJQWsAWo94IlPh+/z7/NRY21OZADBr94AnrguhFfARfAbcQfgU/VtJiP9fkO1EDhkTBR9gtIN+AfgBYRnmzAl8qXHuwsHwPfQIY4pAbOTC/UKJ8AHfPCQ/kX4BlxbjcmfAGfASfENC3zppnkbw7sFcp03OmEsYU6Fb3XhB1ylMYilL8Cj8ABKXh3L3whb5C1XhDD1PiZ5hcfNdb+NaFCCuh04lycEQcYxBFr8gmy86myZmU+Vx5krS6Ej+9eFkh1j8AbsqtTUSK7navYuWKE8AmDmxziXrMinyL3csvgMBfK7/RloR8vgA/kuE39pUqGu+ykc6YihE+AV+QU9KrluiKfqpZSOZ/CjfI7BtcZj2Rosgopgk87EMrffmIH/FqrUL5DCrHHr7Wa5KPG2lTHziMZyPFz+PdRoXyBf8/47/wPkIeSvj8d+WoAAAAASUVORK5CYII=) no-repeat;background-size:contain}.navigation li.current i{color:#fff;background:#fd7c69}.navigation li i{w:30px;display:block;width:30px;height:30px;line-height:30px;text-align:center;border-radius:50%;background:#e5e5e5;margin:auto;font-style:normal;color:#878787}</style>
+	<style type="text/css">.form_datetime,.form_datetime2{background:#fff!important}</style>
+	<style type="text/css">.img-thumbnail{border:none;}.a-upload{padding:4px 10px;line-height:20px;position:relative;cursor:pointer;color:#454343;border:1px solid #ddd;border-radius:4px;overflow:hidden;display:inline-block}.a-upload input{position:absolute;font-size:100px;right:0;top:0;opacity:0;cursor:pointer;width:100%;height:100%}.a-upload:hover{color:#444;background:#eee;border-color:#ccc;text-decoration:none}</style>
+	
+</head>
+<body>
+<include file="Zhaoshang:header_fetch" />
+
+<div> <div class="container"> <ul class="navigation"> 
+<li class="current"> <i>1</i> <span>个人/企业信息填写</span> </li> 
+<li> <i>2</i> <span>店铺信息填写</span> </li> 
+<li> <i>3</i> <span>资质审核</span> </li> 
+<li style="display:none;"> <i>4</i> <span>签约打款</span> </li> 
+<li> <i>4</i> <span>入驻成功</span> </li> </ul><!--v-component--> <div id="bus-entry"> <section> <h4><span></span>店铺管理人基本信息 </h4> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>管理人姓名:</label> <div class="col-lg-5"> 
+<input type="text" class="form-control" id="admin_real_name" placeholder="请输入管理人的真实姓名"> </div> 
+</div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>管理人邮箱:</label> 
+
+<div class="col-lg-5"> <input type="text" id="admin_email" class="form-control" placeholder="请输入常用邮箱，便于审核信息及后期规则的及时送达"> 
+
+</div> </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>管理人手机号码:</label> <div class="col-lg-5"> 
+
+<input type="text" class="form-control" id="admin_mobile" placeholder="请输入管理人常用手机号，不支持座机号"> 
+
+</div> </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right">
+<i class="must">*</i>再次输入管理人手机号码:</label> 
+<div class="col-lg-5"> <input type="text" id="re_admin_mobile" class="form-control" placeholder="请再次输入手机号码"> 
+
+</div> </div> <div class="col-lg-offset-3 col-lg-8"> <p style="color:red">注：此手机号为商家首次登陆后台的账号，有最高管理员权限</p> </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>紧急联系人名称:</label> <div class="col-lg-5"> 
+
+<input type="text" id="jinji_username" class="form-control" placeholder="紧急联系人与管理人不能为同一人"> </div>
+
+ </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>紧急联系人号码:</label> <div class="col-lg-5"> 
+ 
+ <input type="text" id="jinji_mobile" class="form-control" placeholder="紧急联系人手机号不能与管理人手机号相同"> </div> 
+ 
+ </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>再次输入紧急联系人号码:</label>
+
+ <div class="col-lg-5"> <input type="text" id="rejinji_mobile" class="form-control" placeholder="请再次输入紧急联系人的手机号"> </div> 
+ 
+ </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>开店性质:</label> <div class="col-lg-4"> <!--v-for-start--><div class="col-lg-6"> 
+ 
+ <input type="radio" id="0one" name="jiny_type" value="3"> 
+ <label for="0one">海淘</label> </div>
+ 
+ <div class="col-lg-6"> <input type="radio" name="jiny_type" checked id="1one" value="4"> 
+ <label for="1one">非海淘</label> 
+ </div><!--v-for-end--> </div> <div class="col-lg-offset-3 col-lg-8"> 
+ 
+ <p>注：</p> <p>1、海淘类店铺可销售进口、直邮、直供等海外商品，非海淘类店铺可销售进口、国内商品</p> 
+ <p>2、店铺性质会选择影响到后期可售商品的类型及经营范围，具体可见<a target="_blank" href="#!/zhaoshang/problem">《常见问题解答》</a></p> 
+ </div> </div> <!--v-if--> <div class="form-group row"> <div class="col-lg-offset-3 col-lg-9"> 
+ <!--v-for-start--><!--v-for-end--> </div> </div> <!--v-if--> </section> <section> <h4><span></span>负责人基本信息 </h4> 
+ <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>负责人姓名:</label> 
+ <div class="col-lg-5"> <input type="text" id="fuze_realname" class="form-control" placeholder="请输入负责人的真实姓名"> 
+ 
+ </div> </div> 
+ <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>负责人邮箱:</label> 
+ 
+ <div class="col-lg-5"> <input type="text" id="fuze_email" class="form-control" placeholder="请输入常用邮箱，便于审核信息及后期规则的及时送达"> 
+ 
+ </div> </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>负责人手机号码:</label> <div class="col-lg-5"> 
+ <input type="text" id="fuze_mobile" class="form-control" placeholder="请输入负责人常用手机号，不支持座机号"> </div> 
+ 
+ </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>再次输入负责人手机号码:</label> <div class="col-lg-5"> 
+ 
+ <input type="text" id="re_fuze_mobile" class="form-control" placeholder="请再次输入手机号码"> 
+ 
+ </div> </div> <div class="form-group row"> <div class="col-lg-offset-3 col-lg-8"> 
+ <p style="color:red">注：此手机号为商家提现时，接收验证码的初始手机号</p> </div> </div> 
+ </section> <section id="detail-wraper"> 
+ <h4><span></span>企业信息</h4> <div class="form-group row"> 
+ <label class="col-lg-3 control-label text-right"><i class="must">*</i>企业法人姓名:</label>
+ <div class="col-lg-5"> <input type="text" id="faren_username" class="form-control" placeholder="请输入企业法人的真实姓名"> </div> 
+ 
+ </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>身份证号:</label> 
+ <div class="col-lg-5"> <input type="text" id="faren_id_card" class="form-control" placeholder="请输入企业法人的证件号（身份证、护照、军官证等均可）"> 
+ 
+ </div>
+ </div> <div class="col-lg-offset-3 col-lg-8"> <p style="color:red">注：请确认您的身份证号码填写无误，该身份证号必须与您上传的身份证照片一致</p> </div> 
+ <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>公司名称:</label> 
+ <div class="col-lg-5">
+
+ <input type="text" id="faren_company" class="form-control pull-left" placeholder="请输入公司名称"> </div> 
+ 
+ </div> <div class="form-group row"> 
+<label class="col-lg-3 control-label text-right"><i class="must">*</i>营业执照注册号:</label> 
+<div class="col-lg-5"> 
+<input type="text" id="faren_yingye" class="form-control pull-left" style="width:86%" placeholder="请输入15位营业执照注册号"> 
+
+<button type="button" class="btn btn-default pull-right" style="display:none;">示例</button> </div> </div> 
+<div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>组织机构代码:</label> 
+
+<div class="col-lg-5"> 
+<input type="text" id="faren_zuzhi" class="form-control pull-left" style="width:86%" placeholder="请输入组织机构代码"> 
+
+<button type="button" class="btn btn-default pull-right" style="display:none;">示例</button> </div> </div> <div class="form-group row"> 
+<label class="col-lg-3 control-label text-right"><i class="must">*</i>纳税人识别码:</label> <div class="col-lg-5"> 
+<input type="text" id="faren_nashui" class="form-control pull-left" style="width:86%" placeholder="请输入纳税人识别码"> 
+
+
+<button type="button" class="btn btn-default pull-right" style="display:none;">示例</button> </div> </div> <div class="form-group row"> 
+<label class="col-lg-3 control-label text-right"><i class="must">*</i>统一社会信用代码:</label> <div class="col-lg-5"> 
+<input type="text" id="faren_xinyong" class="form-control pull-left" style="width:86%" placeholder="请输入18位的统一社会信用代码"> 
+
+
+<button type="button" class="btn btn-default pull-right" style="display:none;">示例</button> </div> </div> <div class="form-group row"> 
+<div class="col-lg-offset-3 col-lg-8"> <p style="color:red">注：三证合一的营业执照，请全部填写统一社会信用代码，非三证合一的营业执照请在统一社会信用代码处填写营业执照注册号，请根据您的营业执照类型依次填写。</p> </div> </div> </section> <h4><span></span>资质信息上传<small> (注：上传的图片大小在5M以内，仅支持JPG、PNG格式)</small> </h4> 
+
+<div class="form-group row"> 
+	<label class="col-lg-3 control-label text-right"><i class="must">*</i>法人身份证正面照片:</label> 
+	<div class="col-lg-9" id="shop-image-row4"> 
+		<div class="col-lg-2" id="image-row4"> 
+			<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image4" num="4">
+				<img osctype="shop_image4" src="__PUBLIC__/image/addphone.png" />
+			</a>
+			<input osctype="shop_image_input4" type="hidden" name="id_card" value="" id="input-image4" />	
+		</div>
+		<div class="col-lg-1"> <span><label class="control-label pdd-tips">示例：</label></span> </div> 
+
+		<div class="col-lg-2"> 
+			<div class="row"> <img class="col-md-12" style="width:150px;height:auto" src="__PUBLIC__/image/front_e70416.png"> </div> 
+		</div> 
+	</div> 
+</div>
+
+<div class="form-group row"> 
+<label class="col-lg-3 control-label text-right"><i class="must">*</i>法人身份证反面照片:</label> 
+
+<div class="col-lg-9" id="shop-image-row5"> 
+	<div class="col-lg-2" id="image-row5"> 
+		<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image5" num="5">
+			<img osctype="shop_image5" src="__PUBLIC__/image/addphone.png" />
+		</a>
+		<input osctype="shop_image_input5" type="hidden" name="id_card" value="" id="input-image5" />	
+	</div> 
+
+<div class="col-lg-1"> <span><label class="control-label pdd-tips">示例：</label></span> </div> <div class="col-lg-2"> <div class="row"> <img class="col-md-12" style="width:150px;height:auto" src="__PUBLIC__/image/back_96b89a.png"> 
+</div> </div> </div> </div> 
+
+<div class="form-group row"> 
+<label class="col-lg-3 control-label text-right"><i class="must">*</i>身份证有效期:</label> 
+
+<div class="col-lg-8"> <div class="col-lg-4"> <div enddate="2016-10-30"> 
+<input size="16" type="text" id="begin_time" class="form-control form_datetime" placeholder="请选择时间"> </div>
+
+ </div>
+
+ <div class="pull-left" style="margin-top:5px"> <span>至</span> </div> 
+ <div class="col-lg-4"> 
+ <div> <input size="16" type="text" id="end_time" class="form-control form_datetime" placeholder="请选择时间"> </div><!--v-component--> 
+ </div> 
+ </div> 
+
+</div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>营业执照:</label> 
+
+<div class="col-lg-9" id="shop-image-row6"> 
+	<div class="col-lg-4" id="image-row6"> 
+		<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image6" num="6">
+			<img osctype="shop_image6" src="__PUBLIC__/image/addphone.png" />
+		</a>
+		<input osctype="shop_image_input6" type="hidden" name="yingye" value="" id="input-image6" />	
+	</div> 
+</div>
+
+ </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>营业执照有效期:</label> 
+ 
+ <div class="col-lg-8"> <div class="col-lg-4">
+
+ <div > <input size="16" type="text" id="yy_begin_time" class="form-control form_datetime" placeholder="请选择时间"> </div><!--v-component--> </div> <div class="pull-left" style="margin-top:5px"> <span>至</span> </div> <div class="col-lg-4"> <div> <input size="16" type="text" id="yy_end_time" class="form-control form_datetime" placeholder="请选择时间"> </div><!--v-component--> </div> </div> </div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>税务登记证明:</label> 
+ 
+ <div class="col-lg-9" id="shop-image-row7"> 
+	<div class="col-lg-4" id="image-row7"> 
+		<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image7" num="7">
+			<img osctype="shop_image7" src="__PUBLIC__/image/addphone.png" />
+		</a>
+		<input osctype="shop_image_input7" type="hidden" name="shuiwu" value="" id="input-image7" />	
+	</div>
+ </div> 
+ 
+ </div> 
+ 
+ <div class="form-group row"> 
+	<label class="col-lg-3 control-label text-right"><i class="must">*</i>组织机构证明:</label> 
+	<div class="col-lg-9" id="shop-image-row8"> 
+		<div class="col-lg-4" id="image-row8"> 
+			<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image8" num="8">
+				<img osctype="shop_image8" src="__PUBLIC__/image/addphone.png" />
+			</a>
+			<input osctype="shop_image_input8" type="hidden" name="zuzhijigou" value="" id="input-image8" />	
+		</div>
+		
+		
+		</div> </div> 
+		
+		<div class="form-group row"> 
+			<label class="col-lg-3 control-label text-right"><i class="must">*</i>组织机构有效期:</label> 
+			<div class="col-lg-8"> 
+				<div class="col-lg-4"> 
+					<div > 
+						<input size="16" id="zz_begin_time" type="text"  class="form-control form_datetime" placeholder="请选择时间"> 
+					</div>
+				</div> 
+				<div class="pull-left" style="margin-top:5px"> <span>至</span> </div> 
+				<div class="col-lg-4"> 
+					<div> 
+						<input size="16" type="text" id="zz_end_time" class="form-control form_datetime" placeholder="请选择时间"> 
+					</div> 
+				</div> 
+			</div> 
+			
+			</div>
+			<div class="form-group row"> <label class="col-lg-3 control-label text-right">
+				
+				<i class="must">*</i>开户许可证:</label> 
+				<div class="col-lg-9" id="shop-image-row9"> 
+					<div class="col-lg-4" id="image-row9"> 
+						<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image9" num="9">
+							<img osctype="shop_image9" src="__PUBLIC__/image/addphone.png" />
+						</a>
+						<input osctype="shop_image_input9" type="hidden" name="kaihuxuke" value="" id="input-image9" />	
+					</div>
+				</div> 
+				
+				
+				</div> <div class="form-group row"> <label class="col-lg-3 control-label text-right">商标注册证明:</label> 
+				
+				<div class="col-lg-9"> <p class="pdd-tips">(可选) 填写店铺名称时如果包含“旗舰、官方”，商家必须上传“商标注册证明”。</p><!--v-if--> <!--v-if--> </div><!--v-if--> 
+				<div class="row col-lg-9 col-lg-offset-3" id="shop-image-row10"> <!--v-for-start--><!--v-for-end--> 
+				
+					<div class="col-lg-4" id="image-row10"> 
+						<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image10" num="10">
+							<img osctype="shop_image10" src="__PUBLIC__/image/addphone.png" />
+						</a>
+						<input osctype="shop_image_input10" type="hidden" name="shangbiao" value="" id="input-image10" />	
+					</div> 
+				
+				</div> 
+				
+				</div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><!--v-if-->品牌授权证明:</label> <div class="col-lg-9"> <p class="pdd-tips">(可选) “店铺名包含“旗舰、专卖、专营”，商家必须上传品牌授权或独占授权证明，需授权店铺从属人在拼多多经营该品牌产品。”</p><!--v-if--> <!--v-if--> </div> 
+				
+				<div class="row col-lg-9 col-lg-offset-3" id="shop-image-row11"> <!--v-for-start--><!--v-for-end--> 
+				
+					<div class="col-lg-4" id="image-row11"> 
+						<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image11" num="11">
+							<img osctype="shop_image11" src="__PUBLIC__/image/addphone.png" />
+						</a>
+						<input osctype="shop_image_input11" type="hidden" name="shangbiao" value="" id="input-image11" />	
+					</div> 
+				
+				</div> 
+				
+				</div> <div class="form-group row"> <label class="col-lg-3 control-label text-right"><!--v-if-->质检报告:</label> <div class="col-lg-9"> <p class="pdd-tips">(可选) </p><!--v-if--> <!--v-if--> </div> 
+				
+				
+				<div class="row col-lg-9 col-lg-offset-3" id="shop-image-row12"> <!--v-for-start--><!--v-for-end--> 
+				
+					<div class="col-lg-4" id="image-row12"> 
+						<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image12" num="12">
+							<img osctype="shop_image12" src="__PUBLIC__/image/addphone.png" />
+						</a>
+						<input osctype="shop_image_input12" type="hidden" name="shangbiao" value="" id="input-image12" />	
+					</div> 
+				
+				<div class="row col-lg-12"> <p>注：</p> <p>1、<span style="color:red">海淘类商家，</span>经营<span style="color:red">食品及酒类</span>者需在质检报告处上传<span style="color:red">食品流通许可证</span></p> <p>2、目前只允许企业店铺经营酒类，需在质检报告处上传以下任一证件：酒类流通许可证（酒类流通登记备案）</p> </div> </div> </div> <!--v-if--> <!--v-if--> <h4></h4> <div class="row clearfix text-center"> 
+				<button type="button" class="btn pdd-danger submit-btn" id="next_step">下一步</button> 
+				</div> <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> <h3 class="modal-title text-center">示例</h3> </div> <div class="modal-body"> <img alt="" style="width:60%;margin-left:20%;height: auto" src=""> </div> <div class="modal-footer"> <button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button> </div> </div> </div> </div> <div class="modal" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> <h3 class="modal-title text-center">保证金说明</h3> </div> <div class="modal-body"> <img alt="" style="width:70%;margin-left:15%;height: auto" src="__PUBLIC__/image/price2_320e32.png"> </div> <div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button> </div> </div> </div> </div> </div> </div><!--v-component--> </div>
+
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+
+
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script src="__PUBLIC__/js/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+
+<script>
+
+$(function(){
+	$('#next_step').click(function(){
+		var admin_real_name = $('#admin_real_name').val();
+		var admin_email = $('#admin_email').val();
+		var admin_mobile = $('#admin_mobile').val();
+		var re_admin_mobile = $('#re_admin_mobile').val();
+		
+		var jinji_username = $('#jinji_username').val();
+		var jinji_mobile = $('#jinji_mobile').val();
+		var rejinji_mobile = $('#rejinji_mobile').val();
+		var jiny_type = $('input[name="jiny_type"]:checked ').val();
+		
+		var fuze_realname = $('#fuze_realname').val();
+		var fuze_email = $('#fuze_email').val();
+		var fuze_mobile = $('#fuze_mobile').val();
+		var re_fuze_mobile = $('#re_fuze_mobile').val();
+		
+		var faren_username = $('#faren_username').val();
+		var faren_id_card = $('#faren_id_card').val();
+		var faren_company = $('#faren_company').val();
+		var faren_yingye = $('#faren_yingye').val();
+		var faren_zuzhi = $('#faren_zuzhi').val();
+		var faren_nashui = $('#faren_nashui').val();
+		var faren_xinyong = $('#faren_xinyong').val();
+		
+		var fa_id_card = $('#input-image4').val();
+		var fa_fan_id_card = $('#input-image5').val();
+		var id_card_begin_time = $('#begin_time').val();
+		var id_card_end_time = $('#end_time').val();
+		var yingye_image = $('#input-image6').val();
+		var yy_begin_time = $('#yy_begin_time').val();
+		var yy_end_time = $('#yy_end_time').val();
+		var suiwu_image = $('#input-image7').val();
+		var zuzhi_image = $('#input-image8').val();
+		var zz_begin_time = $('#zz_begin_time').val();
+		var zz_end_time = $('#zz_end_time').val();
+		var kaihu_image = $('#input-image9').val();
+		var shangbiao_image = $('#input-image10').val();
+		var pingpai_image = $('#input-image11').val();
+		var zhijian_image = $('#input-image12').val();
+		
+		
+		
+		
+		if(admin_real_name == '')
+		{
+			alert('请填写管理人姓名');
+			return false;
+		}
+		if(admin_email == '')
+		{
+			alert('请填写管理人邮箱');
+			return false;
+		}
+		if(admin_mobile == '')
+		{
+			alert('请填写管理人手机号');
+			return false;
+		}
+		if(admin_mobile != re_admin_mobile)
+		{
+			alert('两次输入的管理人手机号不一致');
+			return false;
+		}
+		
+		if(jinji_username == '')
+		{
+			alert('请填写紧急联系人名称');
+			return false;
+		}
+		if(jinji_mobile == '')
+		{
+			alert('请填写紧急联系人手机号码');
+			return false;
+		}
+		if(jinji_mobile != rejinji_mobile)
+		{
+			alert('两次输入的紧急联系人手机号不一致');
+			return false;
+		}
+		
+		if(fuze_realname == '')
+		{
+			alert('请填写负责人姓名');
+			return false;
+		}
+		if(fuze_email == '')
+		{
+			alert('请填写负责人邮箱');
+			return false;
+		}
+		
+		if(fuze_mobile == '')
+		{
+			alert('请填写负责人手机号码');
+			return false;
+		}
+		
+		if(fuze_mobile != re_fuze_mobile)
+		{
+			alert('两次输入的负责人手机号码不一致');
+			return false;
+		}
+		
+		if(faren_username == '')
+		{
+			alert('请填写企业法人姓名');
+			return false;
+		}
+		if(faren_id_card == '')
+		{
+			alert('请填写身份证号');
+			return false;
+		}
+		if(faren_company == '')
+		{
+			alert('请填写公司名称');
+			return false;
+		}
+		if(faren_yingye == '')
+		{
+			alert('请填写营业执照注册号');
+			return false;
+		}
+		if(faren_zuzhi == '')
+		{
+			alert('请填写组织机构代码');
+			return false;
+		}
+		if(faren_nashui == '')
+		{
+			alert('请填写纳税人识别码');
+			return false;
+		}
+		if(faren_xinyong == '')
+		{
+			alert('请填写统一社会信用代码');
+			return false;
+		}
+		
+		if(fa_id_card == '')
+		{
+			alert('请上传法人身份证正面照片');
+			return false;
+		}
+		if(fa_fan_id_card == '')
+		{
+			alert('请上传法人身份证反面照片');
+			return false;
+		}
+		
+		if(id_card_begin_time == '' || id_card_end_time == '')
+		{
+			alert('请填写身份证有效期');
+			return false;
+		}
+		if(yingye_image == '')
+		{
+			alert('请上传营业执照照片');
+			return false;
+		}
+		
+		if(yy_begin_time == '' || yy_end_time == '')
+		{
+			alert('请填写营业执照有效期');
+			return false;
+		}
+		if(suiwu_image == '')
+		{
+			alert('请上传税务登记证明');
+			return false;
+		}
+		if(zuzhi_image == '')
+		{
+			alert('请上传组织机构证明');
+			return false;
+		}
+		
+		if(zz_begin_time == '' || zz_end_time == '')
+		{
+			alert('请填写组织机构有效期');
+			return false;
+		}
+		if(kaihu_image == '')
+		{
+			alert('请上传开户许可证');
+			return false;
+		}
+		
+		var dataObj = {};
+		dataObj.admin_real_name = admin_real_name;
+		dataObj.admin_email = admin_email;
+		dataObj.admin_mobile = admin_mobile;
+		dataObj.re_admin_mobile = re_admin_mobile;
+		dataObj.jinji_username = jinji_username;
+		dataObj.jinji_mobile = jinji_mobile;
+		dataObj.rejinji_mobile = rejinji_mobile;
+		dataObj.jiny_type = jiny_type;
+		
+		dataObj.fuze_realname = fuze_realname;
+		dataObj.fuze_email = fuze_email;
+		dataObj.fuze_mobile = fuze_mobile;
+		dataObj.re_fuze_mobile = re_fuze_mobile;
+		dataObj.faren_username = faren_username;
+		dataObj.faren_id_card = faren_id_card;
+		dataObj.faren_company = faren_company;
+		dataObj.faren_yingye = faren_yingye;
+		dataObj.faren_zuzhi = faren_zuzhi;
+		dataObj.faren_nashui = faren_nashui;
+		dataObj.faren_xinyong = faren_xinyong;
+		dataObj.fa_id_card = fa_id_card;
+		dataObj.fa_fan_id_card = fa_fan_id_card;
+		dataObj.id_card_begin_time = id_card_begin_time;
+		dataObj.id_card_end_time = id_card_end_time;
+		dataObj.yingye_image = yingye_image;
+		dataObj.yy_begin_time = yy_begin_time;
+		dataObj.yy_end_time = yy_end_time;
+		dataObj.suiwu_image = suiwu_image;
+		dataObj.zuzhi_image = zuzhi_image;
+		dataObj.zz_begin_time = zz_begin_time;
+		dataObj.zz_end_time = zz_end_time;
+		dataObj.kaihu_image = kaihu_image;
+		dataObj.shangbiao_image = shangbiao_image;
+		dataObj.pingpai_image = pingpai_image;
+		dataObj.zhijian_image = zhijian_image;
+		
+		$.ajax({
+			url:'{:U("Zhaoshang/bus_sub")}',
+			type:'post',
+			dataType:'json',
+			data:dataObj,
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('提交成功');
+					location.href = '{:U("Zhaoshang/bus_qualification")}';
+				}
+			}
+		})
+		
+		
+	});
+})
+</script>
+<script>
+
+$(function(){
+		$('#begin_time').datetimepicker({
+		 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+		 icons: {
+			time: 'btn btn-lg icon-time',
+			date: 'btn btn-lg icon-calendar',
+			up: 'fa icon-chevron-up',
+			down: 'fa icon-chevron-down',
+			previous: 'fa icon-chevron-left',
+			next: 'fa icon-chevron-right',
+			today: 'fa icon-arrows ',
+			clear: 'fa icon-trash',
+			close: 'fa icon-times'
+		 }
+		});
+		
+		$('#end_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+		});
+		
+		$('#zz_begin_time').datetimepicker({
+		 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+		 icons: {
+			time: 'btn btn-lg icon-time',
+			date: 'btn btn-lg icon-calendar',
+			up: 'fa icon-chevron-up',
+			down: 'fa icon-chevron-down',
+			previous: 'fa icon-chevron-left',
+			next: 'fa icon-chevron-right',
+			today: 'fa icon-arrows ',
+			clear: 'fa icon-trash',
+			close: 'fa icon-times'
+		 }
+		});
+		
+		$('#zz_end_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+		});
+		
+		$('#yy_begin_time').datetimepicker({
+		 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+		 icons: {
+			time: 'btn btn-lg icon-time',
+			date: 'btn btn-lg icon-calendar',
+			up: 'fa icon-chevron-up',
+			down: 'fa icon-chevron-down',
+			previous: 'fa icon-chevron-left',
+			next: 'fa icon-chevron-right',
+			today: 'fa icon-arrows ',
+			clear: 'fa icon-trash',
+			close: 'fa icon-times'
+		 }
+		});
+		
+		$('#yy_end_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+		});
+		
+})
+
+$(function(){
+	
+	$(document).delegate('a[data-toggle="image"]', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+		var type=$(this).attr('type');
+		
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'" t="'+type+'"  class="btn btn-primary button-image"><i class="icon-edit"></i>上传</button> ';
+				}
+			});
+		}
+		
+		$(element).popover('toggle');	
+		
+			
+		$('.button-image').on('click', function() {
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			var i=$(this).attr('n');
+			var type=$(this).attr('t');
+						
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name="file"]').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image/dir')}"+'/'+type,
+	            add: function(e, data) {
+	                $parent = $('#image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                var old_name='old_'+type+'_image';
+	                data.formData = {old_name:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#'+type+'-image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__/'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+			
+		});
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+	
+})
+
+</script>
+</block>
+</body>
+</html>

@@ -1,0 +1,771 @@
+<extend name="Public:pinduoduobase" />
+
+
+
+
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pin/assets/css/react_boot_30305e74e4b4d863454d94cab029e844.css">
+<link rel="stylesheet" href="__PUBLIC__/pin/assets/css/react_common_e1852e5ddc660dd79bef5eb49d18af1d.css">
+<link rel="stylesheet" href="__PUBLIC__/pin/assets/css/react_commercial_bargain_list_1e198f619d9fd08875d2f633992f363b.css">
+<script type="text/javascript" src="__PUBLIC__/js/scroll.js"></script>
+<style>
+.cb-banner{height:auto;}
+.cb-goods-list .cb-goods-item .goods-right button{
+	background-color: #ff6699;
+}
+.cb-goods-list .cb-goods-item .goods-right .detail .goods-price{
+	color:#ff6699;
+}
+#ws-for-push{display:none;}
+</style>
+<div id="main">
+   <section data-reactroot="" class="main-view container bg-white">
+   
+	
+    <div id="bargain-goods-list" style="">
+     <img class="cb-banner" <?php if(empty($free_ad_list['image'])){ ?> src="" <?php }else{?> src="/Uploads/image/<?php echo $free_ad_list['image'];?>"<?php } ?>  alt="banner" />
+     
+	 <?php if(!empty($success_order_list)){ ?>
+	 <div class="bargain-rolling-msg" style="">
+	  <ul>
+      <?php $j=1;$i=0; foreach($success_order_list as $val){?>
+	  <li class="content stop-1<?php echo $i; ?>">
+       <img class="avatar" src="<?php echo $val['avatar']; ?>" />
+       <p class="label"><?php echo $val['uname']; ?>砍价成功啦，0元拿了<?php echo $val['goods_name']; ?></p>
+      </li>
+	  <?php $j++;$i++;if($i>1)$i=1;} ?>
+	  </ul>
+     </div>
+	 <style>
+		.bargain-rolling-msg{height:40px;}
+		.bargain-rolling-msg .content{position:relative}
+		.bargain-rolling-msg .content{
+		width:100%;
+		height:40px;padding:11px 0 0 12px;
+		overflow:hidden;
+		white-space:nowrap;left:0}
+	 </style>
+	 <script>
+		$(function(){
+			$('.bargain-rolling-msg').myScroll({
+				speed: 2000, //数值越大，速度越慢
+				rowHeight: 40 //li的高度
+			});
+		});
+	 </script>
+	 <?php } ?>
+	 
+     <ul class="cb-goods-list" id="tuan_list">
+			
+		<?php foreach($list as $goods){ ?>
+		<li class="cb-goods-item item-0" >
+			<img class="scrollLoading" src="{$fan_ly_image}" data-echo="__UPLOAD__/<?php echo $goods['image']; ?>" alt="goods" />
+		   <div class="goods-right">
+				<p class="goods-name"><?php echo $goods['name']; ?> </p>
+				<div class="detail">
+					<p class="sold-quantity"><?php echo $goods['seller_count']; ?>人已0元拿</p>
+					 <div class="goods-price">
+						原价
+					  <i><?php echo $goods['price']; ?></i>元
+					 </div>
+				</div>
+			<button class="button" onclick="get_free_coup(this)" data-goods-id="<?php echo $goods['goods_id']; ?>">砍价0元得</button>
+		   </div>
+		</li>
+		<?php } ?>
+		
+     </ul>
+	 <section class="sku-selector-bg" id="sku_selector" style="display:none;">
+				<div class="sku-selector-main-spec sku-selector-main sku-selector-main-show" id="sku_selector_html">
+					<div class="sku-selector-container" style="display:none;">
+						<div class="sku-selector-head">
+							<img src="http://omsproductionimg.yangkeduo.com/images/2018-01-10/07b3a25e8155489dea7c1f0be3e3b603.jpeg@750w_1l_50Q">
+							<div class="sku-selector-head-content">
+								<div class="sku-selector-price">￥0 <span class="sku-selector-normal">￥339</span></div>
+								<div class="sku-selector-desc">请选择 颜色 尺寸</div>
+							</div>
+							<div class="sku-selector-close-btn"></div>
+						</div>
+						<div id="sku-selector-body" style="overflow: hidden;">
+							<div class="sku-specs">
+								<span class="sku-specs-key">颜色</span>
+								<div class="sku-spec-value-list">
+									<span class="sku-spec-value">浪漫粉【终身保修】</span>
+									<span class="sku-spec-value">淡雅蓝【终身保修】</span>
+									<span class="sku-spec-value" >玫瑰金【终身保修】</span>
+									<span class="sku-spec-value" >薄荷绿【终身保修】</span>
+									<span class="sku-spec-value" >香槟色【终身保修】</span>
+									<span class="sku-spec-value" >玫红色【终身保修】</span>
+									<span class="sku-spec-value" >奢华银【终身保修】</span>
+								</div>
+							</div>
+							<div class="sku-specs">
+								<span class="sku-specs-key">尺寸</span>
+								<div class="sku-spec-value-list">
+									<span class="sku-spec-value" >20寸【扩展15%容量】</span>
+								</div>
+							</div>
+						</div>
+						<div class="sku-selector-bottom">确定</div>
+					</div>
+				</div>
+			</section>
+    </div>
+   
+    <div class="cb-tab">
+		<div class="tab-item">
+			<span class="icon-bargain active">砍价商品</span>
+		</div>
+		<div class="tab-item">
+			<span class="icon-bargain-group " onclick="location.href='{:U('Subject/assist_bargain_coupon_me')}';">我的砍价</span>
+		</div>
+		<div class="tab-split"></div>
+    </div>
+   </section>
+</div> 
+
+
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pin/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+
+
+<div class="address-popup" id="address-popup" style="display:none;">
+    <div class="address-popup-mask"></div>
+    <div class="address-popup-content" id="address-popup-content" >
+        <div class="address-popup-title">选择收货地址<i class="address-popup-title-close"></i></div>
+        <ul class="address-popup-list" id="address-popup-list">
+        </ul>
+    </div>
+</div>
+
+
+<div id="m-addr-mask" avalonctrl="edit_address" style="display:none;">
+    <div class="m-addr-main">
+        <div class="m-addr-title">添加新收货地址</div>
+        <div class="m-address-receiver">
+            <input class="m-addr-name" id="name" placeholder="名字" type="text">
+            <input class="m-addr-mobile" id="telephone" placeholder="电话" type="tel">
+        </div>
+        <div class="m-addr-region">
+            <div class="m-addr-province">
+                <select class="m-addr-select" id="areaprovince" data-duplex-changed="onProvinceEdited">
+                    <option value="0">选择省份</option>
+                </select>
+            </div>
+            <div class="m-addr-city">
+                <select class="m-addr-select" id="areacity" data-duplex-changed="onCityEdited">
+                    <option value="0">选择城市</option>
+                    <!--repeat757947232574--><!--repeat757947232574:end-->
+                </select>
+            </div>
+            <div class="m-addr-district">
+                <select class="m-addr-select" id="areadistrict" data-duplex-changed="onDistrictEdited">
+                    <option value="0">选择地区</option>
+                    <!--repeat749156095088--><!--repeat749156095088:end-->
+                </select>
+            </div>
+        </div>
+        <div class="m-addr-address">
+            <input placeholder="请填写详细街道地址" id="addr_address" type="text">
+            <input type="hidden" name="sub_address_id" id="sub_address_id" />
+        </div>
+        <div class="m-addr-save">保存</div>
+        <div class="m-addr-close">
+            <div class="ms-addr-close-icon"></div>
+        </div>
+        <!--ms-if-->
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="">
+<style>
+
+.pin-spinner-2 {
+    display: none;
+    position: fixed;
+    width: .66rem;
+    height: .66rem;
+    top: 35%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    z-index: 999999999;
+}
+.ps-inner-box {
+    width: 100%;
+    height: 100%;
+}
+.ps-rotate-img {
+    width: .25rem;
+    height: .25rem;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    animation: rotateImg 2.5s linear infinite;
+    -webkit-animation: rotateImg 2.5s linear infinite;
+    z-index: 9999999999;
+    position: absolute;
+}
+
+.ps-rotate-msg {
+    width: 100%;
+    font-size: .15rem;
+    text-align: center;
+    /*height: 11px;*/
+    color: #ffffff;
+    position: relative;
+    bottom: .12rem;
+}
+
+.spinner-background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999999999;
+}
+
+#ps-background {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    background-color: #000;
+    border-radius: .06rem;
+}
+
+.pin-spinner-wrapper-no-message {
+    display: block;
+    top: 50%;
+    margin-top: -.65rem;
+    width: .66rem;
+    height: .66rem;
+}
+
+.pin-spinner-wrapper-no-message .ps-rotate-msg {
+    display: none;
+    bottom: 0;
+}
+
+.pin-spinner-wrapper-no-message .ps-rotate-img {
+    width: .25rem;
+    height: .25rem;
+    bottom: 0;
+    top: 0;
+}
+
+.pin-spinner-wrapper-message {
+    display: block;
+    top: 50%;
+    margin-top: -.82rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+.pin-spinner-wrapper-message .ps-rotate-msg {
+    display: block;
+    bottom: .32rem;
+}
+
+.pin-spinner-wrapper-message .ps-rotate-img {
+    width: .39rem;
+    height: .39rem;
+    bottom: .43rem;
+    top: .18rem;
+}
+
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    .pin-spinner-wrapper-no-message {
+        margin-top: -.82rem;
+    }
+
+    .pin-spinner-wrapper-message {
+        margin-top: -.99rem;
+    }
+}
+
+
+@keyframes rotateImg {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    50% {
+        transform: rotateZ(180deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+@-webkit-keyframes rotateImg {
+    0% {
+        -webkit-transform: rotateZ(0deg);
+    }
+    50% {
+        -webkit-transform: rotateZ(180deg);
+    }
+    100% {
+        -webkit-transform: rotateZ(360deg);
+    }
+}
+</style>
+<div id="pin-spinner" class="pin-spinner-2">
+    <div id="ps-background"></div>
+    <div class="ps-inner-box">
+        <img id="imgInit" class="ps-rotate-img" src="data:image/png;base64,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">
+    </div>
+    <div id="msgInit" class="ps-rotate-msg"></div>
+
+</div>
+</div>
+
+<include file="Widget:pin_notify" />
+<include file="Public:foot_lazy" />
+ <include file="Widget:pin_toast" />
+{~W('Share/common_bargain_index_share')}
+<style>
+.qrcode-share-title-0{
+	line-height:36px;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+.m-addr-main .m-addr-close:before{
+    position: absolute;
+    top: 3px;
+    left: 10px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Subject/assist_bargain_coupon')}";
+var req_step = 1;
+var goods_id = 0;
+var sku_arr_str = '';
+var address_id = 0;
+var need_optionc = [];
+
+var  mult_sku_option = new Array();
+//$('.sku-specs').length
+var ajaxarea_url='{:U("/c_getarea")}';
+
+$(function(){
+	
+	
+	
+	
+	//sku-spec-value-selected
+	$('.sku-spec-value').on('click',function(){
+		console.log(32);
+	});
+	$('.address-popup-title-close').click(function(){
+		$('#address-popup').hide();
+	})
+	
+	$('.add-btn').click(function(){
+	
+	})
+	
+	$("#areaprovince").change(function(){
+		var areaId = $(this).val();
+		if(areaId == 0){
+			$('#areacity').html('<option value="0">选择城市</option>');
+			$('#areadistrict').html('<option value="0">选择地区</option>')
+		} else {
+			$.post(ajaxarea_url,{'areaId':areaId},function(data){    
+	            $('#areacity').html('<option value="0">选择城市</option>');
+	            $.each(data,function(no,items){
+	               $('#areacity').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+	            });
+	            
+	            $('#areadistrict').html('<option value="0">选择地区</option>');
+	        });
+		}
+			
+	})
+	
+	$("#areacity").change(function(){
+		var areaId = $(this).val();
+		if(areaId == 0){
+			$('#areadistrict').html('<option value="0">选择地区</option>')
+		} else {
+			$.post(ajaxarea_url,{'areaId':areaId},function(data){    
+                $('#areadistrict').html('<option value="0">选择地区</option>');
+                $.each(data,function(no,items){
+                   $('#areadistrict').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+                });
+                
+                
+            });
+		}
+			
+	})
+	
+	$('.m-addr-save').on('click',function(){
+		var name = $('#name').val();
+		var m_addr_mobile = $('.m-addr-mobile').val();
+		var areaprovince = $('#areaprovince').val();
+		var areaprovince_html = $('#areaprovince').find("option:selected").text();
+		
+		var areacity = $('#areacity').val();
+		var areacity_html = $('#areacity').find("option:selected").text();
+		
+		var areadistrict = $('#areadistrict').val();
+		var areadistrict_html = $('#areadistrict').find("option:selected").text();
+		
+		var addr_address = $('#addr_address').val();
+		
+		if($.trim(name) == ''){
+			showTip('请填写姓名');
+			return false;
+		}
+		if($.trim(m_addr_mobile) == ''){
+			showTip('请填写手机');
+			return false;
+		}
+		
+		if(!m_addr_mobile.match('^1[3|5|8|7][0-9]{9}$')){ 
+			showTip('请输入正确的手机号码');
+			return false; 
+		}
+		if(areaprovince <= 0)
+		{
+			showTip('请选择省份');
+			return false; 
+		}
+		if(areacity <= 0)
+		{
+			showTip('请选择城市');
+			return false; 
+		}
+		if(areadistrict <= 0)
+		{
+			showTip('请选择地区');
+			return false; 
+		}
+		
+		if($.trim(addr_address) == ''){
+			showTip('请填写详细街道地址');
+			return false;
+		}
+		var sub_address_id = $('#sub_address_id').val();
+		
+		var data_obj = {name:name,telephone:m_addr_mobile,is_default:0,province_id:areaprovince,city_id:areacity,country_id:areadistrict,address:addr_address};
+		
+		var edit_url = "{:U('User/edit_address')}";
+		var add_url = "{:U('User/add_address')}";
+		if(sub_address_id != '') {
+			var ajaxaddress_add_url = edit_url;
+			data_obj.address_id = sub_address_id;
+		} else {
+			var ajaxaddress_add_url = add_url;
+		}
+		
+		$.ajax({
+			url:ajaxaddress_add_url,
+			type:'post',
+			data:data_obj,
+			dataType:'json',
+			success:function(json){
+				
+				if(json.code == 1) {
+					address_id = json.address_id;
+					$('#m-addr-mask').hide();
+					get_share_goods_qrcode();
+					return false;
+				} else {
+					showTip(json.msg);
+					return false;
+				}
+			}
+		})
+		
+	})
+	
+	$('.m-addr-close').click(function(){
+		$('#m-addr-mask').hide();
+	})
+	
+	$('.afc-rules-button').click(function(){
+		$('#jsalert-assist_free_coupon_rules1516799938453').show();
+	})
+	$('#assist-free-coupon-rules-alert').click(function(){
+		$('#jsalert-assist_free_coupon_rules1516799938453').hide();
+	})
+	$('#qrcode-share').click(function(){
+		$('#qrcode-share').hide();
+	});
+
+	$("#qrcode_share_img").click(function(event){
+		event.stopPropagation();
+	});
+	
+	$('#sku_selector').on('click', function(){
+		$('#sku_selector').hide();
+	})
+	$('#sku_selector_html').on('click', function(){
+		event.stopPropagation();
+	})
+
+})
+
+function chose_address_detai(addr_id)
+{
+	address_id = addr_id;
+	$('#address-popup').hide();
+	//获取二维码开始
+	get_share_goods_qrcode();
+}
+////获取二维码开始
+function get_share_goods_qrcode()
+{
+
+	
+	$('#pin-spinner').show();
+	$.ajax({
+		url:"{:U('Subject/get_user_goods_bargain')}",
+		type:'post',
+		data:{address_id:address_id,goods_id:goods_id,need_optionc:need_optionc},
+		dataType:'json',
+		success:function(ret)
+		{
+			console.log(ret); 
+			$('#pin-spinner').hide();
+			if(ret.code ==0)
+			{
+				//location.href ="";
+				//subject/assist_bargain_coupon_detail/id/5.html
+				location.href = ret.gourl;
+				return false;
+			} else{
+				showTip('当前有未完成的团');
+				return false;
+			}
+			
+		}
+	})
+	
+}
+
+function add_address()
+{
+	$('#sub_address_id').val('');
+	$('#address-popup').hide();
+	$('.m-addr-title').html('添加收货地址');
+	
+	var areaId=0;
+	$.post(ajaxarea_url,{'areaId':areaId},function(data){                
+		
+		$('#areaprovince').html('<option value="0">选择省份</option>');
+		
+		$.each(data,function(no,items){
+		   $('#areaprovince').append('<option value="'+items.area_id+'">'+items.area_name+'</option>');
+		});
+		
+		$('#m-addr-mask').show();
+	});
+}
+
+function chose_sku_option(obj)
+{
+	//console.log(obj);
+	$(obj).siblings().removeClass('sku-spec-value-selected');
+	$(obj).addClass('sku-spec-value-selected');
+	var selected_sku_count =  $('.sku-spec-value-selected').length;
+	var total_sku_count = $('.sku-specs').length;
+	
+	if(selected_sku_count == total_sku_count)
+	{
+		var sku_arr = [];
+		var sku_html_arr = [];
+		
+		var optionc = [];
+		need_optionc = [];
+		$('.sku-spec-value-selected').each(function(){
+			sku_arr.push( $(this).attr('option_value_id') );
+			sku_html_arr.push( $(this).html() );
+			
+			var tp_goods_option_id = $(this).attr('relgoods_option_id');
+			var tp_relgoods_option_value_id = $(this).attr('relgoods_option_value_id');
+			var s_gvi = tp_goods_option_id + '_' +tp_relgoods_option_value_id;
+			optionc.push(s_gvi)
+		})
+		need_optionc = optionc;
+		
+		 sku_arr_str = sku_arr.join('_');
+	
+		$('#sku-msg').html('已选择：'+ sku_html_arr.join('、'));
+		
+		$.ajax({
+			url:"{:U('Subject/get_mult_sku')}",
+			type:'get',
+			data:{goods_id:goods_id,sku_arr_str:sku_arr_str},
+			dataType:'json',
+			success:function(ret){
+				//console.log(ret);
+				//array('code' => 0 , 'data' => $goods_option_mult_value_info)
+				$('#sku-image').attr('src', ret.data.image);
+			}
+		})
+	}
+	
+}
+/**
+	下单，选择地址
+**/
+function chose_sku()
+{
+	
+	var selected_sku_count =  $('.sku-spec-value-selected').length;
+	var total_sku_count = $('.sku-specs').length;
+	
+	if(selected_sku_count != total_sku_count)
+	{
+		showTip('请选择规格');
+	}else {
+		$('#sku_selector').hide();
+		chose_address();
+	}
+}
+
+
+
+function chose_address()
+{
+	$.ajax({
+		url:"{:U('Subject/get_user_addresslist')}",
+		type:'get',
+		dataType:'json',
+		success:function(ret){
+			$('#address-popup-list').html(ret.html);
+			$('#address-popup').show();
+		}
+	})
+	
+}
+
+
+function close_sku()
+{
+	$('#sku_selector').hide();
+}
+function get_free_coup(obj)
+{
+	goods_id = $(obj).attr('data-goods-id');
+	//get sku
+	$.ajax({
+		url:"{:U('Subject/get_option_sku')}",
+		type:'get',
+		data:{goods_id:goods_id},
+		dataType:'json',
+		success:function(res){
+			console.log(res);
+			if(res.code == 1)
+			{
+				//show option_html
+				$('#sku_selector_html').html(res.html);
+				$('#sku_selector').show();
+			}else if(res.code ==0)
+			{
+				//show address 
+				sku_arr_str = '';
+				chose_address();
+			}
+			else if(res.code == 3)
+			{
+				//img  当前有未完成的团
+				showTip('当前有未完成的团');
+				return false;
+			}
+		}
+	})
+	console.log(goods_id);
+}
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+					bindImgEvent();
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

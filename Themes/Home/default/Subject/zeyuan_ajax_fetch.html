@@ -1,0 +1,47 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<div class="free-trial-list-item-0" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+	<div class="free-trial-item">
+	    <div class="goods-img">
+	        <img src="{$fan_ly_image}" class="scrollLoading" data-echo="__UPLOAD__/{$d.image}" />
+				        
+	    </div>
+	    <p class="goods-name">{$d.name}</p>
+	    <div class="group-detail">
+	        <b class="price">
+	            ￥{$d.pinprice}
+	        </b>
+	        <del class="market-price">
+	            ￥{$d.price}
+	        </del>
+	        <a class="quantity">
+	            限量 {$d.seller_count} 件
+	        </a>
+	        <!--ms-if-->
+	        <div class="status">申请试用</div>
+	        <div class="group-desc">
+	            {$d.pin_count}人团
+	        </div>
+	    </div>
+	</div>
+</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,212 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/tixianorder.css">
+<div class="container">
+	<section class="main-view">
+		<div class="fixed">
+			<nav class="tab-bar">
+				<section class="left-small">
+					<a href="javascript:history.back(-1);" class="menu-icon"><span></span></a>
+				</section>
+				<section class="middle tab-bar-section">
+					<h1 class="title">提取金额</h1>
+				</section>
+			</nav>
+		</div>
+		
+	<div class="panel extract">
+		<div class="commision-total">
+			<span class="span-title">可提现金额</span>
+			<span class="number">¥{$member_commiss.money}</span>
+			<?php if(!empty($commiss_money_limit) && $commiss_money_limit > 0){ ?>
+			<font>(佣金满<?php echo $commiss_money_limit; ?>元可提现)</font>
+			<?php } ?>
+		</div>
+		<div class="panel extract-account">
+			<ul class="side-nav">
+				<li class="account-none">
+					<span style="line-height: 45px;font-size: 18px;float: left;color: #999;">
+						<span style="margin-left:10px">
+						用户名：{$member_commiss.bankname}<br>
+						银行卡号:{$member_commiss.bankaccount}<br>
+						银行名称:{$member_commiss.bankusername}<br>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+		<div class="address_new" style="margin-bottom:10px;">
+			<input id="money" name="money" style="border-radius:2px;" max-rel="{$member_commiss.money}" value="{$member_commiss.money}" placeholder="提现金额" type="text">
+		</div>
+		<a href="javascript:;" id="tixian_btn" class="button [radius round] red">立即申请</a>
+		
+		<table class="table table-hover" style="width:100%;background-color:#fff;">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="text-align: center;">提现单号</th>
+					<th style="text-align: center;">提现金额</th>
+					<th style="text-align: center;">提现状态</th>
+					<th style="text-align: center;">提现时间</th>
+				</tr>
+			</thead>
+			<tbody id="tbodyshenqing">
+				<?php foreach($list as $val){ ?>
+				<tr>
+					<td style="text-align: center;">
+						<?php echo $val['id']; ?>
+					</td>
+					<td style="text-align: center;">
+						<?php echo $val['money']; ?>
+					</td>
+					<td style="text-align: center;">
+						<?php if($val['state'] == 0){ ?>
+						审核中
+						<?php }else if($val['state'] ==1){ ?>
+						已到账
+						<?php }else if($val['state'] == 2){ ?>
+						被拒绝 
+						<?php } ?>
+					</td>
+					<td style="text-align: center;">
+						<?php echo date('Y-m-d',$val['addtime']); ?>
+					</td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+	</div>
+</section>
+
+</div>
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<style>
+
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Spike/index')}";
+
+var req_step = 1;
+
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: "{:U('Tuanbonus/tixian')}", 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+				
+				if(result.code == 1)
+				{
+					$('#tbodyshenqing').append(result.html);
+					$('#center_pullup').hide();
+					
+					_pa++;
+					is_can_next = 1;
+				} else if(result.code == 0) {
+					$('#center_pullup').hide();
+					is_can_next = 0;
+					$('#center_pullup').remove();
+				}
+			}
+		}
+	);
+}
+$(function(){
+	nextpage();
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+<script>
+
+$(function(){
+			
+	$('#tixian_btn').click(function(){
+		var t_money = parseFloat($('#money').val());
+		
+		var m_money = parseFloat($('#money').attr('max-rel'));
+		if(t_money > m_money)
+		{
+			alert('提现金额超出已有金额');
+			return false;
+		} else if(t_money <= 0){
+			alert('提现金额必须大于0');
+			return false;
+		}
+		//
+		$.ajax({
+			url:"{:U('Tuanbonus/tixian_sub')}",
+			type:'post',
+			data:{money:t_money},
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('申请提现成功，等待管理员审核');
+					location.href = location.href;
+				} else {
+					alert(ret.msg);
+					return false;
+				}
+			}
+		})
+		
+	})
+
+})
+</script>
+</block>

@@ -1,0 +1,19 @@
+<?php foreach($list as $val){ ?>
+<div class="item-wrap waterfall-frame-1 waterfall-box waterfall-optimise-show" >
+	<a class="iwf" href="<?php echo $val['url']; ?> ">
+	<div class="img-wrap J_dynamic_imagebox" img-src="/Common/mogu/image/170905_1hfl9f14ebfb4fbgfcb45c033d0f9_640x900.jpg" style="padding-bottom: 110%;">
+		<div class="bottom-img-tags clearfix">
+			<img class="img-tag fl" src=" <?php echo $val['fan_image']; ?>" >
+		</div>
+		<img class="J_dynamic_img fill_img scrollLoading" src="{$index_ly_image}" data-echo="<?php echo $val['image']; ?>" alt="">
+	</div>
+	<p class="title">
+		 <?php echo $val['name']; ?>
+	</p>
+	<div class="goods_info">
+		<span class="price_info"><?php echo $val['danprice']; ?></span>
+		<span class="fav_num"><em class="no_collect_icon"></em><?php echo $val['seller_count']; ?></span>
+	</div>
+	</a>
+</div>
+<?php } ?>

@@ -1,0 +1,91 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/groupLeaderIndex-8dc18bb17b.css">
+<div class="body groupLeaderIndex" style="display: block;">
+	<header data-role="header">
+    	<div class="info">
+	    	<div class="img"><img src="{$member_info.avatar}" alt="" style="background-image: url(&quot;http://img.shopping.vd.cn/online/upload/shopimg/default_avatar_tuan.png&quot;);"></div>
+	    	<div class="nickname"><span>{$member_info.name}</span></div>
+	    	<div class="bind"><span></span></div>
+	    	
+    	</div>
+    </header>
+	<section class="section-body">
+        <div class="message">
+        	<a href="javascript:;" onclick="location.href='{:U('Tuanbonus/tuanbonus_index')}';">
+                <div class="bottom2">
+                    <div class="bonus jump">
+                	    <div class="total2">
+                	    	<div><p>累计奖金（元）</p></div>
+                	    	<div><p>{$member_commiss['getmoney']}</p></div>
+                	    </div>
+                	    <div class="cashout">
+                	    	<p class="gray">可提现奖金<span>{$member_commiss['money']}</span>元<label> </label></p>
+                        </div>
+            	    </div>
+                </div>
+            </a>
+
+    	    <a href="javascript:;" onclick="location.href='{:U('Tuanbonus/qrcode')}';">
+                <div class="bottom">
+                    <div class="myqcode jump">
+            	        <div class="font">我的二维码</div><div class="gray"> <span>
+						<img src="__PUBLIC__/image/qcode-675ff2114d.png"></span><label> </label> </div>
+            	    </div>
+                </div>
+            </a>
+
+			<?php if($commiss_level_num>=1){ ?>
+    	    <a href="{:U('Tuanbonus/tuanyuan', array('type' => 1))}" >
+                <div class="myfans jump">
+        	        <div class="font">我的一级团员</div><div class="gray"><span>{$tuanyuan_count}</span> 人<label> </label></div>
+        	    </div>
+            </a>
+			<?php } ?>
+			<?php if($commiss_level_num>=2){ ?>
+			<a href="{:U('Tuanbonus/tuanyuan', array('type' => 2))}" >
+                <div class="myfans jump">
+        	        <div class="font">我的二级团员</div><div class="gray"><span>{$second_tuanyuan_count}</span> 人<label> </label></div>
+        	    </div>
+            </a>
+			<?php } ?>
+			<?php if($commiss_level_num>=3){ ?>
+			<a href="{:U('Tuanbonus/tuanyuan', array('type' => 3))}" >
+                <div class="myfans jump">
+        	        <div class="font">我的三级团员</div><div class="gray"><span>{$three_tuanyuan_count}</span> 人<label> </label></div>
+        	    </div>
+            </a>
+			<?php } ?>
+			
+
+    	    <a href="javascript:;" style="display:none;">
+                <div class="bottom">
+                    <div class="mycard jump">
+            	        <div class="font">我的卡券</div><div class="gray"> <span>1</span> 张<em></em><label> </label> </div>
+            	    </div>
+                </div>
+            </a>
+
+    	    <a href="tel:4000908822" style="display:none;">
+                <div class="cs">
+        	        <div class="font">联系客服</div><div class="gray"> <label> </label></div>
+        	    </div>
+            </a>
+
+    	    <a href="javascript:;" style="display:none;">
+                <div class="leader">
+        	        <div class="font">我是团长</div><div class="gray"> <label> </label> </div>
+        	    </div>
+            </a>
+            <div class="recommend">
+                <p class="gray">我是由【 <span>{$tuijian_ren}</span> 】推荐</p>
+            </div>
+        </div>
+    </section>
+	
+	
+</div>
+
+<include file="Public:foot_pinduoduo" />
+
+</block>

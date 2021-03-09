@@ -1,0 +1,78 @@
+<extend name="Public:base" />
+
+<block name="content">
+	<div class="page-header">
+	<a href="{:U('Blog/add')}" class="btn btn-primary">新增</a>
+
+	</div>	
+	
+<div class="row">
+	<div class="col-xs-12">
+		<div class="alert alert-block alert-success">
+			1、文章类型为：“商家后台”、“常见问题” 的，可以添加多篇文章<br/>
+			2、文章类型为：“拼团介绍” 的目前仅需要添加1篇文章即可
+		</div>
+	</div>
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>											
+						<th>ID</th>
+						<th>文章标题</th> 
+						<th>文章类型</th> 
+						<th>发布</th>			
+						
+						<th>创建时间</th>	
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+						<volist name="list" id="data" empty="$empty">
+						<tr>						
+							<td>{$data.blog_id}</td>
+							
+							<td>{$data.title}</td>
+							<td>{$data.}
+								<?php if(empty($data['type']))
+									{
+										echo '无效类型';	
+									}else {
+										echo $blog_type[$data['type']];
+									}
+								?>
+							</td>
+							<td>
+								<switch name="data.status">    
+									<case value="1">
+										<span class="green bold">是</span>
+									</case>    
+									<case value="0">
+										<span class="red bold">否</span>
+									</case>
+								</switch>
+									
+							</td>
+							
+							<td>{$data.create_time}</td>
+							<td>
+								<a  class="btn btn-xs btn-info" href='{:U("Blog/edit",array("id"=>$data["blog_id"]))}'>
+									<i class="icon-edit bigger-120"></i>
+								</a> 
+								<a class="delete btn btn-xs btn-danger" href='{:U("Blog/del",array("id"=>$data["blog_id"]))}' >
+									<i class="icon-trash bigger-120"></i>
+								</a>
+							</td>
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+</block>

@@ -1,0 +1,322 @@
+<extend name="Public:mogubase" />
+<block name="content">  
+
+<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/index.css" media="all" /> 
+<link rel="stylesheet" href="__PUBLIC__/mogu/aZsui7zFTG4yb9jnBh219.css">
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/base-22357a5508.css" media="all" /> 
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/pinIndex-2.css?v=232" media="all" /> 
+<script type="text/javascript">			window.use_screen_base = '750';			(function(a,b){var c="orientationchange"in b?"orientationchange":"resize",d=use_screen_base.indexOf("_mate"),e=parseInt(use_screen_base),f=a.documentElement,g=function(){var a=f.clientWidth,c=b.innerWidth;f.style.fontSize=100*(c/e)+"px"};if(/iPad.*OS|iPhone.*OS/.test(navigator.userAgent)&&d>0){var h=a.querySelectorAll("meta[name=viewport]"),i=b.devicePixelRatio;i=i!=1?2:1,h[0]&&h[0].setAttribute("content","width=device-width, user-scalable=no, minimum-scale="+1/i+", maximum-scale="+1/i+", initial-scale="+1/i)}g(),b.addEventListener(c,g,!1),delete use_screen_base})(document,window);		</script> 
+<style>
+.bannerPic, .banner_box, .swipe-wrap{ height:auto;}
+</style>
+  
+<!-- 顶部轮播banner --> 
+<div id="slider" class="swipe" style="visibility:visible"> 
+   <div class="swipe-wrap"> 
+		<div class=" lazyloadBg"> 
+			<a class=" lazyload-img-end" href="{$slider_nav.url}"  style="">
+				<img src="{$slider_nav.image}" width="100%" />
+			</a>
+		</div> 
+	</div> 
+   <div class="swipe-indicator"></div> 
+</div>
+<!-- 顶部轮播banner end -->
+
+<!-- 顶部轮播 1分 banner --> 
+<div id="slider1" class="swipe" style="visibility:visible;display:none;"> 
+   <div class=""> 
+		<div class=" lazyloadBg"> 
+			<a class=" lazyload-img-end" href="{$slider_newman.url}"  style="">
+				<img src="{$slider_newman.image}" width="100%" />
+			</a>
+		</div> 
+	</div> 
+   <div class="swipe-indicator"></div> 
+</div>
+<!-- 顶部轮播banner end -->
+
+<!-- 顶部轮播 抽奖 banner --> 
+<div id="slider2" class="swipe" style="visibility:visible;display:none;"> 
+   <div class=""> 
+		<div class=" lazyloadBg"> 
+			<a class=" lazyload-img-end" href="{$slider_lottery.url}"  >
+				<img src="{$slider_lottery.image}" width="100%" />
+			</a>
+		</div> 
+	</div> 
+   <div class="swipe-indicator"></div> 
+</div>
+<!-- 顶部轮播banner end -->
+  
+<div class="list_wrap">
+	<div class="tab_content goods_wall rec-show-log module_row waterfall-container" id="best_pintuan_wrap">
+	
+	</div>
+</div>
+
+
+<script src="__PUBLIC__/js/jquery.tmpl.min.js"></script>
+
+<script>
+var load_pintuan_url ="{:U('Apiindex/load_index_pintuan')}";
+var is_can_next = 1;
+var goods_page = 1;
+var type = '<?php echo $type; ?>';
+var is_index_show =2;
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	//is_index_show
+	if(type == 'all')
+	{
+		is_index_show = 2;
+	}else {
+		is_index_show = 2;
+	}
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: load_pintuan_url, 
+			type:'get',
+			data:{page:goods_page,per_page:10,type:type,is_index_show:is_index_show},
+			dataType: 'json', 
+			success: function(ret){
+				var links = [];
+				if(ret.code == 0)
+				{
+					
+					var s_data = ret.data;
+					for(var i in s_data){
+						var s_tmp = {};
+						s_tmp.url = s_data[i].url;
+						s_tmp.fan_image = s_data[i].image;
+						s_tmp.name = s_data[i].name;
+						s_tmp.pin_price = s_data[i].pin_price;
+						s_tmp.price = s_data[i].danprice;
+						s_tmp.pin_count = s_data[i].pin_count;
+						s_tmp.seller_count = s_data[i].seller_count;
+						links.push(s_tmp);
+					}
+					
+					$('#best_pintuan').tmpl(links).appendTo('#best_pintuan_wrap');
+					
+					
+					goods_page++;
+					is_can_next = 1;
+					
+					//bindImgEvent();
+				} else if(ret.code == 1) {
+					is_can_next  = 0;
+				}
+				
+			}
+		}
+	);
+}
+
+$(function(){
+	nextpage();
+	//load best goods
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+</script>
+
+<script id="best_pintuan" type="text/x-jquery-tmpl">
+
+<a class="goods_box show-log-item cube-acm-node waterfall-frame-0 waterfall-box waterfall-optimise-show" href="${url}"> 
+   <div class="pic_box lazyloadBg"> 
+		<div class="lazyload-img-end" style="background-image: url(${fan_image}); background-size: cover;">
+			{{if type === 'lottery' }}        
+			<img class="flag" src="__PUBLIC__/mogu/image/170731_5e428cacel8ffj5197i38136ii525_168x60.png">
+			 {{/if}}
+		</div> 
+   </div> 
+   <div class="content"> 
+		<h2>${name}</h2> 
+		<div class="l_box"> 
+			<p class="price_box"> 
+				<span>￥${pin_price}</span>
+				<del>
+				￥${price}
+				</del> 
+			</p> 
+			<p> ${pin_count}人团 <b> &middot; </b>已团${seller_count}件 </p> 
+		</div> 
+		<div class="open_tuan_btn">
+		 去开团
+		</div> 
+   </div> 
+</a>
+</script>
+
+
+<div id="views">
+	<div class="page_activity page_type_h5 ">
+		
+		<div class="module_row module_row_116980 MOD_ID_116891">
+			<div class="mod_row MCUBE_MOD_ID_116891">
+				<div class="wall-wrap waterfall-container" id="goods_content">
+					<p class="hint" style="display: none;">
+						数据加载中...
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="module_row module_row_423645 MOD_ID_60139" >
+			<div class="mod_row MCUBE_MOD_ID_60139">
+				<a class="to-top-btn J_toTop" href="javascript:;" style="display: none;"></a>
+			</div>
+		</div>
+		
+		<div class="bottom_tab" a="1"> 
+			 <a href="javascript:;" data-url="all" class="tab change_type <?php if($type == 'all'){ ?> cur<?php } ?>"> 
+			<span class="normal" style=" background-size: .5rem;">
+			拼团首页</span> 
+			</a>
+			<a href="javascript:;" data-url="newman" class="tab change_type <?php if($type == 'all'){ ?> cur<?php } ?>"> 
+				<span class="newman" style=" background-size: .5rem;">
+				1分拼团</span> 
+			</a> 
+			<a href="javascript:;" data-url="lottery" class="tab change_type <?php if($type == 'all'){ ?> cur<?php } ?>"> 
+				
+				<span class="lottery" style=" background-size: .5rem;">
+				
+				抽奖团</span> 
+			</a> 
+		    <a href="{:U('Pingoods/pinlist')}" class="tab"> 
+			<span style="background: url(__PUBLIC__/mogu/image/170821_7a759fga0l98jjhjejigh94hj34ii_72x72.png) no-repeat top center; background-size: .5rem;">
+			我的拼团</span> 
+			</a> 
+	  </div>
+		
+		<div class="module_row module_row_118905 MOD_ID_45043" >
+			<div class="mod_row MCUBE_MOD_ID_45043">
+			</div>
+		</div>
+		<div class="module_row module_row_144077 MOD_ID_144060" >
+			<div class="mod_row MCUBE_MOD_ID_144060">
+				<div class="maskWrap">
+				</div>
+				<input type="hidden" class="popConfig" data-pop="1">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="detail-plus" id="DetailPlus">
+	<a href="{:U('Index/index')}" class="gotop"></a>
+</div>
+
+
+<include file="Widget:pin_notify" /> 
+{~W('Share/common_pin_share')}
+<style>
+.detail-plus {
+    width: 0.88rem;
+    height: 0.9rem;
+    position: fixed;
+    z-index: 9999999999999999;
+    right: .1rem;
+    bottom: 1.5rem;
+}
+.detail-plus .cart, .detail-plus .gotop {
+    background: url(__PUBLIC__/mogu/image/back_index.png) no-repeat;
+    background-size: 0.8rem;
+}
+
+
+.detail-plus .gotop {
+    background-position: 0 0rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    display: block;
+}
+	
+.lottery{
+	background: url(__PUBLIC__/mogu/image/170821_5951l6h436ig1l7010fj37e05iehg_72x72.png) no-repeat top center;
+}
+.cur .lottery{
+	background: url(__PUBLIC__/mogu/image/170821_1a06lb2h8eic8gc30ifcc2c3716e3_75x72.png) no-repeat top center;
+}
+.newman{
+	background: url(__PUBLIC__/mogu/image/170821_4caa2bah1797i0c1f1824hlih1g30_72x72.png) no-repeat top center;
+}
+.cur .newman{
+	background: url(__PUBLIC__/mogu/image/170821_7lakih42kd5d5dg86gj6681dh76gg_72x72.png) no-repeat top center;
+}
+
+.normal{
+	background: url(__PUBLIC__/mogu/image/170821_7l5785llaikkj4e5al161lj49468e_72x72.png) no-repeat top center;
+}
+.cur  .normal{
+	background: url(__PUBLIC__/mogu/image/170821_2ifi3kcb9j91jae76fc6jh00hc4fl_72x72.png) no-repeat top center;
+}
+</style>
+
+<script>
+
+var is_can_next = 1;
+var goods_page = 1;
+
+
+$('.change_type').click(function(){
+	var new_type = $(this).attr('data-url');
+	
+	var new_type = $(this).attr('data-url');
+	if(new_type == 'all')
+	{
+		$('#slider1').hide();
+		$('#slider2').hide();
+		$('#slider').show();
+	}else if(new_type == 'newman')
+	{
+		$('#slider2').hide();
+		$('#slider').hide();
+		$('#slider1').show();
+		
+	}else if(new_type == 'lottery')
+	{
+		$('#slider').hide();
+		$('#slider1').hide();
+		$('#slider2').show();
+	}
+	
+	$(this).addClass('cur').siblings().removeClass('cur');
+	is_can_next = 0;
+	goods_page = 1;
+	type = new_type;
+	$('#best_pintuan_wrap').html('');
+	nextpage();
+})
+
+$('.mb_go2pre').click(function(){
+	
+	$('.mb_go2pre').hide();
+	$('.home_btn').show();
+	$('#js-hotwords').hide();
+})
+
+</script>
+
+</block>

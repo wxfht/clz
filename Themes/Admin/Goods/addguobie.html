@@ -1,0 +1,257 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				基本信息
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="form" method="post" action="{:U('Goods/saveguobie')}">	
+			
+			<notempty name="Think.get.id">
+			<input name="id" type="hidden" value="{$Think.get.id}" />
+			</notempty>
+			<div class="tab-content">
+          	<!-- 常规 START -->
+	          	<div class="tab-pane active" id="tab-general">
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-left"> 国别名称 </label>
+						<div class="col-sm-10">
+							<div class="clearfix">
+								<input name="name" class="col-xs-10 col-sm-10 form-control"  value="{$guobie.name|default=''}" type="text">
+							</div>
+						</div>
+					</div>
+					<div class="form-group" id="goods-image-row2">
+						<label class="col-sm-2 control-label no-padding-left">国别logo </label>
+						<div class="col-sm-10" id="image-row2">
+						  <a href="#" data-toggle="image" class="img-thumbnail" type="goods" id="thumb-image2" num="2">
+							<img osctype="goods_image2" <if condition="$guobie['logo']"> 
+								src="__ROOT__/<?php echo resize($guobie['logo'],100,100); ?>" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_40x40.jpg" 
+								</if>  />
+								</a>
+							<input osctype="goods_image_input2" type="hidden" name="logo" value="{$guobie.logo|default=''}" id="input-image2" />
+							<span class="help-inline ">
+								<span class="middle red">用于海淘首页展示圆形logo</span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group" id="goods-image-row3">
+						<label class="col-sm-2 control-label no-padding-left">国旗 </label>
+						<div class="col-sm-10" id="image-row3">
+							<a href="#" data-toggle="image" class="img-thumbnail" type="goods" id="thumb-image3" num="3">
+							<img osctype="goods_image3" <if condition="$guobie['icon']"> 
+								src="__ROOT__/<?php echo resize($guobie['icon'],100,100); ?>" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_40x40.jpg" 
+								</if>  />
+							</a>
+							<input osctype="goods_image_input3" type="hidden" name="icon" value="{$guobie.icon|default=''}" id="input-image3" />
+							<span class="help-inline ">
+								<span class="middle red">用于海淘首页展示圆形logo</span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group" id="goods-image-row4">
+						<label class="col-sm-2 control-label no-padding-left">BANNER </label>
+						<div class="col-sm-10" id="image-row4">
+							<a href="#" data-toggle="image" class="img-thumbnail" type="goods" id="thumb-image4" num="4">
+							<img osctype="goods_image4" <if condition="$guobie['banner']"> 
+								src="__ROOT__/<?php echo resize($guobie['banner'],100,100); ?>" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_40x40.jpg" 
+								</if>  />
+							</a>
+							<input osctype="goods_image_input4" type="hidden" name="banner" value="{$guobie.banner|default=''}" id="input-image4" />
+							<span class="help-inline ">
+								<span class="middle red">海淘国家详细页顶部</span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-left"> 推荐</label>
+						<div class="col-sm-10">
+							<div class="clearfix">					
+									<label class="radio-inline"><input <?php if($guobie['is_index']==1){echo ' checked="checked"';} ?> type="radio" value="1" name="is_index">是</label>	
+									<label class="radio-inline"><input <?php if($guobie['is_index']==0){echo ' checked="checked"';} ?> type="radio" value="0" name="is_index">否</label>				
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+			
+		</form>
+		<div class="form-group">
+			<label class="col-sm-1 control-label no-padding-left"> </label>	
+			<div class="col-sm-11">
+				<button form="form" type="submit"   class="btn btn-sm btn-primary">提交</button>		
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>	
+$(function(){	
+	
+	// tooltips on hover button-upload
+	$('[data-toggle=\'tooltip\']').tooltip({container: 'body', html: true});
+
+	// Makes tooltips work on ajax generated content
+	$(document).ajaxStop(function() {
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	});	
+	
+	
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+		var type=$(this).attr('type');
+		//alert(index);
+		
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'" t="'+type+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> ';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		//商品图片
+		$('#thumb-image').on('click', function() {
+			
+			//alert('333');
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'shop'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_goods_image:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+			
+		$('.button-image').on('click', function() {
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			var i=$(this).attr('n');
+			var type=$(this).attr('t');
+						
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image/dir')}"+'/'+type,
+	            add: function(e, data) {
+	                $parent = $('#image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                var old_name='old_'+type+'_image';
+	                data.formData = {old_name:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#'+type+'-image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__/'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+			
+		});
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+	
+	
+});
+	
+</script>
+</block>

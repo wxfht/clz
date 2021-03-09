@@ -1,0 +1,45 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<div class="lottery_goods">
+    <img class="lottery_pic scrollLoading" src="{$index_ly_image}" data-echo="{$d.image}">
+	
+    <div class="lottery_info">
+        <div class="lottery_left_time">
+            <div class="lottery_left_time_head">开始时间:</div>
+            <div class="lottery_left_time_detail">
+               <span class="left_time_im"><?php echo date('m',$d['begin_time']); ?></span>月
+                <span class="left_time_im"><?php echo date('d',$d['begin_time']); ?></span>日
+                <span class="left_time_im"><?php echo date('H',$d['begin_time']); ?></span>:
+                <span class="left_time_im"><?php echo date('i',$d['begin_time']); ?></span>
+            </div>
+        </div>
+        <div class="lottery_goods_name">{$d.name}</div>
+        <div class="lottery_buy">
+            <div class="lottery_price_all">
+                <div class="lottery_sale_price">￥{$d.pinprice}</div>
+                <div class="lottery_market_price">￥{$d.price}</div>
+            </div>
+            <div class="lottery_buy_button_come">即将开始</div>
+        </div>
+    </div>
+</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

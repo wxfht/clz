@@ -1,0 +1,15 @@
+
+<style>
+.index_ad_list{width:100%;margin-top:5px;}
+.index_ad_list li{width:100%;margin-bottom:5px;}
+.index_ad_list img{width:100%;}
+</style>
+<div class="index_ad_list">
+	<ul>
+		<li>
+			<volist name="slider" id="v">
+               	<li><a href="{$v.url}"><img src="__ROOT__/Uploads/image/{$v.image}" /></a></li>
+            </volist> 
+		</li>
+	</ul>
+</div>

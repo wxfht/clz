@@ -1,0 +1,174 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/index.css">
+<div id="main">
+	<div id="index-content" class="container">
+		{$item_content_html}
+	</div>
+</div>
+<style>	
+
+
+<?php if(!empty($special_info['special_bgcolor'])){ ?>
+.container{background-color:<?php echo $special_info['special_bgcolor']; ?>; }
+<?php } ?>
+
+<?php if(!empty($special_info['special_bgimage'])){ ?>
+.container{background:url(/Uploads/image/<?php echo $special_info['special_bgimage']; ?>) repeat 0 0; }
+<?php } ?>
+	.index_ad_list{margin-top:1px;}
+	
+	.m-component-download {
+		padding: 10px;
+		background: #fff;
+		position: relative;
+		overflow: hidden;
+	}
+	.pull-left {
+		float: left;
+	}
+	.m-component-download .m-img {
+		display: inline;
+		width: 50px;
+		height: 50px;
+	}
+	.m-component-download .m-tips {
+		float: left!important;
+		margin: 4px 0 0 10px;
+		font-size:15px;
+	}
+	.pull-right {
+		float: right;
+	}
+	.m-component-download .m-btn {
+		margin: 4px 0 0 10px;
+	}
+
+	.m-component-download .app_btn, .m-component-download .tf_app_btn {
+		color: #fff;
+		background-color: #5cb85c;
+		border-color: #4cae4c;
+		display: inline-block;
+		margin-bottom: 0;
+		font-weight: 400;
+		text-align: center;
+		vertical-align: middle;
+		-ms-touch-action: manipulation;
+		touch-action: manipulation;
+		cursor: pointer;
+		background-image: none;
+		border: 1px solid transparent;
+		white-space: nowrap;
+		font-size: 14px;
+		line-height: 1.42857143;
+		border-radius: 4px;
+	}
+	.m-component-download .app_btn {
+		padding: 6px 12px;
+	}
+	#banner{height:auto;}
+	.banner-focus {
+		width: 100%;
+		height: 10px;
+		position: absolute;
+		bottom: 15px;
+		overflow: hidden;
+		z-index: 10000
+	}
+
+	.banner-focus .banner-hd {
+		width: 100%;
+		height: 10px;
+		bottom: 0;
+		position: absolute;
+		content: "";
+		text-align: right;
+		z-index: 100000
+	}
+
+	.banner-focus .banner-hd ul,.banner-focus .banner-hd ul li {
+		display: inline-block;
+		height: 10px;
+		vertical-align: top
+	}
+
+	.banner-focus .banner-hd ul li {
+		width: 10px;
+		background: #fff;
+		margin: 0 3px;
+		overflow: hidden;
+		border-radius: 100%;
+		-moz-border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-o-border-radius: 100%;
+		color: #fff
+	}
+
+	.banner-focus .banner-hd ul .on {
+		background: red;
+		color: red
+	}
+	
+	.home2_box:after {
+		 content: ".";
+		 display: block;
+		 height: 0;
+		 clear: both;
+		 visibility: hidden;
+	}
+	.home_3_box:after {
+		 content: ".";
+		 display: block;
+		 height: 0;
+		 clear: both;
+		 visibility: hidden;
+	}
+	.home4_box:after {
+		 content: ".";
+		 display: block;
+		 height: 0;
+		 clear: both;
+		 visibility: hidden;
+	}
+	.index_ad_list:after {
+		 content: ".";
+		 display: block;
+		 height: 0;
+		 clear: both;
+		 visibility: hidden;
+	}
+	.home2_box{margin-top:1px;}
+	.home_3_box{margin-top:1px;}
+	.home4_box{margin-top:1px;}
+	.half_left{width:50%;float:left;}
+	.half_left img{width:100%;}
+	.half_right{width:50%;float:left;}
+	.half_half_div img{width:100%;}
+	.half_half_div{}
+	.home_3_div{width:50%;float:left;}
+	.home_3_div img{width:100%:}
+</style>
+	<include file="Widget:pin_notify" />
+	{~W('Share/common_special_share',array($special_info['special_id']))}
+	<include file="Widget:pin_toast" />
+	<include file="Public:foot_lazy" />
+	<include file="Public:foot_pinduoduo" />
+	
+<script src="__PUBLIC__/pinduoduo/js/TouchSlide.1.1.js"></script>
+<script>
+	if($('#banner').length > 0)
+	{
+		TouchSlide({ 
+			slideCell:"#banner",
+			titCell:".banner-hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+			mainCell:".bd ul", 
+			delayTime:200,
+			interTime:5000,
+			autoPlay:true,
+			effect:"leftLoop", 
+			autoPage:true //自动分页
+		});
+	}
+	
+</script>
+</block>

@@ -1,0 +1,169 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			快递鸟参数配置
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="panel-body">
+			<ul class="nav nav-tabs">
+            <li <?php if($type == 0){ ?>class="active" <?php } ?>><a href="{:U('Voucher/index')}">平台券管理</a></li>
+            <li <?php if($type == 1){ ?>class="active" <?php } ?>><a href="{:U('Voucher/free_config')}">免单券配置</a></li>              
+           
+          </ul>
+		</div>
+	</div>
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="validation-form" method="post" action='{:U("Voucher/free_config")}'>
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">开启赠送免单券：</label>
+				<div class="col-sm-10">
+					<label>
+						<input type="radio" name="voucher_free_state" value="1" <?php if($voucher_free_state_info['value'] == 1){ ?> checked <?php } ?> />&nbsp;是
+					</label>
+					<label>
+						<input type="radio" name="voucher_free_state" value="0" <?php if($voucher_free_state_info['value'] == 0){ ?> checked <?php } ?> />&nbsp;否
+					</label>
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">免单券描述：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="免单券描述：" name="voucher_free_desc"  value="{$voucher_free_desc_info.value}" />
+				</div>
+			</div>
+
+			<div class="form-group required">
+				<label class="col-sm-2 control-label" for="input-image">
+				<span title="">封面图：</span>
+				</label>
+				
+				<div class="col-sm-10" id="thumb">
+				  <a href="#" data-toggle="image" class="img-thumbnail">
+					<img osctype="image" <if condition="!empty($voucher_free_image_info['value'])"> 
+						src="__ROOT__<?php echo resize($voucher_free_image_info['value'], 100, 100) ?>" 
+						<else /> 
+						src="__ROOT__/Common/image/no_image_100x100.jpg" 
+						</if>  />
+						</a>
+				  <input osctype="image_input" type="hidden" name="voucher_free_image" value="{$voucher_free_image_info.value|default=''}" id="input-image" />
+				  <span class="help-inline ">
+						<span class="middle red">建议尺寸:900*500</span>
+					</span>
+				</div>
+			
+			</div> 
+					
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+$(function(){
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+				
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		$('#thumb-image').on('click', function() {		
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'seller'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_blog_images:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;
+	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+		
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+})
+</script>
+
+</block>
+

@@ -1,0 +1,46 @@
+<extend name="Public:computerbase" />
+<block name="content">  
+
+<style>
+.pdd-head .ph-tab{float:left;}
+</style>
+
+
+<div id="pdd-activity-glist" class="act-goods-list" style="margin-top: 0.97rem;">
+
+<div class="pdd-act-glist" avalonctrl="pdd-activity-glist" style="visibility: visible;">
+    <ul>
+        <li class="pa-glist-item">
+            <!--repeat60211463645-->
+			
+			
+				
+			<?php foreach($goods_list as $goods){ ?>
+			<?php if(!empty($goods['fan_image'])){ 
+				$goods['image'] = $goods['fan_image'];
+				}
+			?>			
+			<div class="pa-glist-item-goods">
+                <div class="act-goods-img">
+                    <img class="pa-goods-img" alt="goods" src="/Uploads/image/<?php echo $goods['image']; ?>">
+                    <img class="pa-buy-code" alt="code" src="http://qr.topscan.com/api.php?text=<?php echo $goods['url']; ?>">
+                </div>
+                <div class="act-goods-txt">
+                    <p class="act-goods-name"><?php echo $goods['name']; ?></p>
+                    <div class="act-goods-prices">
+                        <span class="act-goods-price"><b>￥</b><span><?php echo $goods['pinprice']; ?></span></span>
+                        <span class="act-goods-mprice">￥<span><?php echo $goods['price']; ?></span></span>
+                        <span class="act-goods-cnt">已团<span><?php echo $goods['seller_count']+$goods['virtual_count']; ?></span>件</span>
+                    </div>
+                </div>
+            </div>
+			<?php } ?>
+        </li>
+    </ul>
+</div>
+
+</div>
+
+<include file="Public:foot_computer" />
+</block>
+

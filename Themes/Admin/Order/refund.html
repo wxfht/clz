@@ -1,0 +1,234 @@
+<extend name="Public:base" />
+<block name="content">
+	<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>	
+	<ul class="nav nav-tabs">
+	  <li class="active"><a href="#tab-order" data-toggle="tab">订单退款详情</a></li>  
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="tab-order">
+			<table class="table table-bordered">
+				<tr>
+				    <td>订单ID</td>
+				    <td>{$data.order.order_id}</td>
+				</tr>
+				<tr>
+					<td>订单编号</td>
+					<td>{$data.order.order_num_alias}</td>
+				</tr>
+				<tr>
+					<td>会员名称</td>
+					<td>{$data.order.uname}</td>
+				</tr>
+				  <tr>
+				    <td>联系电话</td>
+				    <td>{$data.order.shipping_tel}</td>
+				</tr> 
+				<tr>
+				    <td>合计金额</td>
+				    <td>
+				    	￥{$data.order.total}
+				    </td>
+				</tr>
+				<tr>
+				    <td>订单状态</td>
+				    <td id="order-status">{$data.order.name}</td>
+				</tr>
+				<tr>
+					<td>下单时间</td>
+					<td>{$data.order.date_added|toDate='Y/m/d H:i:s'}</td>
+				</tr>
+				<tr>
+					<td>修改时间</td>
+					<td>{$data.order.date_modified|toDate='Y/m/d H:i:s'}</td>
+				</tr>
+				</table>
+				<table class="table table-bordered">
+			          <tr>
+			            <td>收货人姓名</td>
+			            <td>{$data.order.shipping_name}</td>
+			          </tr>
+			                  
+			          <tr>
+			            <td>所在地</td>
+			            <td>
+			            	<?php echo get_area_name($data['order']['shipping_province_id']); ?>，
+			            	<?php echo get_area_name($data['order']['shipping_city_id']); ?>，
+			            	<?php echo get_area_name($data['order']['shipping_country_id']); ?>
+			            </td>
+			          </tr>
+			          
+			          <tr>
+			            <td>地址</td>
+			            <td>{$data.order.address}</td>
+			          </tr>
+			         
+			          <tr>
+			            <td>支付方式</td>
+			            <td>微信支付</td>
+			          </tr>
+			           <tr>
+			          	<td>货运方式</td>
+			          	<td><?php echo get_shipping_name($data['order']['shipping_method']); ?></td>
+			          </tr>
+			          <tr>
+			          	<td>快递单号</td>
+			          	<td><?php echo $data['order']['shipping_no']; ?></td>
+			          </tr>
+			          <tr>
+			          	<td>联系电话</td>
+			          	<td>{$data.order.shipping_tel}</td>
+			          </tr>
+      			  </table>
+				  
+				  <table class="table table-bordered">
+					  <thead>
+						<tr>
+						  <td class="left">商品品名</td>
+						  <td class="right">数量</td>
+						  <td class="right">价格</td>
+						  <td class="right">总计</td>
+						</tr>
+					  </thead>
+					  <tbody>
+						<?php if(isset($data['order_product'])&&is_array($data['order_product'])){ ?>
+							<?php foreach ($data['order_product'] as $product) { ?>
+							<tr>
+							  <td class="left">
+								<a href="{:U('Goods/edit',array('id'=>$product['goods_id']))}"><?php echo $product['name']; ?></a>
+								<?php if($option_list=M()->query('select * from '.C('DB_PREFIX').'order_option where order_goods_id='.$product['order_goods_id'].' and order_id='.$product['order_id'])){ ?>
+								<?php foreach ($option_list as $option) { ?>
+								<br />
+								&nbsp;<small> - <?php echo $option['name']; ?>: <?php echo $option['value']; ?></small>
+								<?php } ?>
+								<?php } ?>
+							  </td>
+							  <td class="right"><?php echo $product['quantity']; ?></td>
+							  <td class="right">￥<?php echo $product['price']; ?></td>
+							  <td class="right">￥<?php echo $product['total']; ?></td>
+							</tr>
+							<?php } ?>
+						<?php } ?>
+				
+					  </tbody>
+					  <?php if(isset($data['order_total'])&&is_array($data['order_total'])){ ?>
+						  <?php foreach ($data['order_total'] as $totals) { ?>
+						  <tbody id="totals">
+							<tr>
+							  <td colspan="3" class="right"><?php echo $totals['title']; ?>:</td>
+							  <td class="right"><?php echo $totals['text']; ?></td>
+							</tr>
+						  </tbody>
+						  <?php } ?>
+					  <?php } ?>
+					</table>
+					<div id="history">
+						<table class="table table-bordered">
+						  <thead>
+							<tr>
+							  <td class="left"><b>操作日期</b></td>
+							  <td class="left"><b>操作附言</b></td>
+							  <td class="left"><b>反馈</b></td>
+							</tr>
+						  </thead>
+							<tbody>
+								
+								
+								<tr>
+								  <td class="left"><?php echo date('Y-m-d H:i:s',$order_refund['addtime']); ?></td>
+								  <td class="left">
+									退款类型：{$order_refund.ref_type}<br/>
+								    退款金额：{$order_refund.ref_money}元<br/>
+								    联系人手机号：{$order_refund.ref_mobile}元<br/>
+									当前状态:{$order_refund.state}
+								  </td>
+								  <td class="left">
+								  退款原因：{$order_refund.ref_name}<br/>
+								  问题描述：{$order_refund.ref_description}<br/>
+								  <?php foreach($refund_images as $image){ ?>
+									<a href="/Uploads/image/<?php echo $image['thumb_image']; ?>" target="_blank"><img src="<?php echo $image['thumb_image']; ?>" /></a>
+								  <?php } ?>
+								  </td>
+								</tr>
+								<?php foreach($order_refund_history as $val){ ?>
+								<tr>
+								  <td class="left"><?php echo date('Y-m-d H:i:s',$val['addtime']);?></td>
+								  <td class="left">{$val.type}</td>
+								  <td class="left">反馈：{$val.message}<br/>
+									 <?php foreach($val['order_refund_history_image'] as $image){ ?>
+									<a href="/Uploads/image/<?php echo $image['thumb_image']; ?>" target="_blank"><img src="<?php echo $image['thumb_image']; ?>" /></a>
+								  <?php } ?>
+								  </td>
+								</tr>
+								<?php } ?>
+							</tbody>
+						</table>
+					</div>
+					<table class="table table-bordered">
+					  <tr>
+						<td>退款状态</td>
+						<td>
+						  <select name="order_refund_type" id="order_refund_type">
+								<option value="1" >拒绝退款</option>
+								<option value="2" >同意退款</option>
+						  </select>
+						</td>
+					  </tr>
+					  
+					  <tr>
+						<td>商家反馈</td>
+						<td><textarea name="comment" id="comment" cols="40" rows="8" style="width: 99%"></textarea>
+						</td>
+					   </tr>
+					   <tr>
+						<td colspan="2">
+					  <div class="text-right">
+						<button id="button-history" class="btn btn-primary" data-loading-text="Loading...">
+						<i class="fa fa-plus-circle"></i>
+							添加处理记录
+						</button>
+					  </div>
+					  </td>
+					  </tr>
+					</table>
+					
+			</div>
+		
+		
+		
+	</div>
+</block>
+<block name="javascript">
+<script>	
+$('#button-history').live('click', function() {
+	var comment = $('#comment').val();
+	var order_refund_type = $('#order_refund_type').val();
+	
+	$.ajax({
+		url: '<?php echo U("Order/refunddone",array("id"=>I("id"))); ?>',
+		type: 'post',
+		data:{comment:comment,order_refund_type:order_refund_type},
+		dataType: 'json',
+		beforeSend: function() {
+			$('.success, .warning').remove();
+			$('#button-history').attr('disabled', true);
+			$('#history').prepend('<div class="attention"><img src="__IMG__/loading.gif" alt="" />加载中...</div>');
+		},
+		complete: function() {
+		},
+		success: function(ret) {
+			alert('操作成功');
+			location.href = location.href;
+			return false;
+		}
+	});
+});
+</script>
+</block>

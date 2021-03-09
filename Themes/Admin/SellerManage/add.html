@@ -1,0 +1,208 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			商家管理
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="validation-form" method="post" action='{:U("SellerManage/add")}'>
+			
+			<div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-image">
+                <span title="" data-toggle="tooltip" data-original-title="上传800x800的图片">LOGO：</span>
+                </label>
+                
+                <div class="col-sm-10" id="thumb">
+                  <a href="#" data-toggle="image" class="img-thumbnail">
+                  	<img osctype="image" src="__ROOT__/Common/image/no_image_100x100.jpg" />
+				  </a>
+                  <input osctype="image_input" type="hidden" name="s_logo" value="" id="input-s_logo" />
+            	</div>
+            
+            </div> 		
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">用户名：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="用户名" name="s_uname"  value="" />
+				</div>
+			</div>	
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">密码：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="密码" name="s_passwd"  value="888888" />
+				</div>
+			</div>
+								
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">店铺名称：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="店铺名称" name="s_true_name"  value="" />
+				</div>
+			</div>
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">手机号码：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="手机号码" name="s_telephone"  value="" />
+				</div>
+			</div>
+			
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">客服电话：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="客服电话" name="s_mobile"  value="" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">客服qq：</label>
+				<div class="col-sm-6">
+					<input  class="form-control" type="text" placeholder="客服qq" name="s_qq"  value="" />
+				</div>
+				<span class="help-inline col-sm-4">
+					<span class="middle">请使用该QQ登录一次<a href="http://shang.qq.com" target="_blank">shang.qq.com</a></span>
+				</span>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">微信客服：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="微信客服" name="s_weixin"  value="" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">支付宝：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="支付宝" name="s_alipay"  value="" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">银行卡名称：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="银行卡名称" name="s_cardname"  value="" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">银行卡账号：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="银行卡账号" name="s_cardnumber"  value="" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">收款名称：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="收款名称" name="s_cardrealname"  value="" />
+				</div>
+			</div>
+			 
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+$(function(){
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+				
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		$('#thumb-image').on('click', function() {		
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'seller'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_blog_images:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;
+	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+		
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+})
+</script>
+
+</block>
+

@@ -1,0 +1,16 @@
+<?php foreach($list as $goods){ ?>
+<li class="cb-goods-item item-0" >
+	<img class="scrollLoading" src="{$fan_ly_image}" data-echo="__UPLOAD__/<?php echo $goods['image']; ?>" alt="goods" />
+   <div class="goods-right">
+		<p class="goods-name"><?php echo $goods['name']; ?> </p>
+		<div class="detail">
+			<p class="sold-quantity"><?php echo $goods['seller_count']; ?>人已0元拿</p>
+			 <div class="goods-price">
+				原价
+			  <i><?php echo $goods['price']; ?></i>元
+			 </div>
+		</div>
+	<button class="button" onclick="get_free_coup(this)" data-goods-id="<?php echo $goods['goods_id']; ?>">砍价0元得</button>
+   </div>
+</li>
+<?php } ?>

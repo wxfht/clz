@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+  <link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+  <script type="text/javascript">
+      window.sysinfo = {
+        <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+        <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+        <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+        <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+        'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+        'siteroot': '{$_W['siteroot']}',
+        'siteurl': '{$_W['siteurl']}',
+        'attachurl': '{$_W['attachurl']}',
+        'attachurl_local': '{$_W['attachurl_local']}',
+        'attachurl_remote': '{$_W['attachurl_remote']}',
+        'module': {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+        'cookie': {'pre': ''},
+        'account': {:json_encode($_W['account'])},
+      };
+  </script>
+        
+  <script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+  <script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+  <script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+  <script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+  <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+  <link href="/static/css/snailfish.css" rel="stylesheet">
+</head>
+<body layadmin-themealias="default">
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text">优惠券管理</span></div>
+        <div class="layui-card-body" style="padding:15px;">
+	        <div class="page-content">
+	            <form action="" method="get" class="form-horizontal form-search layui-form" role="form" id="form1">
+					<input type="hidden" name="c" value="marketing" />
+					<input type="hidden" name="a" value="coupon" />
+					
+                    
+					<div class="layui-form-item">
+						<!-- <div class='layui-input-inline' style='width: 280px;'>
+							{:tpl_form_field_daterange('time', array('placeholder'=>'创建时间'),true);}
+						</div> -->
+						<span class="layui-input-inline" style="width:120px;">
+							<select name='gettype' class="layui-input layui-unselect" >
+								<option value=''>首页显示</option>
+								<option value='0' <?php if( $gpc['gettype']=='0'){ ?>selected<?php } ?>>不显示</option>
+								<option value='1' <?php if( $gpc['gettype']=='1'){ ?>selected<?php } ?>>显示</option>
+							</select>
+						</span>
+						<span class="layui-input-inline" style="width:120px;">
+							<select name='catid' class="layui-input layui-unselect" >
+								<option value=''>分类</option>
+								<?php foreach( $category as  $k => $c  ){ ?>
+								<option value='{$k}' <?php if( $gpc['catid']==$k){ ?>selected<?php } ?>>{$c}</option>
+								<?php } ?>
+							</select>
+						</span>
+						<div class="layui-input-inline" style="width:250px;">
+							<input type="text" class="form-control" name='keyword' value="{$gpc['keyword']}" placeholder="优惠券名称"> 
+						</div>
+						<span class="layui-input-inline">
+							<button class="btn btn-primary" type="submit"> 搜索</button> 
+						</span>
+					</div>
+				</form>
+
+				<form action="" class="layui-form" lay-filter="example" method="post" >
+					<div class="page-table-header">
+						
+						<span class="pull-right">
+							<a href="{:U('marketing/addcoupon', array('ok' => 1))}" class="layui-btn layui-btn-sm"><i class="fa fa-plus"></i> 添加优惠券</a>
+						</span>
+						<span class="btn-group">
+							<button class="btn btn-default btn-sm dropdown-toggle btn-operation" type="button" data-toggle='batch-remove' data-confirm="确认要删除?" data-href="{:U('marketing/deletecoupon')}">
+								<i class="layui-icon">&#xe640;</i>删除
+							</button>
+						</span>
+					</div>
+					<?php if( count($list)>0){ ?>
+					<table class="layui-table" lay-skin="line" lay-size="lg">
+						<thead class="navbar-inner" >
+						<tr>
+							<th style="width:25px;"><input type='checkbox' name="checkall" lay-skin="primary" lay-filter="checkboxall" /></th>
+							<th style="width:50px;">ID</th>
+							<th style="width:50px;">排序</th>
+							<th style="">优惠券名称</th>
+							<th style=" ">优惠<br/>使用条件</th>
+							<th style=" ">剩余数量/已使用/已发出</th>
+							<th style="width:130px;">首页领券</th>
+							<th style="width:200px;">创建时间</th>
+							<th style="width: 200px;">操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php foreach( $list as  $row  ){ ?>
+						<tr>
+							<td>
+								<input type='checkbox' value="{$row['id']}" name="item_checkbox" lay-skin="primary"/>
+							</td>
+							<td>
+								{$row['id']}
+							</td>
+							<td>
+								<a href='javascript:;' class="setOrder" data-id="{$row['id']}" data-value="{$row['displayorder']}" data-href="{:U('marketing/displayordercoupon',array('id'=>$row['id']))}" >{$row['displayorder']}</a>
+							</td>
+							<td>
+								<p style="line-height:30px;">{$row['voucher_title']}</p>
+								<label class='label label-success'>购物</label>
+								<?php if( !empty($row['catid'])){ ?>
+								<label class='label label-primary'>{$category[$row['catid']]['name']}</label>
+								<?php } ?>
+								
+								<?php if($row['is_new_man'] == 1){ ?>
+								<label class='layui-badge'>新人券</label>
+								<?php } ?>
+							</td>
+							<td>
+								{$row['credit']} 元<br/> 
+								<?php if( $row['limit_money']>0){ ?>
+								<span class="text-danger">满{$row['limit_money']}可用</span>
+								<?php  }else{  ?>
+								<span class="text-warning">不限</span>
+								<?php } ?>
+							</td>
+							<td>
+								<?php if( $row['total_count']==-1){ ?>无限<?php  }else{  ?>剩余：<?php echo ($row['total_count'] -  $row['send_count']) < 0 ? 0:$row['total_count'] -  $row['send_count']; ?> <?php } ?>
+								&nbsp;&nbsp;已使用: {$row['usetotal']}&nbsp;&nbsp;已发出: {$row['send_count']}
+							</td>
+							<td>
+								<input type="checkbox" name="" lay-filter="statewsitch" data-href="{:U('marketing/change',array('type'=>'is_index_show','id'=>$row['id']))}" <?php if( $row['is_index_show']==1){ ?>checked<?php  }else{  ?><?php } ?> lay-skin="switch" lay-text="显示|隐藏">
+							</td>
+							<td>{:date('Y-m-d',$row['add_time'])} {:date('H:i',$row['add_time'])}</td>
+							<td>
+								<div class="btn-group">
+									<a class="layui-btn layui-btn-xs" href="{:U('marketing/addcoupon',array('id'=> $row['id'],'ok'=>1));}">
+									<i class="layui-icon layui-icon-edit"></i>编辑</a>
+  									<a class="layui-btn layui-btn-danger layui-btn-xs deldom" href="javascript:;" data-href="{:U('marketing/deletecoupon',array('id' => $row['id']))}" data-confirm="确定要删除该优惠券吗？"><i class="layui-icon">&#xe640;</i>删除</a>
+								</div>
+							</td>
+						</tr>
+						<?php } ?>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="3">
+									<input type="checkbox" name="checkall" lay-skin="primary" lay-filter="checkboxall" />
+									<span class="btn-group">
+										<button class="btn btn-default btn-sm dropdown-toggle btn-operation" type="button" data-toggle='batch-remove' data-confirm="确认要删除?" data-href="{:U('marketing/deletecoupon')}">
+											<i class="layui-icon">&#xe640;</i>删除
+										</button>
+									</span>
+								</td>
+								<td colspan="6" style="text-align: right">{$pager}</td>
+							</tr>
+						</tfoot>
+					</table>
+					<?php  }else{  ?>
+					<div class='panel panel-default'>
+						<div class='panel-body' style='text-align: center;padding:30px;'>
+							暂时没有任何优惠券!
+						</div>
+					</div>
+					<?php } ?>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/layuiadmin/layui/layui.js"></script>
+
+<script>
+    layui.config({
+        base: '/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use('index');
+</script>
+
+<script>
+var layer = layui.layer;
+var $;
+
+layui.use(['jquery', 'layer', 'form'], function(){ 
+    $ = layui.$;
+    var form = layui.form;
+  
+    $('.deldom').click(function(){
+        var s_url = $(this).attr('data-href');
+        layer.confirm($(this).attr('data-confirm'), function(index){
+            $.ajax({
+                url:s_url,
+                type:'post',
+                dataType:'json',
+                success:function(info){
+                
+                    if(info.status == 0)
+                    {
+                        layer.msg(info.result.message,{icon: 1,time: 2000});
+                    }else if(info.status == 1){
+                        var go_url = location.href;
+                        if( info.result.hasOwnProperty("url") )
+                        {
+                            go_url = info.result.url;
+                        }
+                        
+                        layer.msg('操作成功',{time: 1000,
+                            end:function(){
+                                location.href = info.result.url;
+                            }
+                        }); 
+                    }
+                }
+            })
+        }); 
+    })
+    
+    $('.btn-operation').click(function(){
+        var ids_arr = [];
+        var obj = $(this);
+        var s_toggle = $(this).attr('data-toggle');
+        var s_url = $(this).attr('data-href');
+        
+        
+        $("input[name=item_checkbox]").each(function() {
+            
+            if( $(this).prop('checked') )
+            {
+                ids_arr.push( $(this).val() );
+            }
+        })
+        if(ids_arr.length < 1)
+        {
+            layer.msg('请选择要操作的内容');
+        }else{
+            var can_sub = true;
+            if( s_toggle == 'batch-remove' )
+            {
+                can_sub = false;
+                
+                layer.confirm($(obj).attr('data-confirm'), function(index){
+                     $.ajax({
+                        url:s_url,
+                        type:'post',
+                        dataType:'json',
+                        data:{ids:ids_arr},
+                        success:function(info){
+                        
+                            if(info.status == 0)
+                            {
+                                layer.msg(info.result.message,{icon: 1,time: 2000});
+                            }else if(info.status == 1){
+                                var go_url = location.href;
+                                if( info.result.hasOwnProperty("url") )
+                                {
+                                    go_url = info.result.url;
+                                }
+                                
+                                layer.msg('操作成功',{time: 1000,
+                                    end:function(){
+                                        location.href = info.result.url;
+                                    }
+                                }); 
+                            }
+                        }
+                    })
+                }); 
+            }else{
+                $.ajax({
+                    url:s_url,
+                    type:'post',
+                    dataType:'json',
+                    data:{ids:ids_arr},
+                    success:function(info){
+                    
+                        if(info.status == 0)
+                        {
+                            layer.msg(info.result.message,{icon: 1,time: 2000});
+                        }else if(info.status == 1){
+                            var go_url = location.href;
+                            if( info.result.hasOwnProperty("url") )
+                            {
+                                go_url = info.result.url;
+                            }
+                            
+                            layer.msg('操作成功',{time: 1000,
+                                end:function(){
+                                    location.href = info.result.url;
+                                }
+                            }); 
+                        }
+                    }
+                })
+            }
+        }
+    })
+  
+    form.on('switch(statewsitch)', function(data){
+      
+      var s_url = $(this).attr('data-href')
+      
+      var s_value = 1;
+      if(data.elem.checked)
+      {
+        s_value = 1;
+      }else{
+        s_value = 0;
+      }
+      
+      $.ajax({
+            url:s_url,
+            type:'post',
+            dataType:'json',
+            data:{value:s_value},
+            success:function(info){
+            
+                if(info.status == 0)
+                {
+                    layer.msg(info.result.message,{icon: 1,time: 2000});
+                }else if(info.status == 1){
+                    var go_url = location.href;
+                    if( info.result.hasOwnProperty("url") )
+                    {
+                        go_url = info.result.url;
+                    }
+                    
+                    layer.msg('操作成功',{time: 1000,
+                        end:function(){
+                            location.href = info.result.url;
+                        }
+                    }); 
+                }
+            }
+        })
+    });
+
+    form.on('checkbox(checkboxall)', function(data){
+      if(data.elem.checked)
+      {
+        $("input[name=item_checkbox]").each(function() {
+            $(this).prop("checked", true);
+        });
+        $("input[name=checkall]").each(function() {
+            $(this).prop("checked", true);
+        });
+        
+      }else{
+        $("input[name=item_checkbox]").each(function() {
+            $(this).prop("checked", false);
+        });
+        $("input[name=checkall]").each(function() {
+            $(this).prop("checked", false);
+        });
+      }
+      
+      form.render('checkbox');
+    });
+  
+    //监听提交
+    form.on('submit(formDemo)', function(data){
+        $.ajax({
+            url: data.form.action,
+            type: data.form.method,
+            data: data.field,
+            dataType:'json',
+            success: function (info) {
+              
+                if(info.status == 0)
+                {
+                    layer.msg(info.result.message,{icon: 1,time: 2000});
+                }else if(info.status == 1){
+                    var go_url = location.href;
+                    if( info.result.hasOwnProperty("url") )
+                    {
+                        go_url = info.result.url;
+                    }
+                    
+                    layer.msg('操作成功',{time: 1000,
+                        end:function(){
+                            location.href = info.result.url;
+                        }
+                    }); 
+                }
+            }
+        });
+        return false;
+    });
+
+
+    $('.setOrder').click(function(e){
+    	var _this = $(this);
+    	var id = _this.data('id');
+    	var value = _this.data('value');
+    	layer.prompt({
+	        formType: 2
+	        ,title: '修改 ID 为 ['+ id +'] 的排序'
+	        ,value: value
+	      }, function(value, index){
+	        layer.close(index);
+	        var s_url = _this.data('href');
+            $.ajax({
+                url:s_url,
+                type:'post',
+                dataType:'json',
+                data: {value: value},
+                success:function(info){
+                    if(info.status == 0)
+                    {
+                        layer.msg(info.result.message,{icon: 1,time: 2000});
+                    }else if(info.status == 1){
+                        var go_url = location.href;
+                        if( info.result.hasOwnProperty("url") )
+                        {
+                            go_url = info.result.url;
+                        }
+                        
+                        layer.msg('操作成功',{time: 1000,
+                            end:function(){
+                                location.href = info.result.url;
+                            }
+                        }); 
+                    }
+                }
+            })
+	      });
+    })
+})
+
+</script>  
+</body>
+</html>

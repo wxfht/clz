@@ -1,0 +1,26 @@
+
+<?php 
+if(!empty($address_list)) {
+?>
+<?php foreach($address_list as $address){ ?>
+<li class="address-popup-list-item" onclick="chose_address_detai(<?php echo $address['id']; ?>)">
+	<p><?php echo $address['name']; ?>, <?php echo $address['telephone']; ?></p>
+	<p><?php echo $address['province_name'].$address['city_name'].$address['country'].$address['address']; ?></p>
+</li>
+<?php } ?>
+<?php } ?>
+<li class="address-popup-list-item address-popup-list-item-last" onclick="add_address()">
+	<p>添加新收货地址</p>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+

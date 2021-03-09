@@ -1,0 +1,44 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+	<div class="spike-list-item-0" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+			<div class="spike-goods">
+			    <img class="spike-img scrollLoading" src="{$index_ly_image}" data-echo="{$d.image}">
+			    
+			    <div class="spike-info">
+			        <div class="left-time">
+			            <div class="head">剩余数量:</div>
+			            <div class="quantity-detail">
+			                <span>{$d.quantity}件</span>
+			            </div>
+			        </div>
+			        <div class="spike-goods-name">{$d.name}</div>
+			        <div class="spike-buy">
+			            <div class="all-price">
+			                <div class="sale-price">¥{$d.pinprice}</div>
+			                <div class="market-price">¥{$d.price}</div>
+			            </div>
+			            <div class="spike-button-on">马上抢</div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

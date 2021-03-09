@@ -1,0 +1,33 @@
+<header> 
+	<div class="container"> 
+		<img alt="" src="Uploads/image/{$site_logo.value}" height="79" />
+	</div> 
+	<div class="join-us"> 
+		<button>联系我们</button> 
+		<ul style="display:none;" class="join-us-list"> 
+			<li>
+				<p>咨询电话 <br>
+				<?php 
+				$tel_arr = explode(',',$site_tel['value']);
+				?>
+				<?php 
+					foreach($tel_arr as $tel)
+					{
+				?>
+				<a href="tel:<?php echo $tel; ?>" class="contact"><?php echo $tel; ?></a> 
+				<?php } ?> 
+				</p>
+			</li> 
+			<li><p>企业QQ群 <br><span class="contact">{$site_qqun.value}</span></p></li> 
+			<li><p>服务时间 <br><span class="contact">{$site_woketime.value}<span></span></span></p></li> <li><p style="font-size:12px">系统使用中，如遇到问题，请添加商家入驻咨询QQ群，我们将提供专人解决您的问题</p></li> </ul>
+	</div> 
+</header>
+<script>
+	$(function(){
+		$('.join-us').hover(function(){
+			$('.join-us-list').show();
+		},function(){
+			$('.join-us-list').hide();
+		});
+	})
+</script>

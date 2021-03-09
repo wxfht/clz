@@ -1,0 +1,73 @@
+
+<block name="content">    
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>绑定核销管理员</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css"/>
+</head>
+<body>
+	
+	<div class="weui_cells_tips" style="margin-top:50%;">&nbsp;</div>
+    
+	<?php if( !empty($pick_up_info) ){ ?>
+		<div class="weui_cells_tips" style="">门店：<?php echo $pick_up_info['pick_name']; ?></div>
+	<?php }else{  ?>
+		<div class="weui_cells_tips" style="">所有门店</div>
+	<?php } ?>
+	
+    <div class="weui_cells_tips" style="">点击确认按钮，您将拥有店铺的核销权限！</div>
+    <div class="weui_btn_area">
+        <a class="weui_btn weui_btn_primary" href="javascript:" id="submit-btn">确定</a>
+    </div>
+    
+    
+    <div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">绑定成功</p>
+    </div>
+    
+
+</div>
+
+ <script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js" ></script>
+ <script>
+ 	$(document).ready(function(){
+ 		
+ 		$("#submit-btn").click(function(e){
+ 			 
+ 			 var params = $("#apply_form").serialize();
+ 			 var url="{:U('Seller/bind_pickup_post',array('seller_id' => $seller_id,'pick_up_id' =>$pick_up_id))}";
+ 			 var successFun=function(result){
+ 			 	if(result.code=='200'){
+ 			 		$('#toast').show();
+		 		 	setTimeout(function () {
+		                    $('#toast').hide();
+		                    location.href="{:U('Index/index')}";
+		             }, 1500);
+ 			 	}else{
+ 			 		alert(result.msg);
+ 			 	}
+ 			 };
+ 			 
+ 			  $.ajax({
+	             type: "POST",
+	             url:url,
+	             data: params,
+	             dataType: "json",
+	             success: successFun
+			});
+ 			 
+ 		});
+ 	});
+ </script>
+  
+</body>
+</html>
+
+</block>

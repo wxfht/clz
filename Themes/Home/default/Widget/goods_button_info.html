@@ -1,0 +1,565 @@
+
+<?php if( in_array($goods['type'], array('normal','subject','super_spike','niyuan','oneyuan','haitao') ) ) { ?>
+	
+	<?php if($pin_id >0){ ?>
+		<?php if($is_me) { ?>
+			<div class="kt which_one">
+			     <a class="kt_item kt_item1"><span>邀请好友参团</span>
+			         <div class="kt_height">
+			             <b id="tuan_more_price">
+			               	￥<i>{$goods.danprice}</i>
+			             </b>
+			         </div>
+			     </a>
+			 </div>
+		<?php }else{ ?>
+			<div class="kt which_one" id="tuan_more_btn">
+	            <a class="kt_item kt_item1"><span>立即参团</span>
+	                <div class="kt_height">
+	                    <b id="tuan_more_price">
+	                      	  ￥<i>{$goods.pinprice}</i>
+	                    </b>
+	                </div>
+	            </a>
+	        </div>
+		<?php } ?>
+	<?php }else { ?>
+	
+		<div class="kt" >
+		    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+		        <div class="kt_index_img">
+		            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+		        </div>
+		        <div class="kt_index_text">首页</div>
+		    </a>
+			<a id="kt_like_btn" class="kt_like">
+                <div class="kt_index_img">
+                    <div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+                </div>
+                <div class="kt_index_text">收藏</div>
+            </a>
+		    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id)  )}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+			
+			
+			
+		    <a id="tuan_more_btn" class="kt_item">
+		        <div class="kt_price"><span id="tuan_more_price">¥&nbsp;{$goods.pinprice}</span></div>
+		        <div class="kt_btn"><b id="tuan_more_number">{$goods.pin_count}人团</b></div>
+		    </a>
+		    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+		        <div class="kt_price">
+		            <div><b id="tuan_one_price">¥&nbsp;{$goods.danprice}</b></div>
+		        </div>
+		        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+		    </a>    
+		</div>
+	<?php } ?>
+<?php } ?>
+
+
+<?php if($goods['type'] == 'zeyuan') { ?>
+	<?php if($pin_id >0){ ?>
+		<?php if($is_me) { ?>
+			<div class="kt which_one">
+			     <a class="kt_item kt_item1"><span>邀请好友参团</span>
+			         <div class="kt_height">
+			             <b id="tuan_more_price">
+			               	￥<i>{$goods.danprice}</i>
+			             </b>
+			         </div>
+			     </a>
+			 </div>
+		<?php }else{ ?>
+			<div class="kt which_one" id="tuan_more_btn">
+	            <a class="kt_item kt_item1"><span>立即参团</span>
+	                <div class="kt_height">
+	                    <b id="tuan_more_price">
+	                      	  ￥<i>{$goods.pinprice}</i>
+	                    </b>
+	                </div>
+	            </a>
+	        </div>
+		<?php } ?>
+	<?php }else { ?>
+		<div class="kt">
+            <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+                <div class="kt_index_img">
+                    <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+                </div>
+                <div class="kt_index_text">首页</div>
+            </a>
+			<a id="kt_like_btn" class="kt_like">
+                <div class="kt_index_img">
+                    <div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+                </div>
+                <div class="kt_index_text">收藏</div>
+            </a>
+			
+             <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+            <div id="tuan_more_btn" class="free-trial-btn">
+                <span>申请试用</span>
+            </div>
+            <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+                <div class="kt_price">
+                    <div>
+                        <b id="tuan_one_price">￥{$goods.pinprice}</b>
+                    </div>
+                </div>
+                <div class="kt_btn" id="tuan_one_number">单独购买</div>
+            </a>
+            <!--ms-if-->
+        </div>
+	<?php } ?>
+<?php } ?>
+
+
+
+
+<?php if( in_array($goods['type'], array('spike') ) ) { ?>
+	<?php 
+		$spike_goods = M('spike_goods')->where( array('goods_id' => $id) )->find();
+	 ?>
+	<?php if($spike_goods['begin_time'] > time()){  ?>
+		<!-- 未开始 begin  -->
+		<div class="kt">
+		    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+		        <div class="kt_index_img">
+		            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+		        </div>
+		        <div class="kt_index_text">首页</div>
+		    </a>
+			<a id="kt_like_btn" class="kt_like">
+                <div class="kt_index_img">
+                    <div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+                </div>
+                <div class="kt_index_text">收藏</div>
+            </a>
+			
+		    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+		    <div class="free-trial-btn">
+                <span>即将开始</span>
+            </div>
+		    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+		        <div class="kt_price">
+		            <div>
+		                <b id="tuan_one_price">￥{$goods.danprice}</b>
+		            </div>
+		        </div>
+		        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+		    </a>
+		</div>
+		<!-- 未开始 end  -->
+	<?php }else if( $spike_goods['end_time'] < time() ){ ?>
+		<!-- 已结束 begin  -->
+		<div class="kt">
+		    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+		        <div class="kt_index_img">
+		            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+		        </div>
+		        <div class="kt_index_text">首页</div>
+		    </a>
+			<a id="kt_like_btn" class="kt_like">
+                <div class="kt_index_img">
+                    <div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+                </div>
+                <div class="kt_index_text">收藏</div>
+            </a>
+		    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+		    <div class="free-trial-btn">
+                <span>活动结束</span>
+            </div>
+		    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+		        <div class="kt_price">
+		            <div>
+		                <b id="tuan_one_price">￥{$goods.danprice}</b>
+		            </div>
+		        </div>
+		        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+		    </a>
+		</div>	
+		<!-- 已结束end -->
+	<?php }else { ?>
+		<!-- 正常购买 开始 -->
+		<?php if($pin_id >0){ ?>
+			<?php if($is_me) { ?>
+				<div class="kt which_one">
+				     <a class="kt_item kt_item1"><span>邀请好友参团</span>
+				         <div class="kt_height">
+				             <b id="tuan_more_price">
+				               	￥<i>{$goods.danprice}</i>
+				             </b>
+				         </div>
+				     </a>
+				 </div>
+			<?php }else{ ?>
+				<div class="kt which_one" id="tuan_more_btn">
+		            <a class="kt_item kt_item1"><span>立即参团</span>
+		                <div class="kt_height">
+		                    <b id="tuan_more_price">
+		                      	  ￥<i>{$goods.pinprice}</i>
+		                    </b>
+		                </div>
+		            </a>
+		        </div>
+			<?php } ?>
+		<?php }else { ?>
+			<div class="kt">
+			    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+			        <div class="kt_index_img">
+			            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+			        </div>
+			        <div class="kt_index_text">首页</div>
+			    </a>
+				<a id="kt_like_btn" class="kt_like">
+					<div class="kt_index_img">
+						<div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+					</div>
+					<div class="kt_index_text">收藏</div>
+				</a>
+			    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+			    <a id="tuan_more_btn" class="kt_item">
+			        <div class="kt_price"><span id="tuan_more_price">¥&nbsp;{$goods.pinprice}</span></div>
+			        <div class="kt_btn"><b id="tuan_more_number">{$goods.pin_count}人团</b></div>
+			    </a>
+			    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+			        <div class="kt_price">
+			            <div><b id="tuan_one_price">¥&nbsp;{$goods.danprice}</b></div>
+			        </div>
+			        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+			    </a>    
+			</div>
+		<?php } ?>
+		
+		<!-- 正常购买 结束 -->
+	<?php } ?>
+<?php } ?>
+
+
+<?php if($goods['type'] == 'lottery') { ?>
+	
+	<?php 
+		$lottery_goods = M('lottery_goods')->where( array('goods_id' => $id) )->find();
+	 	
+	 ?>
+	<?php  
+	 	if($lottery_goods['is_open_lottery'] == 0 )
+		{
+		
+	?> 
+			<?php if($lottery_goods['begin_time'] > time() ){  ?>
+				<!-- 未开始 begin  -->
+				<div class="kt">
+				    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+				        <div class="kt_index_img">
+				            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+				        </div>
+				        <div class="kt_index_text">首页</div>
+				    </a>
+					<a id="kt_like_btn" class="kt_like">
+						<div class="kt_index_img">
+							<div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+						</div>
+						<div class="kt_index_text">收藏</div>
+					</a>
+				    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+				    <div class="free-trial-btn">
+		                <span>即将开始</span>
+		            </div>
+				    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+				        <div class="kt_price">
+				            <div>
+				                <b id="tuan_one_price">￥{$goods.danprice}</b>
+				            </div>
+				        </div>
+				        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+				    </a>
+				</div>
+				<!-- 未开始 end  -->
+				
+			<?php }else if( $lottery_goods['end_time'] < time() ){ ?>
+				
+				<!-- 等待开奖 begin  -->
+				<div class="kt">
+				    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+				        <div class="kt_index_img">
+				            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+				        </div>
+				        <div class="kt_index_text">首页</div>
+				    </a>
+					<a id="kt_like_btn" class="kt_like">
+						<div class="kt_index_img">
+							<div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+						</div>
+						<div class="kt_index_text">收藏</div>
+					</a>
+				    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+				    <div class="free-trial-btn">
+		                <span>等待开奖</span>
+		            </div>
+				    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+				        <div class="kt_price">
+				            <div>
+				                <b id="tuan_one_price">￥{$goods.danprice}</b>
+				            </div>
+				        </div>
+				        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+				    </a>
+				</div>	
+				<!-- 等待开奖 end -->
+				
+			<?php }else{ ?>
+				<?php if($pin_id >0){ ?>
+				<!-- 带拼团参数 begin -->
+				<?php if($is_me) { ?>
+					<!--  是自己的 begin  -->
+					<div class="kt which_one">
+					     <a class="kt_item kt_item1"><span>邀请好友参团</span>
+					         <div class="kt_height">
+					             <b id="tuan_more_price">
+					               	￥<i>{$goods.pinprice}</i>
+					             </b>
+					         </div>
+					     </a>
+					 </div>
+					 <!--  是自己的 end  -->
+					 
+				<?php }else{ ?>
+					<!--  不是自己的 begin  -->
+					<div class="kt which_one" id="tuan_more_btn">
+			            <a class="kt_item kt_item1"><span>立即参团</span>
+			                <div class="kt_height">
+			                    <b id="tuan_more_price">
+			                      	  ￥<i>{$goods.pinprice}</i>
+			                    </b>
+			                </div>
+			            </a>
+			        </div>
+			        <!--  不是自己的  end  -->
+				<?php } ?>
+				<!-- 带拼团参数 end -->
+			<?php }else { ?>
+				<!-- 重新开团begin -->
+				<div class="kt">
+				    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+				        <div class="kt_index_img">
+				            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+				        </div>
+				        <div class="kt_index_text">首页</div>
+				    </a>
+					<a id="kt_like_btn" class="kt_like">
+						<div class="kt_index_img">
+							<div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+						</div>
+						<div class="kt_index_text">收藏</div>
+					</a>
+				    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+				    <a id="tuan_more_btn" class="kt_item">
+				        <div class="kt_price">
+				            <span id="tuan_more_price">
+				                <i>￥</i>
+				                <i>{$goods.pinprice}</i>
+				            </span>
+				        </div>
+				        <div class="kt_btn">
+				            <b id="tuan_more_number">{$goods.pin_count}人团</b>
+				        </div>
+				    </a>
+				    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+				        <div class="kt_price">
+				            <div>
+				                <b id="tuan_one_price">￥{$goods.danprice}</b>
+				            </div>
+				        </div>
+				        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+				    </a>
+				</div>
+				<!-- 重新开团end -->
+				
+			<?php } ?>
+					
+			<?php } ?>
+	<?php }else{ ?>
+	 	
+	 	<div class="kt">
+		    <a id="kt_index_btn" class="kt_index" onclick="location.href='{:U('Index/index')}';">
+		        <div class="kt_index_img">
+		            <img src="__PUBLIC__/pinduoduo/assets/img/index-38d3d45c2c.png">
+		        </div>
+		        <div class="kt_index_text">首页</div>
+		    </a>
+		    <a id="kt_like_btn" class="kt_like">
+				<div class="kt_index_img">
+					<div class="kt_index_img_bg <?php if($is_fav){ ?>liked <?php } ?>"></div>
+				</div>
+				<div class="kt_index_text">收藏</div>
+			</a>
+		    <?php  
+				if($open_web_kefu == 1){ 
+			?>
+			<a id="kt_message_btn" target="_blank" href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $id))}" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php }else{ ?>
+			<a id="kt_message_btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="kt_message">
+				<div class="kt_message_img can_contact">
+					 <img src="__PUBLIC__/pinduoduo/assets/img/message-fb3e83c325.png">
+				</div>
+				<div class="kt_message_text">客服</div>
+			</a>
+			<?php } ?>
+		    <div class="free-trial-btn" onclick="location.href='{:U('Goods/lotteryinfo', array('goods_id' => $id))}'">
+                <span>查看中奖名单</span>
+            </div>
+		    <!--ms-if-->
+		    <!--ms-if-->
+		    <a id="tuan_one_btn" class="kt_item kt_item_buy out">
+		        <div class="kt_price">
+		            <div>
+		                <b id="tuan_one_price">￥{$goods.danprice}</b>
+		            </div>
+		        </div>
+		        <div class="kt_btn" id="tuan_one_number">单独购买</div>
+		    </a>
+		    <!--ms-if-->
+		</div>
+	 	
+	<?php } ?> 
+
+<?php } ?>
+
+
+<input type="hidden" name="type" id="type" value="<?php echo $goods['type']; ?>" />
+<input type="hidden" name="goods_id" id="goods_id" value="<?php echo $id; ?>" />
+<input type="hidden" name="pin_id" id="pin_id" value="<?php echo $pin_id; ?>" />
+<input type="hidden" name="pin_type" id="pin_type" value="pin" />

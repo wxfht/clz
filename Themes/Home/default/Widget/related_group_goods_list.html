@@ -1,0 +1,21 @@
+<div id="recommend-grid-old" avalonctrl="recommend-grid-old">
+    <div class="recommend-grid-old" >
+        <div class="recommend_head">你可能会喜欢</div>
+       
+        <ul>
+            <volist name="related_goods" id="d">
+            <li class="item" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+                <div class="recommend_img" style="background:none;">
+                    <img  style="height: 105px;" src="{$d.image}">
+                </div>
+                <div class="recommend_title">{$d.name}</div>
+                <div class="recommend-price">
+                    <span class="price-icon">￥</span>
+                    <span class="price-header">{$d.pinprice}</span>
+                </div>
+            </li>
+            </volist>
+        </ul>
+    </div>
+    <!--ms-if-->
+</div>

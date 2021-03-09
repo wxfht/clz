@@ -1,0 +1,250 @@
+<extend name="Public:base" />
+<block name="content">
+	<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>	
+	<ul class="nav nav-tabs">
+		
+	  <li class="active"><a href="#tab-order" data-toggle="tab">订单详情</a></li>
+	 
+	  
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="tab-order">
+			<table class="table table-bordered">
+				<tr>
+				    <td>订单ID</td>
+				    <td>{$data.order.order_id}</td>
+					<td>订单编号</td>
+					<td class="red"><b>{$data.order.order_num_alias}</b></td>
+					<td>下单时间</td>
+					<td>{$data.order.date_added|toDate='Y/m/d H:i:s'}</td>
+				</tr>
+				<tr>
+					<td>会员名称</td>
+					<td>{$data.order.uname}</td>
+					<td>联系电话</td>
+				    <td>{$data.order.shipping_tel}</td>
+					<td>合计金额</td>
+				    <td class="red">
+				    	<b>￥{$data.order.total}</b>
+				    </td>
+				</tr>
+				<tr>
+				    <td>订单状态</td>
+				    <td id="order-status" class="red"><b>{$data.order.name}</b></td>
+					
+					<?php if(!empty($data['order']['comment'])){ ?>
+					<td>订单留言</td>
+					<td>{$data.order.comment}</td>
+					<?php } ?>
+					
+					<?php if(!empty($order_goods_haitao)){ ?>
+				
+					<td>海淘真实姓名</td>
+					<td><b class="red">{$order_goods_haitao.real_name}</b></td>
+					<td>海淘身份证</td>
+					<td><b class="red">{$order_goods_haitao.id_card}</b></td>
+			
+					<?php } ?>
+				</tr>   
+				<?php if($data['order']['is_pin'] == 1){ ?>
+				<tr>
+					<td>扫码查看拼团详情<img src="http://qr.topscan.com/api.php?text={$pin_url}" width="100" /></td>
+				</tr>
+				<?php } ?>
+				</table>
+				
+				<table class="table table-bordered">
+				  <tr>
+					<td>收货人姓名</td>
+					<td>{$data.order.shipping_name}</td>
+					<td>所在地</td>
+					<td>
+						<?php echo get_area_name($data['order']['shipping_province_id']); ?>，
+						<?php echo get_area_name($data['order']['shipping_city_id']); ?>，
+						<?php echo get_area_name($data['order']['shipping_country_id']); ?>
+					</td>
+					<td>地址</td>
+					<td>{$data.order.address}</td>
+				  </tr>
+					
+				  <tr>
+					<td>支付方式</td>
+					<td>微信支付</td>
+					<td>微信支付交易号</td>
+					<td>{$data.order.transaction_id}</td>
+					<td>联系电话</td>
+					<td>{$data.order.shipping_tel}</td>
+				  </tr>
+				  <?php if($data['order']['delivery'] == 'pickup'){ ?>
+					  <tr>
+						<td>货运方式</td>
+						<td><span class="red">自提</span></td>
+						<td>自提点</td>
+						<td><span class="red"><?php echo $pick_up['pick_name']; ?></span></td>
+					  </tr>
+					  <tr>
+						<td>自提序列号</td>
+						<td><span class="red"><?php echo $pick_order_info['pick_sn']; ?></span>
+							&nbsp;&nbsp;(提货状态:<span class="red">
+								<?php 
+								if($pick_order_info['state'] == 0)
+								{
+									echo '未提货';
+								} else if($pick_order_info['state'] == 1){
+									echo '已提货';
+								}
+								?></span>)
+						</td>
+						<td>自提点联系电话</td>
+						<td><span class="red"><?php echo $pick_up['telephone']; ?></span></td>
+					  </tr>
+				  <?php }else { ?>
+				  <tr>
+					<td>货运方式</td>
+					<td><?php echo get_shipping_name($data['order']['shipping_method']); ?></td>
+					<td>快递单号</td>
+					<td><?php echo $data['order']['shipping_no']; ?></td>
+					
+				  </tr>
+			   
+				  <?php } ?>
+				  
+				</table>
+				
+				<table class="table table-bordered">
+				  <thead>
+					<tr>
+					  <td class="left">商品品名</td>
+					  <td class="left">型号</td>
+					  <td class="right">数量</td>
+					  <td class="right">价格</td>
+					  <td class="right">总计</td>
+					</tr>
+				  </thead>
+				  <tbody>
+					<?php if(isset($data['order_product'])&&is_array($data['order_product'])){ ?>
+						<?php foreach ($data['order_product'] as $product) { ?>
+						<tr>
+						  <td class="left">
+							<a href="{:U('Goods/edit',array('id'=>$product['goods_id']))}"><?php echo $product['name']; ?></a>
+							<?php if($option_list=M()->query('select * from '.C('DB_PREFIX').'order_option where order_goods_id='.$product['order_goods_id'].' and order_id='.$product['order_id'])){ ?>
+							<?php foreach ($option_list as $option) { ?>
+							<br />
+							&nbsp;<small> - <?php echo $option['name']; ?>: <?php echo $option['value']; ?></small>
+							<?php } ?>
+							<?php } ?>
+						  </td>
+						  <td class="left"><?php echo $product['model']; ?></td>
+						  <td class="right"><?php echo $product['quantity']; ?></td>
+						  <td class="right">￥<?php echo $product['price']; ?></td>
+						  <td class="right">￥<?php echo $product['total']; ?></td>
+						</tr>
+						<?php } ?>
+					<?php } ?>
+				  </tbody>
+				  <?php if(isset($data['order_total'])&&is_array($data['order_total'])){ ?>
+					  <?php foreach ($data['order_total'] as $totals) { ?>
+					  <tbody id="totals">
+						<tr>
+						  <td colspan="4" class="right"><?php echo $totals['title']; ?>:</td>
+						  <td class="right"><?php echo $totals['text']; ?></td>
+						</tr>
+					  </tbody>
+					  <?php } ?>
+				  <?php } ?>
+				</table>	
+				<div id="history"></div>
+				<table class="table table-bordered" >
+				  <tr>
+					<td>订单状态</td>
+					<td>
+					  <input type="hidden" name="old_order_status_id" value="{$data.order.order_status_id}" id="old_order_status_id" />
+					  <select name="order_status_id">
+						<?php foreach ($data['order_statuses'] as $order_statuses) { ?>
+							
+						 <option value="<?php echo $order_statuses['order_status_id']; ?>" <?php if ($order_statuses['order_status_id'] == $data['order']['order_status_id']) { echo ' selected="selected"'; }?> ><?php echo $order_statuses['name']; ?></option>
+					   
+						<?php } ?>
+					  </select>
+					</td>
+				  </tr>
+					<?php if($data['order']['delivery'] == 'express'){ ?>
+					<tr>
+						<td>快递类型</td>
+						<td>
+							<select name="shipping_method" class="shipping_method" id="shipping_method">
+								<option value="0">请选择快递</option>
+								<?php foreach($express_list as $express) { ?>
+								<option value="<?php echo $express['id']; ?>" <?php if($express['id'] == $data['order']['shipping_method']){ ?>selected <?php } ?>  >
+									<?php echo $express['express_name']; ?>
+								</option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>快递单号</td>
+						<td>
+							<input type="text" class="shipping_no" name="shipping_no" id="shipping_no" value ="<?php echo  $data['order']['shipping_no']; ?>" />
+						</td>
+					</tr>
+					<?php } ?>   
+				  <tr>
+					<td>订单附言</td>
+					<td><textarea name="comment" cols="40" rows="8" style="width: 99%"></textarea>
+					</td>
+				   </tr>
+				   <tr>
+					<td colspan="2">
+				  <div class="text-right">
+					<button id="button-history" class="btn btn-primary" data-loading-text="Loading...">
+					<i class="fa fa-plus-circle"></i>
+					添加订单记录
+					</button>
+				  </div>
+				  </td>
+				  </tr>
+				</table>
+		</div>
+		
+		
+	</div>
+</block>
+<block name="javascript">
+<script>	
+$('#history').load('<?php echo U("Order/history",array("id"=>I("id"))); ?>');
+$('#button-history').live('click', function() {
+
+	$.ajax({
+		url: '<?php echo U("Order/history",array("id"=>I("id"))); ?>',
+		type: 'post',
+		dataType: 'html',
+		data: 'shipping_no='+encodeURIComponent($('#shipping_no').val())+'&shipping_method='+encodeURIComponent($('#shipping_method').val())+'&order_status_id=' + encodeURIComponent($('select[name=\'order_status_id\']').val()) + '&notify=0&comment=' + encodeURIComponent($('textarea[name=\'comment\']').val()),
+		beforeSend: function() {
+			$('.success, .warning').remove();
+			$('#button-history').attr('disabled', true);
+			$('#history').prepend('<div class="attention"><img src="__IMG__/loading.gif" alt="" />加载中...</div>');
+		},
+		complete: function() {
+			$('#button-history').attr('disabled', false);
+			$('.attention').remove();
+		},
+		success: function(html) {
+			$('#history').html(html);
+			
+			$('textarea[name=\'comment\']').val('');
+			
+			$('#order-status').html($('select[name=\'order_status_id\'] option:selected').text());
+		}
+	});
+});
+</script>
+</block>

@@ -1,0 +1,173 @@
+<extend name="Public:base" />
+<block name="content">
+	<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+		</h1>
+	</div>	
+	<div class="row">
+		<div class="alert alert-info">
+			<i class="icon-hand-right"></i> 
+			平台添加的商品将直接参与活动，无须审核
+			</button>
+		</div>
+	</div>	
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#tab-member" data-toggle="tab">申请活动</a></li>	 
+	</ul>
+	
+	<div class="tab-content">
+		
+		<div class="tab-pane active" id="tab-member">
+			<h3 style="font-weight:bold;">活动信息</h3>
+			<table class="table table-binfoed">
+				<tr>
+				    <td>活动名称:&nbsp;{$subject.name}</td>
+				    <td>
+						活动类型:&nbsp;
+						<?php 
+							switch($subject['type'])
+							{
+								case 'normal':echo '常规活动';break;
+								case 'zeyuan':echo '0元试用';break;
+								case 'niyuan':echo '9.9元活动';break;
+								case 'oneyuan':echo '1元购物活动';break;
+							}
+						?>
+					</td>
+				</tr>
+				<tr>
+				    <td>开始时间:&nbsp;<?php echo date('Y-m-d H:i:s', $subject['begin_time']); ?></td>
+				    <td>
+						结束时间:&nbsp;
+						<?php echo date('Y-m-d H:i:s', $subject['end_time']); ?>
+					</td>
+					<td>
+						限定价格:&nbsp;
+						<?php 
+							if($subject['price'] == -1)
+							{
+								echo '不限制';
+							} else {
+								echo $subject['price'].'元';
+							}
+						?>
+					</td>
+				</tr>
+			</table>	
+		</div>
+		<div class="row">
+			<div class="col-xs-12"> 
+				<div class="panel panel-info">
+					<div class="panel-heading">添加活动商品</div>
+						<div class="panel-body">
+							<div class="col-xs-12 search-row"> 
+								<div class="col-sm-4">
+									<span class="form-label">商品名称：</span>
+									<input type="text" id="goods_name" name="goods_name" value="">
+								</div>
+								<div class="col-sm-4"> 
+									<button name="subtype" id="search" value="search" class="btn btn-white btn-search"> <i class="icon-search"></i> 检 索 </button>
+									
+									<button name="subtype" id="baom" value="search" class="btn btn-white btn-search"> 
+									<i class="icon-ok"></i> 报名 </button>
+								</div> 
+							</div> 
+							<div class="col-xs-12 search-row"> 
+								<div class="tags" style="border:none;width:100%;">
+								</div>
+							</div> 
+					  </div>
+				</div>
+			 </div>
+			 <div class="col-xs-12" id="goods_result"> 
+			 
+			 </div>
+			 
+			 
+		</div>
+	
+	</div>
+	
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+var sub_url ="{:U('Subject/sub_subject', array('id' => $subject['id']))}";
+
+$(function(){
+	$('#search').click(function(){
+		var goods_name = $('#goods_name').val();
+		$.ajax({
+			url:"{:U('Goods/goods_search')}",
+			type:'post',
+			data:{goods_name:goods_name},
+			dataType:'json',
+			success:function(ret){
+				$('#goods_result').html(ret.html);
+			}
+		})
+	});
+	$('#baom').click(function(){
+		var arr = new Array();
+		$('.tag').each(function(){
+			arr.push($(this).attr('rel_goods_id'));
+		})
+		if(arr.length == 0)
+		{
+			alert('请选择需要参加活动的商品');
+			return false;
+		}
+		var data_obj = {};
+		data_obj.goods_ids_arr = arr;
+		$.ajax({
+			url:sub_url,
+			type:'post',
+			data:data_obj,
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('报名成功');
+					location.href = location.href;
+					return false;
+				} else {
+					alert(ret.msg);
+					return false;
+				}
+			}
+		})
+		
+	})
+	$('.close').live('click',function(){
+		$(this).parent().remove();
+	})
+	$('.cgoods_id').live('click',function(){
+		var rel_id = $(this).val();
+		var goods_name = $(this).attr('rel_name');
+		
+		if($(this).is(':checked')) { 
+			if($('.tag'+rel_id).length ==0)
+			{
+				var rel_html = '<span class="tag tag'+rel_id+'" rel_goods_id="'+rel_id+'">'+goods_name+'<button type="button" class="close">×</button></span>';
+				$('.tags').append(rel_html);
+			}
+		}else {
+			$('.tag'+rel_id).remove();
+		}
+	})
+	
+})
+</script>
+<script>
+$(function(){	
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("a_status", {$data.a_status|default=1});		
+	</present>
+	
+		
+});
+</script>							
+</block>

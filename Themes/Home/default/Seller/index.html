@@ -1,0 +1,304 @@
+<extend name="Public:mogubase" />
+<block name="content">  
+
+<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/index.css" media="all" /> 
+<link rel="stylesheet" href="__PUBLIC__/mogu/base-22357a5508.css">
+<link rel="stylesheet" href="__PUBLIC__/mogu/shop-73c3bb1a99.css">
+<script type="text/javascript">			window.use_screen_base = '640_mate';			(function(a,b){var c="orientationchange"in b?"orientationchange":"resize",d=use_screen_base.indexOf("_mate"),e=parseInt(use_screen_base),f=a.documentElement,g=function(){var a=f.clientWidth,c=b.innerWidth;f.style.fontSize=100*(c/e)+"px"};if(/iPad.*OS|iPhone.*OS/.test(navigator.userAgent)&&d>0){var h=a.querySelectorAll("meta[name=viewport]"),i=b.devicePixelRatio;i=i!=1?2:1,h[0]&&h[0].setAttribute("content","width=device-width, user-scalable=no, minimum-scale="+1/i+", maximum-scale="+1/i+", initial-scale="+1/i)}g(),b.addEventListener(c,g,!1),delete use_screen_base})(document,window);		</script>
+
+  <header class="page_head"> 
+   <div class="back_icon" id="back_btn">
+    <i></i>
+   </div> 
+   <div class="right_btn js_shop_cate" style="display:none;">
+    <i></i>分类
+   </div> 
+   <a class="title">{$seller_info.s_true_name}</a> 
+   <div class="cate_wrap none_f"> 
+    <div class="cate_inner"> 
+		<?php foreach($category_list as $cate_val){ ?>
+		<a href="javascript:;" data-gid="<?php echo $cate_val['id']; ?>"><?php echo $cate_val['name']; ?></a>
+		<?php } ?>
+    </div> 
+   </div> 
+  </header> 
+  <section> 
+   <div class="shop_head"> 
+    <a class="shop_info" href="javascript:void(0)"> 
+     <div class="shop_logo" style="background-image: url(<?php echo resize($seller_info['s_logo'], 200, 200); ?>);"></div> 
+     <h3 class="shop_nick">{$seller_info.s_true_name}</h3> 
+     </a> 
+   </div> 
+   <div class="shop_main"> 
+    <div class="nums">
+    	  商品：
+     <span>{$goods_count}</span>粉丝：
+     <span>{$fans_count}</span> 
+    </div> 
+    <!-- <p class="shop_desc">YIGELILA，懂女人，更懂连衣裙</p> --> 
+    <div class="follow">
+	
+		<?php if($is_fav_seller){  ?>
+		<div class="operate_btn follow_btn js_follow_btn" data-follow="1"> 
+		  <i></i>已收藏
+		 </div> 
+		<?php }else { ?>
+		<div class="operate_btn follow_btn js_follow_btn" data-follow="0"> 
+		  <i></i>收藏店铺
+		 </div> 
+		<?php } ?>
+     
+     	
+     	 <?php  
+			if($open_web_kefu == 1){ 
+		 ?>
+			  <a href="{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id']))}" class="operate_btn customer_service js_customer_service"><i></i>联系客服</a>   
+		 <?php }else{ ?>
+			  <a  href="http://wpa.qq.com/msgrd?v=3&uin={$seller_info.s_qq}&site=qq&menu=yes" class="operate_btn customer_service js_customer_service"><i></i>联系客服</a>     
+		 <?php } ?>
+     	
+    </div> 
+   </div> 
+   <div class="shop_coupon"> 
+   </div> 
+   <div class="space_bg"></div> 
+	   <nav class="js_poster_nav"> 
+		    <ul> 
+			     <li class="order current" id="sort_hint_0"><strong>默认</strong></li> 
+			     <li class="order" id="sort_hint_2"><strong>最新</strong></li> 
+			     <li class="order" id="sort_hint_1"><strong>销量</strong></li> 
+			     <li class="order on_price" id="sort_hint_3"><strong>价格
+			     <span id="price_order" style="display:none;"></span></strong></li> 
+		    </ul>                   
+	   </nav>
+	    
+   <div class="goods_wrap"> 
+    <div id="goods_wall"> 
+     <div class="poster_wrap waterfall-container" id="tuan_list">
+      
+      <volist name="list" id="d">
+      <div class="poster_grid poster_wall waterfall-frame-1 waterfall-box waterfall-optimise-show" > 
+       <figure> 
+        <div class="pic_load"> 
+			
+         <a class="bs_load_img lazyTransition" style="opacity: 1; " href="{:U('/goods/'.$d['goods_id'])}" > 
+			<img src="{$d.image}" width="100%" />
+		 </a> 
+        </div> 
+        <p class="clothesTitle">{$d.name}</p> 
+        <figcaption> 
+         <span class="price">￥{$d.danprice}</span> 
+         <span class="like icon-heart">{$d.seller_count}</span> 
+        </figcaption> 
+       </figure> 
+      </div>
+      </volist>
+      
+     </div>
+    </div> 
+    <div class="pullUp" id="center_pullup" status="loading"> 
+     <div></div>
+     <div></div>
+     <div></div>
+     <div></div>
+     <div></div>
+     <div></div>
+     <div></div>
+     <div></div>
+    </div> 
+   </div>
+  </section>
+
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var gid = 0;
+var seller_id = {$seller_id};
+var cur_url = "{:U('Seller/info')}";
+var order_by = 'default';
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	var best_url = cur_url+'&page='+_pa;
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa,seller_id:seller_id,is_ajax:1,order_by:order_by,gid:gid},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+					//bindImgEvent(); //暂时屏蔽
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$('.coupon-take').click(function(){
+		var quan_id = $(this).attr('data-id');
+		$.ajax({
+			url:"{:U('Seller/getQuan')}",
+			type:'post',
+			data:{quan_id:quan_id},
+			dataType:'json',
+			success:function(result){
+				showTip(result.msg);
+			}
+		})
+	})
+	$('#back_btn').click(function(){
+		location.href = "{:U('Index/index')}";
+		return false;
+	})
+	$('.js_follow_btn').click(function(){
+		//seller_id
+		var obj = $(this);
+		$.ajax({
+			url:"{:U('user/fav_storetoggle')}",
+			type:'get',
+			data:{store_id:seller_id},
+			dataType:'json',
+			success:function(ret){
+				
+				if(ret.code == 1)
+				{
+					$(obj).attr('data-follow',0);
+					$(obj).html('<i></i>收藏店铺');
+				}else{
+					$(obj).attr('data-follow',1);
+					$(obj).html('<i></i>已店铺');
+				}
+				
+			}
+		})
+	})
+	
+	$(window).scroll( function() { 
+		loaddata();
+	});
+	
+	$('.cate_inner a').click(function(){
+		//gid
+		gid = $(this).attr('data-gid');
+		$('.cate_wrap').addClass('none_f');
+		_pa = 1;
+		
+		$('#tuan_list').html('');
+		nextpage();
+		
+	})
+	
+	$('#goods_sort').click(function(){
+		if( $('.nav_item_order_bd_arrow').hasClass('arrow_rotate_m_90') ){
+			$('.sort_container').addClass('not_show_hint');
+			$('.nav_item_order_bd_arrow').removeClass('arrow_rotate_m_90');
+		} else {
+			$('.sort_container').removeClass('not_show_hint');
+			$('.nav_item_order_bd_arrow').addClass('arrow_rotate_m_90');
+		}
+	})
+	$('#sort_hint_0').click(function(){
+		
+		$(this).addClass('current').siblings().removeClass('current');
+		
+		//$('.sort_hints').removeClass('color_def');
+		//$('.sort_hints').removeClass('color_hot');
+		//$('.sort_hints').removeClass('color_new');
+		//$('.sort_hints').addClass('color_def');
+		order_by = 'default';
+		_pa = 1;
+		
+		$('.sort_container').addClass('not_show_hint');
+		$('.nav_item_order_bd_arrow').removeClass('arrow_rotate_m_90');
+		$('#goods_sort').html( $(this).html());
+		$('#tuan_list').html('');
+		nextpage();
+		
+	})
+	$('#sort_hint_1').click(function(){
+		$(this).addClass('current').siblings().removeClass('current');
+		//$('.sort_hints').removeClass('color_def');
+		//$('.sort_hints').removeClass('color_hot');
+		//$('.sort_hints').removeClass('color_new');
+		//$('.sort_hints').addClass('color_hot');
+		order_by = 'hot';
+		_pa = 1;
+		$('.sort_container').addClass('not_show_hint');
+		$('.nav_item_order_bd_arrow').removeClass('arrow_rotate_m_90');
+		$('#goods_sort').html( $(this).html());
+		$('#tuan_list').html('');
+		nextpage();
+	})
+	$('#sort_hint_2').click(function(){
+		$(this).addClass('current').siblings().removeClass('current');
+		//$('.sort_hints').removeClass('color_def');
+		//$('.sort_hints').removeClass('color_hot');
+		//$('.sort_hints').removeClass('color_new');
+		//$('.sort_hints').addClass('color_new');
+		order_by = 'new';
+		_pa = 1;
+		$('.sort_container').addClass('not_show_hint');
+		$('.nav_item_order_bd_arrow').removeClass('arrow_rotate_m_90');
+		$('#goods_sort').html( $(this).html());
+		$('#tuan_list').html('');
+		nextpage();
+	})
+	
+	$('#sort_hint_3').click(function(){
+		$(this).addClass('current').siblings().removeClass('current');
+		//$('.sort_hints').removeClass('color_def');
+		//$('.sort_hints').removeClass('color_hot');
+		//$('.sort_hints').removeClass('color_new');
+		//$('.sort_hints').addClass('color_hot');
+		order_by = 'price';
+		_pa = 1;
+		$('.sort_container').addClass('not_show_hint');
+		$('.nav_item_order_bd_arrow').removeClass('arrow_rotate_m_90');
+		$('#goods_sort').html( $(this).html());
+		$('#tuan_list').html('');
+		nextpage();
+	})
+	
+})
+</script>
+<script>
+$(function(){
+	$('.js_shop_cate').click(function(){
+		if( $('.cate_wrap').hasClass('none_f') ){
+			$('.cate_wrap').removeClass('none_f');
+		}else {
+			$('.cate_wrap').addClass('none_f');
+		}
+	})
+	
+})
+</script>
+
+</block>

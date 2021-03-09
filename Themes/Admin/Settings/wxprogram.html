@@ -1,0 +1,166 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="panel-body">
+			<ul class="nav nav-tabs">
+            <li <?php if($type == 1){ ?>class="active" <?php } ?>><a href="{:U('settings/wxprogram')}">参数配置</a></li>
+            <li <?php if($type == 2){ ?>class="active" <?php } ?>><a href="{:U('settings/wxprogram_template')}">模板消息配置</a></li> 
+            
+		  </ul>
+		</div>
+	</div>
+	
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="form" method="post" action="{:U('Settings/save')}">	
+		
+
+			<div class="col-xs-12 top">
+					<div class="col-sm-2 ">微信小程序APPID：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.weprogram_appid.value|default=''}" id="weprogram_appid" name="weprogram_appid" class="form-control" placeholder="">
+                  	</div>
+            </div>
+			<div class="col-xs-12 top">
+					<div class="col-sm-2 ">微信小程序appscret：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.weprogram_appscret.value|default=''}" id="weprogram_appscret" name="weprogram_appscret" class="form-control" placeholder="">
+                  	</div>
+            </div>
+			<div class="col-xs-12 top">
+					<div class="col-sm-2 ">微信小程序支付KEY：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.weprogram_pay_key.value|default=''}" id="weprogram_pay_key" name="weprogram_pay_key" class="form-control" placeholder="">
+                  	</div>
+            </div>
+			<div class="col-xs-12 top">
+					<div class="col-sm-2 ">微信小程序商户id：</div>
+					<div class="col-sm-6">
+						<input type="text" value="{$site.weprogram_mch_id.value|default=''}" id="weprogram_mch_id" name="weprogram_mch_id" class="form-control" placeholder="">
+                  	</div>
+            </div>
+		</form>
+		<div class="form-group">
+			<label class="col-sm-1 control-label no-padding-left"> </label>	
+			<div class="col-sm-11">
+				<button form="form" type="submit"   class="btn btn-sm btn-primary">提交</button>		
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<style>
+.top, .buttom {
+    margin-top: 15px;
+}
+</style>
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>	
+$(function(){	
+	
+	// tooltips on hover button-upload
+	$('[data-toggle=\'tooltip\']').tooltip({container: 'body', html: true});
+
+	// Makes tooltips work on ajax generated content
+	$(document).ajaxStop(function() {
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	});	
+	
+	
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+		
+		//alert(index);
+		
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		//商品图片
+		$('#thumb-image').on('click', function() {
+			
+			//alert('333');
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'shop'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_goods_image:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+			
+		
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+});
+	
+</script>
+</block>

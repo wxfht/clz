@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商家入驻</title>
+    <meta name="keywords" content="商家入驻">
+    <meta name="description" content="商家入驻">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link href="__PUBLIC__/pinduoduo/assets/css/common_8f20fc.css" rel="stylesheet">
+	<link href="__PUBLIC__/pinduoduo/assets/css/index_71bf9f.css" rel="stylesheet">
+	<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script>
+	<script src="__PUBLIC__/js/jquery/jquery-migrate-1.2.1.min.js"></script>
+	<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+	<script src="__PUBLIC__/js/typeahead-bs2.min.js"></script>
+	
+	<style type="text/css">.nb-modal{display:block}</style>
+	<style type="text/css">@media screen and (max-width:640px){body,html{background:#fff!important}header{background:#d12129;width:100%;height:60px}header .join-us{position:relative;z-index:9;width:40%;text-align:center;float:right}header .join-us .contact{margin-left:10px}header .join-us ul{background:#fff;padding:5px;text-align:left;position:absolute;font-size:14px;border:1px solid #ccc;margin-right:5px}header .join-us:hover{cursor:pointer}header .join-us p{padding:0;margin:0}header .join-us button{border:none;color:#fff;background:#d12129;padding:14px 20px;margin-top:12px;width:100%;outline:none;-webkit-filter:chroma(#000);filter:chroma(#000)}header img:hover{cursor:pointer}header .container{width:168px;margin:0;padding:10px 0 0 10px;float:left}header .container img{width:90%}header .container .login{margin-top:40px;color:#fff;position:relative;z-index:9}header .container .login span{display:inline-block;padding-right:10px;border-right:1px solid #fff}header .container .login button{border:none;background:none;border:1px solid #fff;color:#fff;padding:2px 5px}header .container .login button:nth-of-type(2){border:none}}@media screen and (min-width:650px){header{background:#d12129;width:100%;height:80px}header .join-us{position:relative;z-index:9;width:200px;text-align:center;float:right;margin-top:-59px;margin-right:2%}header .join-us .contact{margin-left:30px}header .join-us .active{background:#fff;color:#333}header .join-us ul{background:#fff;padding:20px;text-align:left;position:absolute}header .join-us:hover{cursor:pointer}header .join-us p{padding:0;margin-bottom:5px;line-height:2em}header .join-us button{border:none;color:#fff;background:#d12129;padding:14px 20px;margin-top:12px;outline:none;-webkit-filter:chroma(#000);filter:chroma(#000)}header img:hover{cursor:pointer}header .container .login{margin-top:40px;color:#fff;position:relative;z-index:9}header .container .login span{display:inline-block;padding-right:10px;border-right:1px solid #fff}header .container .login button{border:none;background:none;border:1px solid #fff;color:#fff;padding:2px 5px}header .container .login button:nth-of-type(2){border:none}}</style>
+	<style type="text/css">.container-new{height:103px;width:100%;background:#fff;position:fixed;left:0;top:0;z-index:23}.container-new .container-center{height:100%;width:1200px;margin-left:auto;margin-right:auto}.container-new .container-center img{margin-top:18px}.container-new .container-center #header-category-new{margin-bottom:0;float:right}.container-new .container-center #header-category-new li{display:inline-block;font-size:20px;border-right:1px solid #6c6c6c;width:140px;position:relative;text-align:center;margin-top:29px}.container-new .container-center #header-category-new li.active a{color:#fc475d;font-size:22px}.container-new .container-center #header-category-new li:nth-of-type(1){width:120px}.container-new .container-center #header-category-new li:nth-of-type(6){border-right:none}.container-new .container-center #header-category-new li a{color:#6c6c6c}</style>
+	<style type="text/css">#choose-entry .tips{margin-right:20px;font-size:14px;color:#ccc;text-decoration:underline}#choose-entry .jumbotron{background:#fff;margin-top:50px;padding-left:10px!important;padding-right:10px!important;height:340px}#choose-entry .jumbotron .fixed{position:absolute;bottom:94px;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%)}#choose-entry .jumbotron p{font-size:16px}#choose-entry .jumbotron p:nth-of-type(1){color:#d4d4d4}#choose-entry .jumbotron .btn{h:45px;background:#f5495e;color:#fff;width:140px;margin-top:20px;height:45px;line-height:45px;padding:0}</style>
+
+	<style type="text/css">#qualification{padding-bottom:20px;background:#fff}#qualification .example{color:#00f;margin-left:10px;margin-right:10px;cursor:pointer}#qualification .example:hover+span{display:inline}#qualification .example+span{display:none;color:red}#qualification .image-btn{margin-top:40px}#qualification .upload-btn{margin-top:10px}#qualification label{color:#626262}#qualification input[type=text]{border-color:#e5e5e5;color:#545454}#qualification h4{margin-left:20px;margin-right:20px;border-bottom:1px solid #ccc;padding:10px 20px 10px 0;margin-bottom:30px}#qualification h4 span{display:inline-block;width:6px;height:20px;background:#fd7c6d;vertical-align:middle;margin-right:5px}#qualification .submit-btn{margin-right:50px;margin-bottom:180px;width:148px;height:40px;background:#fe7c6d;border:none}#qualification .logo-error li{display:inline-block;width:30%;vertical-align:top;cursor:pointer}#qualification .logo-error li img{width:80%}</style>
+	<style type="text/css">.a-upload{padding:4px 10px;line-height:20px;position:relative;cursor:pointer;color:#454343;border:1px solid #ddd;border-radius:4px;overflow:hidden;display:inline-block}.a-upload input{position:absolute;font-size:100px;right:0;top:0;opacity:0;cursor:pointer;width:100%;height:100%}.a-upload:hover{color:#444;background:#eee;border-color:#ccc;text-decoration:none}</style>
+	<style type="text/css">.navigation{font-size:0;background:#fff;height:105px;margin-top:20px;margin-bottom:20px}.navigation li{font-size:18px;width:20%;text-align:center;display:inline-block;margin-top:27px;position:relative}.navigation li:last-child:before{display:none}.navigation li:before{content:'';position:absolute;top:10px;right:-46%;width:64%;height:9px;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAJCAYAAAClkKuSAAABc0lEQVRIicWW0W2DMBCGP1AGYASYoHQDskG7AZ2gZII0E7SdoN4g2YCYBegGeARG6MNdhJQWsAWo94IlPh+/z7/NRY21OZADBr94AnrguhFfARfAbcQfgU/VtJiP9fkO1EDhkTBR9gtIN+AfgBYRnmzAl8qXHuwsHwPfQIY4pAbOTC/UKJ8AHfPCQ/kX4BlxbjcmfAGfASfENC3zppnkbw7sFcp03OmEsYU6Fb3XhB1ylMYilL8Cj8ABKXh3L3whb5C1XhDD1PiZ5hcfNdb+NaFCCuh04lycEQcYxBFr8gmy86myZmU+Vx5krS6Ej+9eFkh1j8AbsqtTUSK7navYuWKE8AmDmxziXrMinyL3csvgMBfK7/RloR8vgA/kuE39pUqGu+ykc6YihE+AV+QU9KrluiKfqpZSOZ/CjfI7BtcZj2Rosgopgk87EMrffmIH/FqrUL5DCrHHr7Wa5KPG2lTHziMZyPFz+PdRoXyBf8/47/wPkIeSvj8d+WoAAAAASUVORK5CYII=) no-repeat;background-size:contain}.navigation li.current i{color:#fff;background:#fd7c69}.navigation li i{w:30px;display:block;width:30px;height:30px;line-height:30px;text-align:center;border-radius:50%;background:#e5e5e5;margin:auto;font-style:normal;color:#878787}</style>
+	
+</head>
+<body>
+<include file="Zhaoshang:header_fetch" />
+
+<div> <div class="container"> <ul class="navigation"> 
+<li> <i>1</i> <span>个人/企业信息填写</span> </li> 
+<li class="current"> <i>2</i> <span>店铺信息填写</span> 
+</li> <li> <i>3</i> <span>资质审核</span> </li> <li> <i>4</i> <span>签约打款</span> </li> <li> <i>5</i> <span>入驻成功</span> </li> </ul>
+<!--v-component--> <div id="qualification"> <h4><span></span>店铺管理人基本信息 </h4> 
+
+<div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>店铺名称:</label> 
+<div class="col-lg-6"> <input type="text" id="store_name" name="store_name" class="form-control" placeholder="请输入店铺名称"> </div> 
+</div> 
+<div class="form-group row"> 
+<div class="col-lg-8 col-lg-offset-3"> 
+<p class="pdd-tips"> 注：个人店铺名称禁止出现<span style="color:red">旗舰、专卖、专营、官方、直营、官、官方认证、官方授权、商城、商店、企业、特卖、折扣
+</span>等关键词，否则入驻会被驳回；</p><!--v-if--> <!--v-if--> <!--v-if--> <!--v-if--> <!--v-if--> </div> </div> <div class="form-group row"> 
+
+<label class="col-lg-3 control-label text-right">
+<i class="must">*</i>店铺logo:</label> 
+
+<div class="col-lg-9" id="shop-image-row7"> 
+	<div class="col-lg-4" id="image-row7"> 
+		<a href="#" data-toggle="image" class="img-thumbnail" type="shop" id="thumb-image7" num="7">
+			<img osctype="shop_image7" src="__PUBLIC__/image/addphone.png" />
+		</a>
+		<input osctype="shop_image_input7" type="hidden" name="id_card_half" value="" id="input-image7" />	
+	</div>
+ 
+ </div> 
+ 
+ <div class="col-lg-9 col-lg-offset-3"> 
+ <p class="pdd-tips">注：正方形图片（尺寸为300*300）。请务必使用自己的店铺logo</p> </div> 
+ <div class="col-lg-9 col-lg-offset-3"> <p class="pdd-tips">出现以下几类logo，审核时将会被驳回：</p> </div> 
+ <div class="col-lg-9 col-lg-offset-3"> <ul class="logo-error"> <!--v-for-start-->
+ <li><p style="color:blue" title="点击查看图片">1、内容上直接使用实物照片</p><!--v-if-->
+ </li><li><p style="color:blue" title="点击查看图片">2、网上下载未经处理的图片</p><!--v-if--></li>
+ <li><p style="color:blue" title="点击查看图片">3、出现广告语</p><!--v-if--></li><li><p style="color:blue" title="点击查看图片">4、使用未经授权的他人品牌</p>
+ <!--v-if--></li><li><p style="color:blue" title="点击查看图片">5、出现第三方电商平台信息</p><!--v-if--></li>
+ <li><p style="color:blue" title="点击查看图片">6、使用其他logo</p>
+</li>
+ 
+  </ul> 
+  </div> 
+ </div> 
+ <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>主营类目:</label> 
+	<div class="col-lg-6"> 
+		<select id="category" class="form-control">
+			<?php foreach($goods_category as $category){ ?>
+			<option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+			<?php } ?>
+		</select>
+	</div> 
+</div> 
+ <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>所在城市:</label> 
+<div class="col-lg-6"> <input type="text" id="city_name" name="city_name" class="form-control" placeholder="请输入所在城市"> </div> 
+</div> 
+ <div class="form-group row"> <label class="col-lg-3 control-label text-right"><i class="must">*</i>店铺详情:</label> 
+ <div class="col-lg-6"> <textarea class="form-control" rows="3" id="store_descript" placeholder="介绍此店铺专营类目及特色"></textarea> </div> </div> 
+ 
+ <div class="form-group row"> <div class="col-lg-offset-3"> <p class="pdd-tips">1）个人店铺不能出现
+ <span style="color:red">厂家直营、直销、批发零售、涉及品牌、个人联系方式或者第三方平台的信息</span></p> <p class="pdd-tips">2） 企业店铺不能出现
+ <span style="color:red">批发零售、个人联系方式或者第三方平台的信息</span></p> <p class="pdd-tips">3）详情不超过200字</p> </div> </div> 
+ 
+ <h4></h4> 
+ <div class="form-group row"> <div class="col-lg-offset-3 col-lg-6"> 
+ <button type="button" id="submit" class="btn pdd-danger submit-btn">提交</button> </div> </div> </div> </div><!--v-component--> 
+ </div>
+
+ <block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script>
+$(function(){
+
+	$('#submit').click(function(){
+		var store_name = $('#store_name').val();
+		var store_logo = $('#input-image7').val();
+		var store_category = $('#category').val();
+		var store_descript= $('#store_descript').val();
+		var city_name = $('#city_name').val();
+		
+		if(store_name == '')
+		{
+			alert('请填写店铺名称');
+			return false;
+		}
+		
+		
+		if(store_logo == '')
+		{
+			alert('请上传店铺logo');
+			return false;
+		}
+		
+		if(city_name == '')
+		{
+			alert('请填写所在城市');
+			return false;
+		}
+		
+		if(store_descript == '')
+		{
+			alert('请填写店铺详情');
+			return false;
+		}
+		var data_obj = {};
+		data_obj.store_name = store_name;
+		data_obj.store_logo = store_logo;
+		data_obj.store_category = store_category;
+		data_obj.store_descript = store_descript;
+		data_obj.city_name = city_name;
+		
+		$.ajax({
+			url:"{$next_url}",
+			type:'post',
+			data:data_obj,
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('提交成功');
+					location.href = "{:U('Zhaoshang/resultCheck')}";
+					return false;
+				}else {
+					alert(ret.msg);
+					return false;
+				}
+			}
+		})
+		
+	
+	})
+})
+</script>
+
+<script>
+$(function(){
+	
+	$(document).delegate('a[data-toggle="image"]', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+		var type=$(this).attr('type');
+		
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'" t="'+type+'"  class="btn btn-primary button-image"><i class="icon-edit"></i>上传</button> ';
+				}
+			});
+		}
+		
+		$(element).popover('toggle');	
+		
+			
+		$('.button-image').on('click', function() {
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			var i=$(this).attr('n');
+			var type=$(this).attr('t');
+						
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name="file"]').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image/dir')}"+'/'+type,
+	            add: function(e, data) {
+	                $parent = $('#image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                var old_name='old_'+type+'_image';
+	                data.formData = {old_name:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#'+type+'-image-row'+i);
+	                $input = $parent.find('[osctype="'+type+'_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="'+type+'_image'+i+'"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__/'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+			
+		});
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+	
+})
+</script>
+	
+</block>
+</body>
+</html>

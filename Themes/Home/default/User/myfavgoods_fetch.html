@@ -1,0 +1,24 @@
+<volist name="list" id="d">
+	<div class="like-list-item-0" >
+		<div class="like-item">
+			<div class="like-item-goods-img" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+				<?php if(!empty($d['fan_image'])){ ?>
+				<img src="/Uploads/image/{$d.fan_image}" />
+				<?php } else { ?>
+				<img src="{$d.image}" />
+				<?php } ?>
+				
+			</div>
+			<div class="like-item-goods-text" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+				<div class="like-item-goods-name">{$d.name}</div>
+				<div class="like-item-goods-count">已卖<?php echo $d['seller_count']+$d['virtual_count']; ?>件</span></div>
+			</div>
+			<div class="like-item-goods-bottom">
+				<div class="like-item-goods-line"></div>
+				<div class="like-item-goods-price">￥{$d.danprice}</div>
+				<div class="like-item-goods-start" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">立即购买</div>
+				<div class="like-item-goods-cancel" onclick="del_fav(this,{$d.goods_id})">取消收藏</div>
+			</div>
+		</div>
+	</div>
+</volist>

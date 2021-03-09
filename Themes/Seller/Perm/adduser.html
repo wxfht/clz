@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->  
+
+    <link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+    <link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+    <script type="text/javascript">
+        window.sysinfo = {
+            <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+            <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+            <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+            <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+            'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+            'siteroot': '{$_W['siteroot']}',
+            'siteurl': '{$_W['siteurl']}',
+            'attachurl': '{$_W['attachurl']}',
+            'attachurl_local': '{$_W['attachurl_local']}',
+            'attachurl_remote': '{$_W['attachurl_remote']}',
+            'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+            'cookie' : {'pre': ''},
+            'account' : {:json_encode($_W['account'])},
+        };
+    </script>
+            
+    <script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+    <script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+    <script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+    <script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+    <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+    <link href="/static/css/snailfish.css" rel="stylesheet">
+</head>
+<body layadmin-themealias="default">
+
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text">
+			<?php if(!empty($item['s_id'])){ ?>编辑<?php }else{ ?>添加<?php } ?>操作员 <small><?php if(!empty($item['s_id'])){ ?>修改【{$item['s_true_name']}】<?php } ?></small>
+			</span></div>
+			
+            <div class="layui-card-body" style="padding:15px;">
+                <form action="" method="post" class="layui-form" lay-filter="component-layui-form-item" enctype="multipart/form-data" >
+                    
+					<input type="hidden" name="s_id" value="{$item['s_id']}" />
+
+					 <div class="layui-form-item">
+						<label class="layui-form-label must">登录用户名</label>
+						<div class="col-sm-9 col-xs-12">
+							<input type="text" name="s_uname" class="form-control" value="{$item['s_uname']}"  data-rule-required=true autocomplete="off" />
+							<span class='help-block'></span>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label must">登录密码</label>
+						<div class="col-sm-9 col-xs-12">
+							<input type="password" name="s_passwd" class="form-control" value="" autocomplete="off" <?php if(empty($item['s_passwd'])){ ?>data-rule-required='true' <?php } ?> />
+							<span class='help-block'>如果您编辑密码，不填写，则不修改</span>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属角色</label>
+						<div class="col-sm-9 col-xs-12">
+							
+							<input type='hidden' id='userid' name='roleid' value="{$role['id']}" />
+							<div class='input-group'>
+								<input type="text" name="user" maxlength="30" value="{$role['rolename']}" id="user" class="form-control" readonly />
+								<div class='input-group-btn'>
+									<button class="btn btn-default" type="button" onclick="popwin = $('#modal-module-menus1').modal();">选择角色</button>
+									<button class="btn btn-danger" type="button" onclick="$('#userid').val('');$('#user').val('');">清除选择</button>
+								</div>
+							</div>
+							<span class='help-block'>如果您选择了角色，则此用户本身就继承了此角色的所有权限</span>
+							<div id="modal-module-menus1"  class="modal fade" tabindex="-1">
+								<div class="modal-dialog" style='width: 920px;'>
+									<div class="modal-content">
+										<div class="modal-header"><button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button><h3>选择角色</h3></div>
+										<div class="modal-body" >
+											<div class="row">
+												<div class="input-group">
+													<input type="text" class="form-control" name="keyword" value="" id="search-kwd1" placeholder="请输入角色名称" />
+													<span class='input-group-btn'><button type="button" class="btn btn-default" onclick="search_users();">搜索</button></span>
+												</div>
+											</div>
+											<div id="module-menus1" style="padding-top:5px;"></div>
+										</div>
+										<div class="modal-footer"><a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a></div>
+									</div>
+
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				   
+					<div class="layui-form-item">
+						<label class="layui-form-label">管理员姓名</label>
+						<div class="layui-input-block">
+							<input type="text" name="s_true_name" class="form-control" value="{$item['s_true_name']}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">管理员电话</label>
+						<div class="layui-input-block">
+							<input type="text" name="s_mobile" class="form-control" value="{$item['s_mobile']}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">管理员状态</label>
+						<div class="layui-input-block">
+						   
+							<label class='radio-inline'>
+								<input type='radio' name='s_status' <?php if($item['s_id'] == 1){ ?> disabled="disabled" <?php } ?> value=1' <?php if(empty($item) || $item['s_status']==1){ ?>checked<?php } ?> title="启用" /> 
+							</label>
+							<label class='radio-inline'>
+								<input type='radio' name='s_status' <?php if($item['s_id'] == 1){ ?> disabled="disabled" <?php } ?> value=0' <?php if(!empty($item) && $item['s_status']==0){ ?>checked<?php } ?> title="禁用" /> 
+							</label>
+						   
+						</div>
+					</div>
+					
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"> </label>
+                        <div class="layui-input-block">
+                            <input type="submit" value="提交" lay-submit lay-filter="formDemo" class="btn btn-primary"  />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/layuiadmin/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: '/layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use('index');
+    </script>
+    <script>
+    var layer = layui.layer;
+    var $;
+    var cur_open_div;
+    layui.use(['jquery', 'layer','form'], function(){ 
+      $ = layui.$;
+      var form = layui.form;
+      
+        form.on('radio(linktype)', function(data){
+            if (data.value == 2) {
+                $('#typeGroup').show();
+            } else {
+                $('#typeGroup').hide();
+            }
+        });  
+
+        
+        $('#chose_link').click(function(){
+            cur_open_div = $(this).attr('data-input');
+            $.post("{:U('util.selecturl', array('ok' => 1))}", {}, function(shtml){
+             layer.open({
+                type: 1,
+                area: '930px',
+                content: shtml //注意，如果str是object，那么需要字符拼接。
+              });
+            });
+        })
+
+        form.verify({
+          title: [
+            /^[\S]{1,}$/,'标题不能为空'
+          ] 
+        });
+            
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                url: data.form.action,
+                type: data.form.method,
+                data: data.field,
+                dataType:'json',
+                success: function (info) {
+                  
+                    if(info.status == 0)
+                    {
+                        layer.msg('此用户为系统存在用户，无法添加',{icon: 1,time: 2000});
+                    }else if(info.status == 1){
+                        var go_url = location.href;
+                        if( info.result.hasOwnProperty("url") )
+                        {
+                            go_url = info.result.url;
+                        }
+                        
+                        layer.msg('操作成功',{time: 1000,
+                            end:function(){
+                                location.href = "{:U('perm/user')}";
+                            }
+                        }); 
+                    }
+                }
+            });
+            return false;
+        });
+    })
+    </script> 
+<script language='javascript'>
+
+    function search_users() {
+        $("#module-menus1").html("正在搜索....")
+        $.get('{:U("perm/rolequery")}', {
+            keyword: $.trim($('#search-kwd1').val())
+        }, function(dat){
+            $('#module-menus1').html(dat);
+        });
+    }
+    function select_role(o) {
+        $("#userid").val(o.id);
+        $("#user").val( o.rolename );
+        var perms = o.perms2.split(',');
+
+
+        $(':checkbox').removeAttr('disabled').removeAttr('checked').each(function(){
+
+            var _this = $(this);
+            var perm = '';
+            if( _this.data('group') ){
+                perm+=_this.data('group');
+            }
+            if( _this.data('parent') ){
+                if (_this.data('parent') != 'text') {
+                    perm += "." + _this.data('parent');
+                }
+            }
+            if( _this.data('son') ){
+                if (_this.data('son') != 'text') {
+                    perm += "." + _this.data('son');
+                }
+            }
+            if( _this.data('grandson') ){
+                if (_this.data('grandson') != 'text') {
+                    perm += "." + _this.data('grandson');
+                }
+            }
+            if( $.arrayIndexOf(perms,perm)!=-1){
+                $(this).attr('disabled',true).get(0).checked =true;
+            }
+
+        });
+        $(".close").click();
+    }
+</script>
+	
+</body>
+</html>

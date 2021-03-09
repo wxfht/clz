@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->  
+
+<link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+<link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+<script type="text/javascript">
+	window.sysinfo = {
+	<?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+	
+	<?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+	
+	<?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+	
+	<?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+	
+	'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+	
+	'siteroot': '{$_W['siteroot']}',
+			'siteurl': '{$_W['siteurl']}',
+			'attachurl': '{$_W['attachurl']}',
+			'attachurl_local': '{$_W['attachurl_local']}',
+			'attachurl_remote': '{$_W['attachurl_remote']}',
+			'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+	'cookie' : {'pre': ''},
+	'account' : {:json_encode($_W['account'])},
+	};
+</script>
+		
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+<link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+<link href="/static/css/snailfish.css" rel="stylesheet">
+<style>
+.daterangepicker select.ampmselect, .daterangepicker select.hourselect, .daterangepicker select.minuteselect {
+    width: auto!important;
+}
+.img-40{width:40px;height:40px;}
+</style>
+<script type="text/javascript" charset="utf-8" src="/static/Formbuild/Public/js/jquery-1.7.2.min.js?2024"></script>
+	<script type="text/javascript" charset="utf-8" src="/static/js/Tdrag.min.js"></script>
+	<script type="text/javascript"  src="/static/Formbuild/Public/js/formbuild/bootstrap/js/bootstrap.min.js?2024"></script>
+	<style>
+		#app-inner {
+			background: #fff;
+			margin: 10px 10px 0 10px;
+			padding: 15px;
+			min-width: 750px;
+			min-height: 500px;
+			box-shadow: 0 0 1px 0 rgba(0,0,0,0.2);
+		}
+		.margin-b-10 {
+			margin-bottom: 10px;
+		}
+		.btn-danger {
+			background-color: #ff595f;
+			border: 1px solid #ff595f;
+			color: #FFF;
+		}
+		.app-preview {
+			float: left;
+			width: 345px;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+			background: #fff;
+			padding: 10px;
+			overflow: hidden;
+			margin-bottom: 40px;
+		}
+		.app-preview .app-header {
+			height: 44px;
+			background: #fff;
+			position: relative;
+		}
+		.app-preview .app-header:before {
+			content: "";
+			position: absolute;
+			top: 15px;
+			left: 112px;
+			height: 8px;
+			width: 8px;
+			background: #ddd;
+			border-radius: 8px;
+		}
+		.app-preview .app-header:after {
+			content: "";
+			position: absolute;
+			top: 15px;
+			left: 128px;
+			height: 8px;
+			width: 50px;
+			background: #ddd;
+			border-radius: 8px;
+		}
+		.app-preview .app-footer {
+			height: 24px;
+			width: 60px;
+			margin: 15px auto 5px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+		}
+		.app-preview .title {
+			height: 61px;
+			background: url({php echo SNAILFISH_LOCAL}static/images/titlebar.png) 0 0 no-repeat;
+			background-size: 100% auto;
+			padding: 0 50px;
+			font-size: 15px;
+			color: #fff;
+			text-align: center;
+			line-height: 78px;
+			cursor: default;
+			overflow: hidden;
+			display: block;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		.app-preview .main {
+			position: relative;
+			overflow: hidden;
+			min-height: 540px;
+			border: 1px solid #ddd;
+			border-top: 0;
+			margin:0px;
+		}
+		.postera .drag {
+			position: absolute;
+			width: 80px;
+			height: 80px;
+			border: 1px solid #000;
+		}
+		.postera .drag.drag-background {
+			width: 100%;
+			height: 100%;
+			border: none;
+		}
+		.postera .drag img {
+			position: absolute;
+			z-index: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.app-action {
+			width: 946px;
+			background: #fdfdfd;
+			left: 245px;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			position: fixed;
+			bottom: 0;
+			box-shadow: 0 0 8px rgba(0,0,0,0.1);
+			z-index: 99999;
+		}
+		.app-action .parts {
+    padding: 10px 10px 5px;
+    border-bottom: 1px dotted #ddd;
+}
+.app-action .action {
+    padding: 10px;
+    text-align: right;
+    position: relative;
+    font-size: 12px;
+}
+.app-action .parts {
+    padding: 10px 10px 5px;
+    border-bottom: 1px dotted #ddd;
+}
+.app-action .parts nav {
+    width: 92px;
+    padding: 5px 0;
+    margin: 0 5px 5px 0;
+    text-align: center;
+    color: inherit;
+}
+.btn {
+    border-radius: 3px;
+}
+.app-form-right{float:left;margin-left:10px;width:620px;min-height:300px;}
+.app-editor {
+    float: left;
+    width: 600px;
+    background: #fdfdfd;
+    padding: 15px 10px;
+    margin-left: 18px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 55px;
+    margin-bottom: 100px;
+}
+.app-editor .editor-arrow {
+    height: 0;
+    position: relative;
+}
+.app-editor .editor-arrow:before {
+    position: absolute;
+    font-family: simsun;
+    content: "";
+    top: 8px;
+    left: -21px;
+    display: block;
+    width: 9px;
+    height: 18px;
+    font-size: 24px;
+    color: #fdfdfd;
+    z-index: 111;
+}
+.app-editor .editor-arrow:after {
+    position: absolute;
+    font-family: simsun;
+    content: "";
+    top: 8px;
+    left: -22px;
+    color: #ddd;
+    z-index: 11;
+    display: block;
+    width: 9px;
+    height: 18px;
+    font-size: 24px;
+}
+.avatar{ width:66px;height:66px; line-height:66px;text-align:center;color:#fff; background-color:#02a9f3;border-radius:100%; }
+.qrcodes {width:90px;height:90px; text-align:center;line-height:90px; background-color:#009688;color:#fff;}
+.username{width:100px;height:22.5px;line-height:22.5px;background-color:red;color:#fff;}
+
+
+.message-box{position:fixed; margin:auto; height:32px; line-height:32px; top:-32px; width:100%; text-align:center; z-index:111111111; transition-duration: 300ms; -webkit-transition-duration: 300ms; opacity:0;}
+.message-box.in{top:0; opacity: 1;}
+.message-box .msg{display:inline-block; white-space:nowrap; height:32px; line-height:32px; color:#fff; font-size:14px; min-width: 350px;}
+.message-box .msg-success{background:#1ab394}
+.message-box .msg-error{background:#ed5565}
+.message-box .msg-info{background:#eaa000}
+
+</style>
+</head>
+<body layadmin-themealias="default">
+<div class="clearfix" style="margin-top:10px;">
+		<div class="app-preview">
+			<div class="app-header"></div>
+			<div class="app-body">
+				<div class="title" id="page">海报名称</div>
+				<div class="main postera" id="app-preview">
+					<div class="drag drag-background selected">
+						<?php if(!empty($data['distribution_img_src'])){ ?>
+						<img src="<?php echo tomedia($data['distribution_img_src']); ?>" alt="">	
+						<?php }else{ ?>
+						<img src="http://w7.shiziyu888.com/attachment/images/5/2018/09/JoRkrtjXQTwvJTQwPssokqPsgivKv4.jpg" alt="">	
+						<?php } ?>
+						
+					</div>
+					<div class="avatar" <?php if( !empty($data['distribution_avatar_left']) || !empty($data['distribution_avatar_top']) ){ ?> style="position:absolute;left:{$data['distribution_avatar_left']}px;top:{$data['distribution_avatar_top']}px;" <?php } ?>>头像</div>
+					<div class="qrcodes" <?php if(!empty($data['distribution_qrcodes_left']) || !empty($data['distribution_qrcodes_top']) ){ ?> style="position:absolute;left:{$data['distribution_qrcodes_left']}px;top:{$data['distribution_qrcodes_top']}px;" <?php } ?>>二维码</div>
+					<div class="username" <?php if(!empty($data['distribution_username_left']) || !empty($data['distribution_username_top']) ){ ?> style="position:absolute;left:{$data['distribution_username_left']}px;top:{$data['distribution_username_top']}px;" <?php } ?>>会员昵称</div>
+				</div>
+			</div>
+			<div class="app-footer">
+			</div>
+		</div>
+		<div class="app-form-right">
+			<div class="app-editor form-horizontal" id="app-editor">
+				<div class="editor-arrow"></div>
+				<div class="inner">
+					<div class="form-group">
+						<div class="col-sm-3 control-label">海报背景</div>
+						<div class="col-sm-9" id="bg_img">
+							{:tpl_form_field_image2('distribu_member_image', $data['distribution_img_src'])}
+							
+							<span class="help-block">背景图片尺寸：640*1008</span>
+						</div>
+					</div>
+				
+					<div class="form-group" >
+						<label class="col-sm-3 control-label">头像圆角填充颜色</label>
+						<div class="col-sm-9 col-xs-12">
+							<input type="text" name="commiss_avatar_rgb" class="form-control minicolors_avatar_rgb" value="{$data['commiss_avatar_rgb']}" />
+							<span class='help-block'>不设置则默认黄色<b style="color:red"></b></span>
+						</div>
+					</div>
+					
+					<div class="form-group" >
+						<label class="col-sm-3 control-label">昵称颜色</label>
+						<div class="col-sm-9 col-xs-12">
+							<input type="text" name="commiss_nickname_rgb" class="form-control minicolors_nickname_rgb" value="{$data['commiss_nickname_rgb']}" />
+							<span class='help-block'>不设置则默认粉色<b style="color:red"></b></span>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-3 control-label">
+							&nbsp;
+							<button class="layui-btn layui-btn-sm" id="save_btn" style="margin-left:270px;" type="submit"> 确认保存</button>
+						</div>
+						<div class="col-sm-9" style="display:none;">
+							<button class="layui-btn layui-btn-sm" style="margin-left:270px;" type="submit"> 确认保存</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="margin-b-10"></div>
+	<div class="app-action" style="display:none;">
+		<div class="parts" id="parts">
+			<nav class="btn btn-link">
+				<i class="fa fa-cog"></i>页面设置
+			</nav>
+			<nav class="btn btn-link" data-id="avatar"><i class="fa fa-plus"></i> 商户logo</nav>
+		</div>
+		<div class="action">
+			<nav class="btn btn-default btn-sm pull-left" id="gotop">返回顶部</nav>
+			<nav class="btn btn-primary btn-sm btn-save">保存并设置</nav>
+		</div>
+	</div>
+	
+	<div class="message-box">
+		<div class="msg msg-success">保存成功</div>
+	</div>
+	
+	<link rel="stylesheet" href="/static/css/jquery.minicolors.css">
+	<script src="/static/js/jquery.minicolors.js"></script>
+	
+	<script>
+		$(function(){
+			$('input.minicolors_avatar_rgb').minicolors({
+				control: $(this).attr('data-control') || 'hue',
+				defaultValue: $(this).attr('data-defaultValue') || '',
+				inline: $(this).attr('data-inline') === 'true',
+				letterCase: $(this).attr('data-letterCase') || 'lowercase',
+				opacity: $(this).attr('data-opacity'),
+				position: $(this).attr('data-position') || 'bottom left',
+				change: function(hex, opacity) {
+					if (!hex)
+						return;
+					if (opacity)
+						hex += ', ' + opacity;
+					try {
+						console.log(hex);
+					} catch (e) {
+					}
+				},
+				theme: 'bootstrap'
+			});
+			
+			
+			$('input.minicolors_nickname_rgb').minicolors({
+				control: $(this).attr('data-control') || 'hue',
+				defaultValue: $(this).attr('data-defaultValue') || '',
+				inline: $(this).attr('data-inline') === 'true',
+				letterCase: $(this).attr('data-letterCase') || 'lowercase',
+				opacity: $(this).attr('data-opacity'),
+				position: $(this).attr('data-position') || 'bottom left',
+				change: function(hex, opacity) {
+					if (!hex)
+						return;
+					if (opacity)
+						hex += ', ' + opacity;
+					try {
+						console.log(hex);
+					} catch (e) {
+					}
+				},
+				theme: 'bootstrap'
+			});
+			
+		})
+		
+		$(function(){
+		
+		
+			$("#bg_img img").load(function(){				
+				var s_src = $(this).attr('src');
+				if( s_src.indexOf('nopic.jpg') == -1)
+				{
+					$('.drag-background img').attr('src', s_src);
+				}
+			});
+			
+			$(".avatar").Tdrag({
+				 scope:"#app-preview"
+			});
+			$(".qrcodes").Tdrag({
+				 scope:"#app-preview"
+			});
+			$(".username").Tdrag({
+				 scope:"#app-preview"
+			});
+			
+			$('#clear_haibao').click(function(){
+				$.ajax({
+					url:"{:U('distribution/clear_haibao')}",
+					type:'post',
+					dataType:'json',
+					success:function(ret){
+						alert('操作成功');
+						 var backurl = "{:U('distribution/qrcodeconfig',array('ok'=>'1'))}";
+                         location.href = backurl;
+					}
+				})
+			})
+			
+			$('#save_btn').click(function(){
+			
+				var post_obj ={};
+				
+				post_obj.avatar_left = $('.avatar').position().left;
+				post_obj.avatar_top = $('.avatar').position().top;
+				
+				post_obj.qrcodes_left = $('.qrcodes').position().left;
+				post_obj.qrcodes_top = $('.qrcodes').position().top;
+				
+				post_obj.username_left = $('.username').position().left;
+				post_obj.username_top = $('.username').position().top;
+				
+				
+				var img_src = $('input[name=distribu_member_image]').val();
+				var commiss_avatar_rgb = $('input[name=commiss_avatar_rgb]').val();
+				
+				var commiss_nickname_rgb = $('input[name=commiss_nickname_rgb]').val();
+				
+				post_obj.img_src = img_src;
+				post_obj.commiss_avatar_rgb = commiss_avatar_rgb;
+				post_obj.commiss_nickname_rgb = commiss_nickname_rgb;
+				
+				$.ajax({
+					url:"{:U('distribution/qrcodeconfig')}",
+					type:'post',
+					dataType:'json',
+					data:post_obj,
+					success:function(ret){
+						if( ret.status = 1 )
+						{
+							show_succ_tip();
+							return false;
+						}
+					}
+				})
+				
+			})
+			//var left = $('.avatar').position().left;
+			//var top = $('.avatar').position().top;
+				
+		})
+		
+		
+		function show_succ_tip()
+		{
+			$('.message-box').addClass('in');
+			
+			setTimeout("$('.message-box').removeClass('in');", 1500 )
+			setTimeout("location.href=location.href;", 1800 )
+			
+			
+		}
+	</script>
+</body>
+</html>
+	

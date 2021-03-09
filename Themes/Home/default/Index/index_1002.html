@@ -1,0 +1,141 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/index.css">
+<div id="main">
+	<div id="index-content" class="container">
+		{~W('GoodsCategory/goods_category_show')}	
+		
+		<div id="rp-banner">
+			<?php if($is_sub == 0){ ?> 
+			<section class="m-component-download clearfix" id="downloadApp">
+				<span class="pull-left">
+					<a href="{$sub_url}">
+					<img class="m-img " src="Uploads/image/{$site_logo}">
+					</a>
+				</span>
+				<span class="pull-left m-tips">{$site_title}<br>{$site_name}</span>
+				<span class="pull-right m-btn">
+					<a href="{$sub_url}" class="app_btn" role="button" name="apk_url">立刻关注</a>
+				</span>
+			</section>
+			<?php } ?>
+			<!-- banner begin -->
+			{~W('Slider/slider_show')}	
+			<!--banner end  -->
+			
+			
+			<?php if(!empty($quan_list)) { ?>
+			<div class="mall-coupons">
+				<div class="mall_all_goods">优惠券</div>
+				<div class="mall-coupons-list-wrapper">
+					<ul class="mall-coupon-list">
+						<?php foreach($quan_list as $quan) { ?>
+						<li class="mall-coupons-detail">
+							<img src="__PUBLIC__/pinduoduo/assets/img/mall_coupon_available_bg.png">
+							<div class="coupon-left">
+								<div class="coupon-discount">
+										￥<?php echo round($quan['credit'],0); ?>
+								</div>
+								<?php if($quan['limit_money'] > 0) { ?>
+								<div class="coupon-min-custom">
+																						 满<?php echo $quan['limit_money']; ?>元立减
+								</div>
+								<?php } ?>
+							</div>
+							<div class="coupon-right">
+								<div class="coupon-take" data-id="<?php echo $quan['id']; ?>">领取</div>
+								<div class="coupon-expire-time"><?php echo date('Y.m.d',$quan['end_time']); ?>过期</div>
+							</div>
+						</li>
+						<?php } ?>
+					</ul>
+				</div>
+			</div>
+			
+			<?php } ?>
+		
+			<!-- Subject begin -->
+			{~W('Subject/hot_subject_show')}
+			<!-- Subject end  -->
+			{~W('Slider/slider_show_list')}	
+			
+			<!-- Product begin -->
+			<include file="Widget:index_ajax_goods_list" />
+			<!-- Product end  -->
+			
+		</div>
+	</div>
+</div>
+<style>		
+	.m-component-download {
+		padding: 10px;
+		background: #fff;
+		position: relative;
+		overflow: hidden;
+	}
+	.pull-left {
+		float: left;
+	}
+	.m-component-download .m-img {
+		display: inline;
+		width: 50px;
+		height: 50px;
+	}
+	.m-component-download .m-tips {
+		float: left!important;
+		margin: 4px 0 0 10px;
+		font-size:15px;
+	}
+	.pull-right {
+		float: right;
+	}
+	.m-component-download .m-btn {
+		margin: 4px 0 0 10px;
+	}
+
+	.m-component-download .app_btn, .m-component-download .tf_app_btn {
+		color: #fff;
+		background-color: #5cb85c;
+		border-color: #4cae4c;
+		display: inline-block;
+		margin-bottom: 0;
+		font-weight: 400;
+		text-align: center;
+		vertical-align: middle;
+		-ms-touch-action: manipulation;
+		touch-action: manipulation;
+		cursor: pointer;
+		background-image: none;
+		border: 1px solid transparent;
+		white-space: nowrap;
+		font-size: 14px;
+		line-height: 1.42857143;
+		border-radius: 4px;
+	}
+	.m-component-download .app_btn {
+		padding: 6px 12px;
+	}
+</style>
+	<include file="Widget:pin_notify" />
+	{~W('Share/common_share')}
+	<include file="Widget:pin_toast" />
+	<include file="Public:foot_lazy" />
+	<include file="Public:foot_pinduoduo" />
+<script>
+	$(function(){
+		$('.coupon-take').click(function(){
+			var quan_id = $(this).attr('data-id');
+			$.ajax({
+				url:"{:U('Seller/getQuan')}",
+				type:'post',
+				data:{quan_id:quan_id},
+				dataType:'json',
+				success:function(result){
+					showTip(result.msg);
+				}
+			})
+		})
+		
+	})
+</script>
+</block>

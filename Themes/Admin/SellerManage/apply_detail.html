@@ -1,0 +1,153 @@
+<extend name="Public:base" />
+<block name="content">
+	<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>	
+	<ul class="nav nav-tabs">
+		
+	  <li class="active"><a href="#tab-member" data-toggle="tab">用户资料</a></li>	 
+	  
+	</ul>
+	<form class="form-horizontal" id="validation-form"  method="post" action='{$action}'>
+	<div class="tab-content">
+		
+		<div class="tab-pane active" id="tab-member">
+			<h3 style="font-weight:bold;">店铺基本信息</h3>
+			<table class="table table-binfoed">
+				<tr>
+				    <td>店铺名称:&nbsp;{$apply_relship.rel_data.store_name}</td>
+				    <td>
+						店铺logo:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.store_logo}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['store_logo'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				<tr>
+				    <td>主营类目:&nbsp;<?php 
+						if(!empty($apply_relship['rel_data']['store_category']))
+						{
+							$ct = M('goods_category')->where( array('id' =>$apply_relship['rel_data']['store_category'] ) )->find(); 
+							echo $ct['name'];
+						}
+						?></td>
+				 
+					<td>所在城市:&nbsp;{$apply_relship.rel_data.city_name}</td>
+				</tr>
+				
+				<tr>
+					<td>店铺详情:&nbsp;{$apply_relship.rel_data.store_descript}</td>
+				</tr>
+			</table>	
+			
+			<h3 style="font-weight:bold;">店铺管理人基本信息</h3>
+			<table class="table table-binfoed">
+				<tr>
+				    <td>管理人姓名:&nbsp;{$apply_relship.rel_data.admin_real_name}</td>
+					<td>管理人邮箱:&nbsp;{$apply_relship.rel_data.admin_email}</td>
+				</tr>
+				<tr>
+				    <td>管理人手机号:&nbsp;{$apply_relship.rel_data.admin_mobile}</td>
+					 <td>身份证号:&nbsp;{$apply_relship.rel_data.id_card_num}</td>
+				</tr>
+				<tr>
+				    <td>紧急联系人名称:&nbsp;{$apply_relship.rel_data.jinji_username}</td>
+					<td>紧急联系人手机号码:&nbsp;{$apply_relship.rel_data.jinji_mobile}</td>
+				</tr>
+				<tr>
+				    <td>开店性质:&nbsp;<?php if($apply_relship['rel_data']['jiny_type'] == 1){
+						echo '海淘';
+					}else{
+						echo '非海淘';
+					}
+					?></td>
+				</tr>
+			</table>
+			<h3 style="font-weight:bold;">店铺管理人基本信息</h3>
+			<table class="table table-binfoed">			
+				<tr>
+					<td>身份证正面:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.id_card}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['id_card'], 100, 100); ?>" />
+						</a>
+					</td>
+					<td>身份证反面:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.id_fan_card}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['id_fan_card'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				
+				<tr>
+				    <td>身份证号有效期:&nbsp;{$apply_relship.rel_data.begin_time}-{$apply_relship.rel_data.end_time}</td>
+					
+				</tr>
+				<tr>
+					<td>手持身份证头部照片:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.id_head_card}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['id_head_card'], 100, 100); ?>" />
+						</a>
+					</td>
+					<td>半身照片:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.id_half_card}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['id_half_card'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>商标注册证明:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.shangbiao}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['shangbiao'], 100, 100); ?>" />
+						</a>
+					</td>
+					<td>品牌授权证明:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.pingpai}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['pingpai'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>质检报告:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.zhijian}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['zhijian'], 100, 100); ?>" />
+						</a>
+					</td>
+					
+				</tr>
+			</table>
+			
+				<div class="form-group">
+				
+				
+			</div>
+		</div>
+		
+	
+	</div>
+	</form>	
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+$(function(){
+	
+})
+</script>
+<script>
+$(function(){	
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("a_status", {$data.a_status|default=1});		
+	</present>
+	
+		
+});
+</script>							
+</block>

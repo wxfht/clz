@@ -1,0 +1,151 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+	<h1>
+		{$breadcrumb2}
+		<small>
+			<i class="icon-double-angle-right"></i>
+			群发自定义模板消息
+		</small>
+	</h1>
+</div>
+	
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="panel-body">
+			<ul class="nav nav-tabs">
+            <li <?php if($type == 1){ ?>class="active" <?php } ?>><a href="{:U('settings/wxtempmsg')}">参数配置</a></li>
+            <li <?php if($type == 2){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallwxmsg')}">消息群发</a></li>
+			<li <?php if($type == 3){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallcuswxmsg')}">客服消息群发</a></li> 
+			<li <?php if($type == 4){ ?>class="active" <?php } ?>><a href="{:U('settings/sendallmodifywxmsg')}">自定义模板消息群发</a></li> 
+          </ul>
+		</div>
+	</div>
+	<div class="col-xs-12">
+		<div class="alert alert-block alert-success" >
+				{$moban}
+		</div>
+	</div>
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="form" method="post" action="{:U('Settings/sendallmodifywxmsg_save')}">	
+			
+			<?php foreach($data as $val){ ?>
+				<?php 
+					$arr = explode('.',$val);
+					$val = $arr[0].'_'.$arr[1];
+				?>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-left"> <?php echo $val; ?> </label>
+					<div class="col-sm-10">
+						<div class="clearfix">
+							<input name="<?php echo $val; ?>" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+							<span class="help-inline ">
+								<span class="middle red"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-left"> <?php echo $val; ?>色值 </label>
+					<div class="col-sm-10">
+						<div class="clearfix">
+							<input name="<?php echo $val; ?>_color" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+							<span class="help-inline ">
+								<span class="middle red">请填写色值例如：(#173177)</span>
+							</span>
+						</div>
+					</div>
+				</div>
+				
+			<?php  } ?>
+			
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 点击链接 </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="url_link" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">如（http://pinduoduo.liofis.com/index.php?s=/goods/95.html）注意：http:// 这是必填的</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> 模板ID </label>
+				<div class="col-sm-10">
+					<div class="clearfix">
+						<input name="moban_id" class="col-xs-10 col-sm-10 form-control"  value="" type="text">
+						<span class="help-inline ">
+							<span class="middle red">开发者调用模板消息接口时需提供模板ID</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<input type="hidden" name="page" id="page" value="1" />
+		</form>
+		<div class="form-group">
+			<label class="col-sm-1 control-label no-padding-left"> </label>	
+			<div class="col-sm-11">
+				
+				<button form="form" id="submit_btn" type="submit"   class="btn btn-sm btn-primary">提交</button>		
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div class="alert alert-block alert-success" id="tip_html" style="display:none;">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+</block>
+<block name="javascript">
+<script>
+var can_go = true;
+$(function(){
+	$('#submit_btn').click(function(){
+		go_to_send();
+		return false;
+	})
+})
+function over_time()
+{
+	setTimeout('go_to_send()',3000); 
+}
+function go_to_send()
+{	
+	if(can_go)
+	{
+		can_go = false;
+		$('#tip_html').show();
+		$('#tip_html').html('正在导入发送数据........');
+		$.ajax({
+			url:"{:U('Settings/sendallmodifywxmsg_save')}",
+			type:'post',
+			data:$('#form').serialize(),
+			dataType:'json',
+			success:function(res)
+			{
+				if(res.has_next == 1)
+				{	
+					var _page = parseInt($('#page').val())+1;
+					$('#page').val(_page);
+					
+					$('#tip_html').html('请勿关闭此页面，数据导入中。还剩'+res.del_count+'会员数据正在导入......');
+					
+					can_go = true;
+					over_time();
+				} else {
+					$('#tip_html').html('全部会员数据导入成功，模板消息将陆续发出。');
+					can_go = false;
+				}
+			}
+		
+		})
+	}
+	return false;
+	
+}
+</script>
+</block>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+   
+    <link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/boot_5137f3beb9416650456feb2db54cba04.css">
+    <link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/index_v2_adb7c43cfdaf91053a705a8afdeacb5e.css">
+	
+	<script src="__PUBLIC__/pinduoduo/js/jquery-1.10.1.min.js"></script>
+    <title>{$title|default=''}<?php echo C('SITE_TITLE'); ?></title>
+</head>
+<body>
+<div id="head"> 
+	<div class="pdd-head-wrapper" id="pdd-head-nav" style="visibility: visible;">
+		<div class="pdd-head">
+			<img class="ph-logo" alt="logo" src="<?php echo resize($site_logo, 180, 61); ?>" width='180' height='61'>
+			<ul class="ph-tab">
+				<li>
+					<span class="ph-tab-item <?php if( empty($cur_action) ){ ?>red-color-font<?php } ?>" onclick="location.href='{:U('Index/index')}'">首页</span>
+					<span class="ph-tab-item" onclick="location.href='{:U('Zhaoshang/index')}'">商家入驻</span>
+					<span class="ph-tab-item" onclick="location.href='seller.php'">商户后台</span>
+					<span class="ph-tab-item <?php if($cur_action =='news'){ ?> red-color-font<?php } ?>" onclick="location.href='{:U('Index/news')}'">关于我们</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+  <block name="content"></block>

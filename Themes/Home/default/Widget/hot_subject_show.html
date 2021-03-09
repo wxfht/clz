@@ -1,0 +1,15 @@
+<div id="quick-entrance-new-2" data-reactid="24">
+	<ul class="qe-wrapper-2" data-reactid="25">
+		
+		<?php foreach($slider as $val){  ?>
+		<li class="" onclick="location='<?php echo $val['url']; ?>'">
+			<div class="quick-entrance-cube">
+				<div class="item-img-box">
+					<img src="__ROOT__/Uploads/image/<?php echo $val['image']; ?>">
+				</div>
+				<div class="cube-text"><span><?php echo $val['slider_name']; ?></span></div>
+			</div>
+		</li>
+		<?php } ?>
+	</ul>
+</div>

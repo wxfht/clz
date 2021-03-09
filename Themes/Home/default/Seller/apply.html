@@ -1,0 +1,142 @@
+
+<block name="content">    
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>入驻申请</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css"/>
+</head>
+<body>
+<div class="weui_cells weui_cells_form">
+   		
+    	<form  id="apply_form">
+         <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">姓名</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input"  name="managerName" type="text" placeholder="请输入申请人姓名">
+            </div>
+        </div>
+        
+         <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">手机号</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="managerMobile" type="text" placeholder="请输入申请人手机号">
+            </div>
+        </div>
+        
+          <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">邮箱</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="managerEmail" type="text" placeholder="请输入申请人邮箱">
+            </div>
+        </div>
+
+  
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">店铺名称</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="businessName" type="text" placeholder="请输入店铺名称">
+            </div>
+        </div>
+        
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">所在城市</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="businessCity" type="text" placeholder="请输入所在城市">
+            </div>
+        </div>
+        
+        <div class="weui_cell">
+        	<div class="weui_cell_hd"><label class="weui_label">主营类目</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <select class="weui_select" name="businessMainCategory">
+                    <option selected="" value="">--请选择--</option>
+ 		 			<?php foreach($goods_category as $category){ ?> 
+                     <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                   <?php } ?>
+                </select>
+            </div>
+        </div>
+        
+        
+    </div>
+    
+    <div class="weui_cells_tips">请按要求填写以上表单，提交后客服会电话联系您！</div>
+    <div class="weui_btn_area">
+        <a class="weui_btn weui_btn_primary" href="javascript:" id="submit-btn">确定</a>
+    </div>
+    
+    
+    <div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">已提交</p>
+    </div>
+    
+    </form>
+</div>
+
+ <script src="http://style.114jd.cn/style/js/global/lib/jquery/jquery-2.1.1.min.js" ></script>
+ <script>
+ 	$(document).ready(function(){
+ 		
+ 		$("#submit-btn").click(function(e){
+ 			 if(!$("input[name='managerName']").val()) {
+ 			 	alert("请输入申请人姓名");
+ 			 	return;
+ 			 }
+ 			 var managerMobile=$("input[name='managerMobile']").val();
+ 			  if(!managerMobile) {
+ 			 	alert("请输入申请人手机号");
+ 			 	return;
+ 			 }
+ 			 //手机号检查
+ 			
+ 			if(!managerMobile.match('^1[3|5|8|7][0-9]{9}$')){ alert("请输入正确的手机号码！");return false; }
+			
+ 			  if(!$("input[name='managerEmail']").val()) {
+ 			 	alert("请输入申请人邮箱");
+ 			 	return;
+ 			 }
+ 			  if(!$("input[name='businessName']").val()) {
+ 			 	alert("请输入店铺名称");
+ 			 	return;
+ 			 }
+ 			  if(!$("select[name='businessMainCategory']").val()) {
+ 			 	alert("请选择主营类目");
+ 			 	return;
+ 			 }
+ 			 var params = $("#apply_form").serialize();
+ 			 var url="{:U('Seller/apply_post')}";
+ 			 var successFun=function(result){
+ 			 	if(result.code=='200'){
+ 			 		$('#toast').show();
+		 		 	setTimeout(function () {
+		                    $('#toast').hide();
+		                    location.href="{:U('Index/index')}";
+		             }, 1500);
+ 			 	}else{
+ 			 		alert(result.data);
+ 			 	}
+ 			 };
+ 			 
+ 			  $.ajax({
+	             type: "POST",
+	             url:url,
+	             data: params,
+	             dataType: "json",
+	             success: successFun
+			});
+ 			 
+ 		});
+ 	});
+ </script>
+  
+</body>
+</html>
+
+</block>

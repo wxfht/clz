@@ -1,0 +1,36 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+      <div class="poster_grid poster_wall waterfall-frame-1 waterfall-box waterfall-optimise-show" > 
+       <figure> 
+        <div class="pic_load"> 
+		 <a class="bs_load_img lazyTransition" style="opacity: 1; " href="{:U('/goods/'.$d['goods_id'])}" > 
+			<img src="{$d.image}" width="100%" />
+		 </a> 
+		 </div> 
+        <p class="clothesTitle">{$d.name}</p> 
+        <figcaption> 
+         <span class="price">￥{$d.danprice}</span> 
+         <span class="like icon-heart">{$d.seller_count}</span> 
+        </figcaption> 
+       </figure> 
+      </div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+<volist name="related_goods" id="d">
+<li> 
+  	<a href="{:U('/goods/'.$d['goods_id'])}"> 
+    <div class="img"> 
+     <img class="fadeIn loggered scrollLoading" src="{$index_ly_image}" data-echo="{$d.image}"  /> 
+    </div> 
+    <div class="info"> 
+     <p class="name">{$d.name}</p> 
+     <p class="meta"> <span class="price">&yen;{$d.danprice}</span> </p> 
+    </div> 
+    </a> 
+</li>
+ </volist>

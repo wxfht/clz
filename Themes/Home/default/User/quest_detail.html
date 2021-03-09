@@ -1,0 +1,62 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/suggestion_5d26e47e48fe43d546da6e44b3a131a1.css">
+<div class="faq-wrap">
+	<div class="faq-header">{$blog_info.title}</div>
+	<div class="faq-textinfo">
+	{$blog_content.summary}
+	</div>
+	<div class="faq-list">
+		<?php  if(!empty($blog_info['image'])){ ?>
+		<div class="faq-list-one" style="text-align:center;">
+			<img src="/Uploads/image/{$blog_info.image}" style="max-width:100%;" />
+		</div>
+		<?php } ?>
+		
+		<div class="faq-list-one">
+			<?php echo htmlspecialchars_decode($blog_content['content']); ?>
+		</div>
+	</div>
+</div>
+
+
+<include file="Widget:pin_notify" />
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<style>
+.coupon-tabbar .coupon-tab { 
+	width:49%;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+
+</block>

@@ -1,0 +1,155 @@
+   
+<extend name="Public:mogubase" />
+<block name="content">    
+
+<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/base-22357a5508.css" /> 
+<link rel="stylesheet" href="__PUBLIC__/mogu/myCenter-f802cffc3b.css" /> 
+<style>
+.user-charge{
+  color:#333;
+  position:absolute;
+  top:37px;
+  right:40px;
+}
+.pd-right-6{
+  line-height:27px;
+  font-size:13px;
+  background:url(https://mall.shiziyu888.com/dan/Common/image/jian_right.png) no-repeat 100%;
+  background-size:13px auto;
+  color:#fff;
+  padding-right:13px;
+  background-position-x: right;
+}
+</style>
+<script type="text/javascript">			window.use_screen_base = '750';			(function(a,b){var c="orientationchange"in b?"orientationchange":"resize",d=use_screen_base.indexOf("_mate"),e=parseInt(use_screen_base),f=a.documentElement,g=function(){var a=f.clientWidth,c=b.innerWidth;f.style.fontSize=100*(c/e)+"px"};if(/iPad.*OS|iPhone.*OS/.test(navigator.userAgent)&&d>0){var h=a.querySelectorAll("meta[name=viewport]"),i=b.devicePixelRatio;i=i!=1?2:1,h[0]&&h[0].setAttribute("content","width=device-width, user-scalable=no, minimum-scale="+1/i+", maximum-scale="+1/i+", initial-scale="+1/i)}g(),b.addEventListener(c,g,!1),delete use_screen_base})(document,window);		</script>
+ 
+  <div class="wrap"> 
+   <div class="userInfo"> 
+    <div class="img_wrap" style="position:relative;"> 
+		<div class="img_innner"> 
+			<img src="{$member_info.avatar}" /> 
+		</div> 
+		<div class="user-charge" onclick="location.href = '{:U('User/myscore')}'">
+			<div class="pd-right-6">
+			  积分：{$member_info.score} 
+			</div> 
+		</div>
+    </div> 
+    <p>{$member_info.name}</p> 
+    <div class="list"> 
+     <a href="{:U('User/myvoucherlist')}"><span class="couponIcon"></span>优惠券</a> 
+     <a href="{:U('User/address')}"><span class="addressIcon"></span>收货地址</a> 
+	 <a href="{:U('User/myfavgoods')}"><span class="num" id="myLove">{$fav_goodscount}</span>收藏的宝贝</a> 
+       <?php if($is_open_commiss == 1){ ?>
+				
+				<?php if($member_info['comsiss_flag'] == 0){ ?>	
+				<a href="javascript:;" id="btn2"><span class="tuanIcon"></span>升级为团长</a>
+				<?php }else{ ?>			
+				 <a href="{:U('tuanbonus/groupleaderindex')}"><span class="tuanIcon"></span>超级团长</a>
+				<?php } ?>
+				
+				
+		<?php }else{ ?>
+		
+		
+		<?php } ?>
+	
+	</div> 
+   </div> 
+   <div class="orderTab"> 
+		<a href="{:U('Order/index')}" class="order_status all" data-type="all"><span></span>全部订单</a> 
+		<a href="{:U('Order/index', array('type' => 3))}" class="order_status payment" data-type="created"><span></span>待付款</a> 
+		<a href="{:U('Order/index', array('type' => 4))}" class="order_status send"><span></span>待收货</a> 
+		<a href="{:U('Order/index', array('type' => 6))}" class="order_status get" ><span></span>待评价</a> 
+		<a href="{:U('Order/index', array('type' => 12))}" class="order_status refund" data-type="refund_orders"><span></span>售后</a> 
+   </div> 
+   
+	<div class="recommend-hd"  onclick="location.href='{:U('Group/pinlist')}'">
+     我的拼团
+     <span class="arrow"></span>
+    </div>
+	<?php if($is_open_fissionsharing == 1){ ?>
+	<div class="recommend-hd"  onclick="location.href='{:U('Sharebonus/tuanbonus_index')}'">
+     分享订单
+     <span class="arrow"></span>
+    </div>
+	<?php } ?>
+	
+	
+   {~W('Product/related_usecenter_goods_list')}
+   <style>
+   .recommend .goods-props span{line-height: .35rem;}
+   </style>
+</div>
+<div class="popup-mask" style="display: none;position: fixed; width: 100%;height: auto;top: 50%;z-index: 999999999; background: rgba(0, 0, 0, 0);">
+	<div class="popup-main" style="max-width: 50%;  height: auto;margin: auto;background-color: rgba(0,0,0,.8);color: #f0f0f0;font-size: 16px;padding: 10px;text-align: center;border-radius: 5px;box-shadow: 0 0 24px -1px #383838;  background: rgba(41, 49, 61, 0.701961);">
+		<div class="popup-content"><div style="color:#fff;font-size:26px;margin:0"></div>
+		</div>
+	</div>
+</div>
+<script>
+var can_sub = true;
+
+function show_mask(title)
+{
+	$('.popup-content div').html(title);
+	
+	$('.popup-mask').fadeIn(1500,function(){
+		$('.popup-mask').fadeOut(1500);
+	})
+}
+$(function(){
+	$('#btn2').click(function(){
+		if(!can_sub)
+		{
+			return false;
+		}
+		can_sub = false;
+		$.ajax({
+			url:"{:U('Tuanbonus/apply')}",
+			type:'get',
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					show_mask('申请成功');
+				} else {
+					show_mask(ret.msg);
+				}
+			}
+		});
+		
+	});
+})
+</script>  
+  <style>
+  .recommend .goods-item{margin-bottom:.1rem;}
+  .waterfall-container:after{clear:both;content:".";display:block;visibility:hidden;height:0}
+  .recommend-hd .arrow {
+		margin-right: .2rem;
+		border-top: 1px solid #999;
+		border-left: 1px solid #999;
+		width: .2rem;
+		height: .2rem;
+		background-color: transparent;
+		-webkit-transform: rotate(135deg);
+		display: inline-block;
+		margin-left: .1rem;
+		top: .3rem;
+	}
+	.userInfo .list .tuanIcon {
+		width: .3rem;
+		height: .33rem;
+		background: url(__PUBLIC__/image/chao_tuan.png) no-repeat 0 0;
+		background-size: .39rem;
+	}
+</style>
+ <div style="height:49px;"></div> 
+<include file="Public:foot_pinduoduo" />
+<style>
+	.go-top{display:none;}
+	.footer .nav-controller i{margin-bottom: 6px;}
+</style>
+
+</block>

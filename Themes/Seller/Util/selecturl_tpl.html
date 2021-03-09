@@ -1,0 +1,78 @@
+<?php if( $type=='good'){ ?>
+	<?php if( empty($list)){ ?>
+		<div class="tip">抱歉！未查询到<?php if( !empty($kw)){ ?>与“{$kw}”<?php } ?>相关的商品，请更换关键字后重试。</div>
+	<?php  }else{  ?>
+		<?php foreach( $list as  $item  ){ ?>
+			<div class="line good">
+				<div class="image"><img src="{$item['thumb']}"/></div>
+				<nav title="选择" class="choose_dan_link_url btn btn-default btn-sm" data-href="/lionfish_comshop/pages/goods/goodsDetail?id={$item['id']}">选择</nav>
+				<div class="text">
+					<p class="name">{$item['title']}</p>
+					<p class="price">原价: {$item['productprice']}元 现价: {$item['marketprice']}元</p>
+				</div>
+			</div>
+		<?php } ?>
+	<?php } ?>
+<?php } ?>
+<?php if( $type=='article'){ ?>
+	<?php if( empty($list)){ ?>
+		<div class="tip">抱歉！未查询到<?php if( !empty($kw)){ ?>与“{$kw}”<?php } ?>相关的文章，请更换关键字后重试。</div>
+	<?php  }else{  ?>
+		<?php foreach( $list as  $item  ){ ?>
+			<div class="line good">
+				<nav title="选择" class="choose_dan_link_url btn btn-default btn-sm" data-href="/lionfish_comshop/pages/user/articleProtocol?id={$item['id']}">选择</nav>
+				<div class="text">
+					<p class="name">{$item['title']}</p>
+					
+				</div>
+			</div>
+		<?php } ?>
+	<?php } ?>
+<?php } ?>
+
+<?php if( $type=='url'){ ?>
+	<?php if( $list['no_data']==1){ ?>
+		<div class="tip">抱歉！未查询到<?php if( !empty($kw)){ ?>与“{$kw}”<?php } ?>相关的链接，请更换关键字后重试。</div>
+	<?php  }else{  ?>
+		<?php foreach( $list['list'] as  $item  ){ ?>
+			<?php if( !empty($item['list'])){ ?>
+			<div class="page-head"><h4><i class="fa fa-folder-open-o"></i> {$item['name']}</h4></div>
+			<?php } ?>
+			<?php foreach( $item['list'] as  $child  ){ ?>
+				<nav data-href="<?php echo $platform?$child['url_wxapp']:$child['url']; ?>" class="choose_dan_link_url btn btn-default btn-sm" title="商城首页">{$child['name']}</nav>
+			<?php } ?>
+		<?php } ?>
+	<?php } ?>
+<?php } ?>
+
+
+<?php if($type=='special'){ ?>
+	<?php if(empty($list)){ ?>
+		<div class="tip">抱歉！未查询到{if !empty($kw)}与“{$kw}”{/if}相关的链接，请更换关键字后重试。</div>
+	<?php }else{ ?>
+		<?php foreach($list as $item){ ?>
+			<div class="line">
+				<div title="选择" class="choose_dan_link_url btn btn-default btn-sm" data-href="/lionfish_comshop/moduleA/special/index?id={$item['id']}">选择</div>
+				<div class="text">
+					<p class="name">{$item['name']}</p>
+				</div>
+			</div>
+		<?php } ?>
+	<?php } ?>
+<?php } ?>
+
+
+<?php if($type=='category'){ ?>
+	<?php if(empty($list)){ ?>
+		<div class="tip">抱歉！未查询到<?php if( !empty($kw)){ ?>与“{$kw}”<?php } ?>相关的链接，请更换关键字后重试。</div>
+	<?php }else{ ?>
+		<?php foreach($list as $item){ ?>
+			<div class="line">
+				<div title="选择" class="choose_dan_link_url btn btn-default btn-sm" data-href="/lionfish_comshop/pages/type/details?id={$item['id']}">选择</div>
+				<div class="text">
+					<p class="name">{$item['name']}</p>
+				</div>
+			</div>
+		<?php } ?>
+	<?php } ?>
+<?php } ?>

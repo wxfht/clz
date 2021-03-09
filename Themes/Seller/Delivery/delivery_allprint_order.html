@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>团长配送清单</title>
+    <link rel="stylesheet" href="__PUBLIC__/css/forms.css">
+    <script src="__PUBLIC__/js/jquery-1.7.2.min.js"></script>
+	
+	<style>
+		.w794{width:794px;margin: 0px auto;}
+		.tdleft{text-align:left;width:50%;font-size:16px;}
+		.bold{font-weight:bold;}
+		td, th{padding:0px;}
+		  @media print {
+			.noprint{
+			  display: none;
+			}
+		  }
+		  .PageNext{page-break-after: always;}  
+	</style>
+  </head>
+  <body> 
+	<div style="width:100%;margin:0px auto;">
+		<!-- 弹窗 -->
+		<div id="showdiv" style="width: 40%; margin: 0 auto; height: 100px; border: 1px solid #999; display: none; position: absolute; top: 40%; left: 35%; z-index: 3; background: #fff">
+		  <!-- 标题 -->
+		  <div style="background: #F8F7F7; width: 100%; height: 2rem; font-size: 0.65rem; line-height: 2rem; border: 1px solid #999; text-align: center;" >
+			提示
+		  </div>
+		  <!-- 内容 -->
+		  <div style="text-indent: 50px; height: 80px; font-size: 16px;color:red;  line-height: 60px; " id="print_content_tip">
+			还剩{$count}个团长相关订单未生成，请勿刷新.....
+		  </div>
+		  <!-- 按钮 -->
+		</div>
+		
+		<div class="w794 noprint">
+			<a href="javascript:;" onclick="window.print();">立即打印</a>
+		</div>
+		
+		<div id="print_content">
+		
+		</div>
+		<div class="w794 noprint">
+			<a href="javascript:;" onclick="window.print();">立即打印</a>
+		</div>
+	</div>
+	<script>
+	var s_page = 1;
+	var s_count = {$count};
+	  function showWindow() {
+		$('#showdiv').show();  //显示弹窗
+	  }
+	$(function(){
+		showWindow();
+		load_data();
+	})
+	
+	function load_data()
+	{
+		$.ajax({
+			url:"{:U('Delivery/delivery_allprint_order_do', array('searchtime' => $searchtime, 'starttime' => $starttime, 'endtime' => $endtime))}",
+			type:'get',
+			data:{page:s_page},
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('生成完毕，可以打印');
+					$('#showdiv').remove(); 
+					return false;
+				}else if(ret.code == 0) {
+					s_page++;
+					s_count = s_count -10;
+					if(s_count < 0)
+					{
+						s_count= 0;
+					}
+					$('#print_content_tip').html('还剩'+s_count+'个团长相关订单未生成，请勿刷新.....');
+					$('#print_content').append(ret.html);
+					
+					setTimeout(load_data(), 1000 );
+				}
+			}
+		})
+	}
+	</script>
+  </body>
+</html>

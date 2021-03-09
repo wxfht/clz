@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head >
+	<meta charset="utf-8">
+	<meta name="description" content="{$meta_description|default=''}">
+	<meta name="keywords" content="{$meta_keywords|default=''}">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="email=no" name="format-detection">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<title>{$title|default=''}<?php echo C('SITE_TITLE'); ?></title>
+	<script>!function(e){function t(){e.rem=m.getBoundingClientRect().width/16,m.style.fontSize=e.rem+"px"}var i,n=e.navigator.appVersion.match(/iphone/gi)?e.devicePixelRatio:1,a=1/n,m=document.documentElement,r=document.createElement("meta");if(e.dpr=n,e.addEventListener("resize",function(){clearTimeout(i),i=setTimeout(t,300)},!1),e.addEventListener("pageshow",function(e){e.persisted&&(clearTimeout(i),i=setTimeout(t,300))},!1),m.setAttribute("data-dpr",n),r.setAttribute("name","viewport"),r.setAttribute("content","initial-scale="+a+", maximum-scale="+a+", minimum-scale="+a+", user-scalable=no"),m.firstElementChild)m.firstElementChild.appendChild(r);else{var d=document.createElement("div");d.appendChild(r),document.write(d.innerHTML)}t()}(window)</script>
+	
+	<script src="/Common/js/jquery/jquery-2.0.3.min.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/css/style.css">
+	<block name="head_script"></block>
+</head>
+<body>
+
+
+<block name="content"></block>  
+  
+ 
+<block name="foot_script"></block>

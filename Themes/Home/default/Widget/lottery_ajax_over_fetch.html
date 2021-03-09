@@ -1,0 +1,51 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<div class="lottery_goods" <?php if($d['is_open_lottery'] == 1){ ?>onclick="location.href='{:U( 'Goods/lotteryinfo', array('goods_id' =>$d['goods_id']))}'"<?php } ?>>
+   
+    <img class="lottery_pic scrollLoading" src="{$index_ly_image}" data-echo="{$d.image}">
+			    
+    <div class="lottery_info">
+        <div class="lottery_left_time">
+            <div class="lottery_left_time_head">截止时间:</div>
+            <div class="lottery_left_time_detail">
+                <span class="left_time_im"><?php echo date('m',$d['end_time']); ?></span>月
+                <span class="left_time_im"><?php echo date('d',$d['end_time']); ?></span>日
+                <span class="left_time_im"><?php echo date('H',$d['end_time']); ?></span>:
+                <span class="left_time_im"><?php echo date('i',$d['end_time']); ?></span>
+            </div>
+        </div>
+        <div class="lottery_goods_name">{$d.name}</div>
+        <div class="lottery_buy">
+            <div class="lottery_price_all">
+                <div class="lottery_sale_price">￥{$d.pinprice}</div>
+                <div class="lottery_market_price">￥{$d.price}</div>
+            </div>
+			
+			<?php if($d['is_open_lottery'] == 1){ ?>
+            <div class="lottery_buy_button_result">查看中奖名单</div>
+			<?php }else{ ?>
+			<div class="lottery_buy_button_result">等待开奖</div>
+			<?php } ?>
+        </div>
+    </div>
+</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

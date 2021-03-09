@@ -1,0 +1,39 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+		<div class="double-grid-one" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+			<div class="double-grid-item gap-right">
+				<?php if(!empty($d['fan_image'])){ ?>
+				<img src="{$fan_ly_image}" data-echo="/Uploads/image/{$d.fan_image}" class="scrollLoading" />	
+				<?php }else { ?>
+				<img src="{$fan_ly_image}" data-echo="{$d.image}" class="scrollLoading" />	
+				<?php } ?>
+				<p class="goods-name">{$d.name}</p>
+				<div class="detail">
+					<b class="price-icon">￥</b>
+					<b class="price">{$d.danprice}</b>
+					<div class="info">
+						<span>{$d.pin_count}人团已购买{$d.seller_count}件</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

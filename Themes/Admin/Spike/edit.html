@@ -1,0 +1,91 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			编辑{$spike.name}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12">	
+		<form class="form-horizontal"  id="validation-form" method="post" action='{:U("Spike/update")}'>
+			<input type="hidden" name="id" value="{$spike.id}" />
+					
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">限时秒杀活动名称：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" placeholder="" name="name"  value="{$spike.name}" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">开始时间：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" id="begin_time" placeholder="开始时间" name="begin_time"  value="<?php echo date('Y-m-d H:i:s',$spike['begin_time']) ?>" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label">结束时间：</label>
+				<div class="col-sm-10">
+					<input  class="form-control" type="text" id="end_time" placeholder="结束时间" name="end_time"  value="<?php echo date('Y-m-d H:i:s',$spike['end_time']) ?>" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script src="__PUBLIC__/js/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+<script>
+
+$(function(){
+		$('#begin_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+		$('#end_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+})
+</script>
+</block>

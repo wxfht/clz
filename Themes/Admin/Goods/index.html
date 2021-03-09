@@ -1,0 +1,430 @@
+<extend name="Public:base" />
+
+<block name="content">
+
+<div class="page-header">
+	
+</div>	
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="">
+			<ul class="nav nav-tabs">
+			<li <?php if($get_status == -1){ ?>class="active" <?php } ?>><a href="{:U('Goods/index')}">全部商品</a></li>
+			<li <?php if($get_status == 1){ ?>class="active" <?php } ?>><a href="{:U('Goods/index', array('status' => 1))}">上架商品</a></li>              
+			<li <?php if($get_status == 2){ ?>class="active" <?php } ?>><a href="{:U('Goods/index', array('status' => 2))}" >待上架审核</a></li>      
+			<li <?php if($get_status == 3){ ?>class="active" <?php } ?>><a href="{:U('Goods/index', array('status' => 3))}" >未通过审核</a></li>
+			<li <?php if($get_status == 0){ ?>class="active" <?php } ?>><a href="{:U('Goods/index', array('status' => 0))}" >已下架商品</a></li>
+			<li <?php if($get_status == 4){ ?>class="active" <?php } ?>><a href="{:U('Goods/index', array('status' => 4))}" >回收站</a></li>
+		  </ul>
+		</div>
+	</div>
+</div>	
+<table class="table table-striped table-bordered table-hover search-form">
+	<thead>
+		<th><input name="name" type="text" placeholder="输入商品名称" value="{:I('name')}" /></th>
+		<th>
+			<select name="store_id">
+				<option value="">-选择商家-</option>
+				
+				<volist name="seller_list" id="v" >
+					<option <?php if(isset($get_store)&&($get_store==$v['s_id'])){echo ' selected="selected"';} ?> value="{$v.s_id}">{$v.s_true_name}</option>
+				
+				</volist>	
+			</select>
+		</th>
+		<th>    				
+			<select name="category">
+				<option value="">-选择分类-</option>
+				<volist name="category" id="v" >
+					<option <?php if(isset($get_category)&&($get_category==$v['id'])){echo ' selected="selected"';} ?> value="{$v.id}">{$v.name}</option>
+				
+					<volist name="v.children" id="vv" >
+					<option <?php if(isset($get_category)&&($get_category==$vv['id'])){echo ' selected="selected"';} ?> value="{$vv.id}">　　{$vv.name}</option>
+						<volist name="vv.children" id="vvv" >
+						<option <?php if(isset($get_category)&&($get_category==$vvv['id'])){echo ' selected="selected"';} ?> value="{$vvv.id}">　　　　{$vvv.name}</option>
+						</volist>	
+					</volist>	
+					
+				</volist>	
+			</select>
+		</th>	
+		<th>    				
+			<select name="status">
+				<option value="">-选择状态-</option>				
+				<option <?php if(isset($get_status)&&($get_status==1)){echo ' selected="selected"';} ?> value="1">上架</option>
+				<option <?php if(isset($get_status)&&($get_status==2)){echo ' selected="selected"';} ?> value="2">等待审核</option>
+				<option <?php if(isset($get_status)&&($get_status==0)){echo ' selected="selected"';} ?> value="0">未上架</option>
+				<option <?php if(isset($get_status)&&($get_status==4)){echo ' selected="selected"';} ?> value="4">回收站</option>
+			</select>
+		</th>
+		<th>
+			<a class="btn btn-primary" href="javascript:;" id="search" url="{:U('Goods/index')}">查询</a>
+		</th>
+	</thead>
+</table>	
+<div class="row">
+	<div class="alert alert-info" id="alert_info">
+		<button type="button" class="close" data-dismiss="alert">
+			<i class="ace-icon fa fa-times"></i>
+		</button>
+		<p id="alert_content">
+		</p>
+	</div>
+</div>	
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table id="table" class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th class="center">
+							<label>
+								<input type="checkbox" class="ace check-all" />
+								<span class="lbl"></span>
+							</label>
+						</th>											
+						<th>ID</th>
+						<th>图片</th> 
+						<th>商品名称</th> 
+						<th>分类</th> 
+						<th>首页推荐</th>
+						<th>首页排序</th>
+						<th>价格</th>
+						<th>库存数量</th>
+						<th>所属商家</th>
+						<th>是否上架</th>	
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+						<volist name="list" id="v" empty="$empty">
+						<tr>		
+							<td class="center">
+							<label>
+								<input class="ace ids" type="checkbox" name="id[]" value="{$v.goods_id}"/>
+								<span class="lbl"></span>
+							</label>
+							</td>				
+							<td>{$v.goods_id}</td>
+							<td>
+								<?php if($v['image']){ ?>
+								<img src="__ROOT__/{$v.image}" />
+								<?php }else{ ?>
+								<img src="__ROOT__/Common/image/no_image_50x50.jpg" />
+								<?php } ?>	
+							</td>
+							<td>{$v.name}
+								<?php if(!empty($v['model'])){ ?>
+								<br/>
+								商家编号：{$v.model}
+								<?php } ?>
+							</td>
+							<td>{$v.class_name1}&nbsp;{$v.class_name2}&nbsp;{$v.class_name3}
+								<br/>
+								<?php 
+									switch($v['type'])
+									{
+										case 'lottery':
+										echo '<span class="blue bold">抽奖</span>';
+										break;
+										case 'subject':
+										echo '<span class="blue bold">主题活动</span>';
+										break;
+										case 'free_trial':
+										echo '<span class="blue bold">免费试用</span>';
+										case 'super_spike':
+										echo '<span class="blue bold">超值大牌</span>';
+										break;
+										case 'spike':
+										echo '<span class="blue bold">限时秒杀</span>';
+										break;	
+										case 'niyuan':
+										echo '<span class="blue bold">9.9活动</span>';
+										break;
+										case 'oneyuan':
+										echo '<span class="blue bold">1元购活动</span>';
+										break;	
+										case 'pintuan':
+										echo '<span class="blue bold">拼团活动</span>';
+										break;
+									}
+									if( $v['type'] != 'normal')
+									{
+										$pin_goods = M('pin_goods')->field('pin_price')->where( array('goods_id' => $v['goods_id']) )->find();
+										echo '<span class="red bold"><br/>活动价:'.$pin_goods['pin_price'].'</span>';
+									}
+									switch($v['lock_type'])
+									{
+										case 'newman':
+										echo '<span class="red bold"><br/>(老带新拼团活动)</span>';
+										break;
+									}
+								?>
+							</td>
+							<td>
+							<label class="inline">
+								<input gid="{$v.goods_id}" <?php if($v['is_index_show'] == 1){ ?> checked <?php } ?> type="checkbox" class="index_show id-pills-stacked ace ace-switch ace-switch-5">
+								<span class="lbl middle"></span>
+							</label>
+							</td>
+							<td>
+								<input type="text" gid="{$v.goods_id}" style="width:80px;" name="index_sort" value="{$v.index_sort}" class="index_sort" />
+							</td>
+							<td>
+								<span class="blue">单独价：{$v.danprice}</span><br/>
+								<span class="grey">市场价：{$v.price}</span><br/>
+							</td>
+							<td>
+								<input type="text" gid="{$v.goods_id}" style="width:80px;" name="quantity" value="{$v.quantity}" class="quantity" />
+							</td>
+							<td>
+								<?php echo $seller_key_list[$v['store_id']]; ?>
+								<?php if($v['status'] == 3 && !empty($v['reason'])){ ?>
+								<br/>
+								(审核未通过原因：){$v.reason}
+								<?php } ?>
+							</td>
+							<td>
+								<label class="inline">
+									<input gid="{$v.goods_id}"  <?php if($v['status'] == 1){ ?> checked <?php } ?> type="checkbox" class="qiyongstatus id-pills-stacked ace ace-switch ace-switch-5">
+									<span class="lbl middle"></span>
+								</label>
+							
+							</td>
+							<td>
+								<a  class="btn btn-xs btn-info" href='{:U("Goods/edit",array("id"=>$v["goods_id"]))}'>
+									<i class="icon-edit bigger-120"></i>编辑
+								</a> 
+								<?php if($v['status'] == 2){ ?> 
+								<a  class="btn btn-xs btn-info shenhe_back" rel_goods_id="{$v.goods_id}"  href='javascript:;'>
+									<i class="icon-edit bigger-120"></i>拒绝申请
+								</a> 
+								<?php } ?>
+								
+								<?php if($v['status'] == 4) { ?>
+								<a  class="btn btn-xs btn-info gobakck"  href="javascript:;" rel='{:U("Goods/goback",array("id"=>$v["goods_id"]))}'>
+									重新上架
+								</a> 	
+								<?php } ?>
+								
+								<?php if($v['status'] != 4) { ?>
+								<a  class="btn btn-xs btn-info backhuiche"  href="javascript:;" rel='{:U("Goods/backhuiche",array("id"=>$v["goods_id"]))}'>
+									删除
+								</a> 	
+								<?php } ?>
+								
+								
+							</td>
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+<link rel="stylesheet" href="__CSS__/dialog.css" />	
+<div class="ks-ext-mask" style="position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 999; display:none"></div>
+<div id="dialog" class="dialog" style="z-index: 9999; display:none;top:110px;">
+	<div class="ks-contentbox">
+	  <div class="title"><span>审核拒绝原因</span><a class="ks-ext-close" href="javascript:void(0)">X</a></div>
+		<dl>
+			<dt>原因</dt>
+			<dd>
+				<textarea id="reason" rows="6" cols="40"></textarea>
+			</dd>
+		</dl>
+		<div class="J_DefaultMessage"></div>
+		<div class="bottom">
+			<a href="javascript:void(0);" class="J_SubmitPL ncsc-btn ncsc-btn-green">确认</a> 
+			<a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> 
+		</div>
+	</div>
+</div>  
+  
+</block>
+<block name="javascript">
+<script>
+function alert_show(msg)
+{
+	$('#alert_content').html(msg);	
+	
+	$('#alert_info').show();
+	setTimeout("$('#alert_info').hide();",2000);
+}
+var goods_id =0;
+
+$(function(){
+	
+	$('.gobakck').click(function(){
+		var rel_url = $(this).attr('rel');
+		
+		if(!confirm('确认重新上架吗？'))
+		{
+			return false;
+		}
+		$.ajax({
+			url:rel_url,
+			type:'get',
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('重新上架成功!');
+					location.href = location.href;
+					return false;
+				} else {
+					alert(ret.msg);
+					return false;
+				}
+			}
+		})
+	})
+	
+	$('.backhuiche').click(function(){
+		var rel_url = $(this).attr('rel');
+		
+		if(!confirm('确认删除吗？'))
+		{
+			return false;
+		}
+		$.ajax({
+			url:rel_url,
+			type:'get',
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('删除成功，您的商品已下架!');
+					location.href = location.href;
+					return false;
+				} else {
+					alert(ret.msg);
+					return false;
+				}
+			}
+		})
+	})
+	
+	
+	//关闭弹出层
+	$('#dialog').on('click','.ks-ext-close',function(){	
+		$("#dialog").css('display','none');
+		$('.ks-ext-mask').css('display','none');
+		return false;
+	});
+	//关闭弹出层
+	$('#dialog').on('click','.J_Cancel',function(){	
+		$("#dialog").css('display','none');
+		$('.ks-ext-mask').css('display','none');
+		return false;
+	});
+	
+	$('.J_SubmitPL').click(function(e){    	
+    	var reason = $('#reason').val();
+		
+		$.ajax({
+			url:"{:U('Goods/change_goods_shenhe')}",
+			type:'post',
+			data:{goods_id:goods_id,reason:reason},
+			dataType:'json',
+			success:function(ret){
+				if(ret.code ==1)
+				{
+					alert('修改成功');
+					location.href = location.href;
+					return false;
+				} else {
+					alert(ret.msg);
+				}
+			}
+		})
+		
+    	$("#dialog").css('display','none');
+		$('.ks-ext-mask').css('display','none');
+		
+		
+		
+		
+    });
+	$('.shenhe_back').click(function(){
+		goods_id = $(this).attr('rel_goods_id');
+		
+		$("#dialog").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
+	})
+	
+	$('.index_sort').blur(function(){
+		var gid = $(this).attr('gid');
+		var index_sort = $(this).val();
+		$.ajax({
+			url:"{:U('Goods/toggle_index_sort')}",
+			type:'post',
+			data:{gid:gid,index_sort:index_sort},
+			dataType:'json',
+			success:function(res){
+				alert_show('修改排序成功')
+			}
+		})
+	})
+	$('.quantity').blur(function(){
+		var quantity = $(this).val();
+		var gid = $(this).attr('gid');
+		$.ajax({
+			url:"{:U('Goods/toggle_quantity')}",
+			type:'post',
+			data:{gid:gid,quantity:quantity},
+			dataType:'json',
+			success:function(res){
+				alert_show('修改库存成功')
+			}
+		})
+	});
+	
+	$('.index_show').on('click', function(){
+		var gid = $(this).attr('gid');
+		$.ajax({
+			url:"{:U('Goods/toggle_index_show')}",
+			type:'post',
+			data:{gid:gid},
+			dataType:'json',
+			success:function(res){
+				//code
+			}
+		})
+	});
+	
+	$('.qiyongstatus').on('click', function(){
+		var gid = $(this).attr('gid');
+		$.ajax({
+			url:"{:U('Goods/toggle_statues_show')}",
+			type:'post',
+			data:{gid:gid},
+			dataType:'json',
+			success:function(res){
+				//code
+			}
+		})
+	});
+	
+	
+	$("#search").click(function () {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });
+	
+	
+});		
+</script>
+</block>

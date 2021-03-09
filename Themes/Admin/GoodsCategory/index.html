@@ -1,0 +1,406 @@
+<extend name="Public:base" />
+<block name="javascript">
+<script src="__PUBLIC__/ztree/jquery.ztree.all-3.5.min.js"></script>
+<link  rel="stylesheet" type="text/css" href="__PUBLIC__/ztree/zTreeStyle.css" />
+<link  rel="stylesheet" type="text/css" href="__PUBLIC__/ztree/demo.css" />	
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+$(function(){
+	$('.J_SubmitPL').click(function(e){    	
+    	
+    	$("#dialog").css('display','none');
+		$('.ks-ext-mask').css('display','none');
+		
+    	var zTree = $.fn.zTree.getZTreeObj("category_tree"),
+		
+			nodes = zTree.getSelectedNodes(),
+			treeNode = nodes[0];
+			
+			if(treeNode!=undefined){
+				var isp= nodes[0].isParent;
+			}else{
+				var isp= true;
+			}
+			
+			
+			var id=(treeNode==undefined?0:treeNode.id);
+			
+			var url;
+			
+			if($("input[name='action']").val()=='add'){
+				url='{:U("GoodsCategory/add")}';
+			}else if($("input[name='action']").val()=='edit'){
+				url='{:U("GoodsCategory/edit")}';
+			}
+			
+			$.post(
+				url,
+				{					
+					'id':id,
+					'name':$("input[name='name']").val(),
+					'image':$("input[name='image']").val(),	
+					'is_search':$("input[name='is_search']:checked").val(),
+					'is_hot':$("input[name='is_hot']:checked").val(),
+					'is_haitao':$("input[name='is_haitao']:checked").val(),
+					'sort_order':$("input[name='sort_order']").val(),
+					'c_sort_order':$("input[name='c_sort_order']").val()
+				},
+				function(d){			
+					if($("input[name='action']").val()=='add'){						
+											
+						//有父节点
+				    	if(treeNode){
+				    		treeNode = zTree.addNodes(treeNode, {id:d.id, pId:id, isParent:isp, name:d.name});
+				    	}else{
+				    		treeNode = zTree.addNodes(treeNode, {id:d.id, pId:0, isParent:isp, name:d.name});
+				    	}	
+					}else{
+						
+						if(d.success){
+							nodes[0].name = d.name;
+							zTree.updateNode(nodes[0]);
+							alert('操作成功');
+						}
+						if(d.err){
+							alert(d.err);
+						}
+						
+						
+					}
+					
+				}
+			);
+    	
+    });
+	
+});
+</script>
+
+<script>
+
+		var setting = {
+			view: {
+				addHoverDom: false,
+				removeHoverDom: false,
+				selectedMulti: false
+			},
+			edit: {
+				enable: true,
+				editNameSelectAll: true,
+				showRemoveBtn: false,
+				showRenameBtn: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+
+	
+	var zNodes ={$list};
+	
+	function add(e) {
+
+		$("input[name='action']").val('add');
+		$('.title').find('span').text('新增分类');	
+		
+		$("input[name='name']").val('');
+		$("input[name='image']").val('');
+		$("input[name='sort_order']").val('');
+		$("input[name='c_sort_order']").val('');
+
+		$('#thumb').find('img').attr('src', $('#thumb').find('img').attr('data-placeholder'));
+	
+		
+		$("#dialog").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
+		
+	}
+	function edit() {
+			$("input[name='action']").val('edit');
+			
+			var zTree = $.fn.zTree.getZTreeObj("category_tree"),
+			nodes = zTree.getSelectedNodes(),
+			treeNode = nodes[0];
+			if (nodes.length == 0) {
+				alert("请先选择一个节点");
+				return;
+			}else{
+				var id=treeNode.id;
+				$.post(
+				'{:U("GoodsCategory/get_info")}',
+				{					
+					'id':id,
+					
+				},
+				function(d){			
+					$("input[name='name']").val(d.name);
+					$("input[name='image']").val(d.logo);
+					$("input[name='sort_order']").val(d.sort_order);
+					$("input[name='c_sort_order']").val(d.c_sort_order);
+					
+					if(d.is_hot == 1)
+					{	
+						$(".is_hot1").attr("checked",true);
+					} else if(d.is_hot ==0)
+					{
+						$(".is_hot0").attr("checked",true);
+					}
+					
+					if(d.is_search == 1)
+					{	
+						$(".is_search1").attr("checked",true);
+					} else if(d.is_hot ==0)
+					{
+						$(".is_search0").attr("checked",true);
+					}
+					
+					if(d.is_haitao == 1)
+					{	
+						$(".is_haitao1").attr("checked",true);
+					} else if(d.is_hot ==0)
+					{
+						$(".is_haitao0").attr("checked",true);
+					}
+					
+					if(d.thumb_image != '')
+						$('#thumb').find('img').attr('src', d.thumb_image);
+					else 
+						$('#thumb').find('img').attr('src', $('#thumb').find('img').attr('data-placeholder'));
+				}
+			);
+				$('.title').find('span').text('编辑分类');	
+				$("#dialog").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
+				
+				
+				
+			}
+	}
+	function remove(e) {
+		if(!confirm('确认要删除吗！！')){
+				return false;
+			}
+			
+			var zTree = $.fn.zTree.getZTreeObj("category_tree"),
+			nodes = zTree.getSelectedNodes(),
+			treeNode = nodes[0];
+			if (nodes.length == 0) {
+				alert("请先选择一个节点");
+				return;
+			}
+			$.post(
+				'{:U("GoodsCategory/del")}',
+				{					
+					'id':treeNode.id,					
+				},
+				function(d){			
+					if(d.err){
+						alert(d.err);
+					}else{						
+						zTree.removeNode(treeNode);
+					}
+					
+					
+				}
+			);
+	}
+	
+		$(document).ready(function(){
+			$.fn.zTree.init($("#category_tree"), setting, zNodes);
+			$("#addParent").bind("click", {isParent:true}, add);
+			$("#edit").bind("click", edit);
+			$("#remove").bind("click", remove);
+			
+			//关闭弹出层
+			$('#dialog').on('click','.ks-ext-close',function(){	
+			    $("#dialog").css('display','none');
+			    $('.ks-ext-mask').css('display','none');
+			    return false;
+			});
+			//关闭弹出层
+			$('#dialog').on('click','.J_Cancel',function(){	
+			    $("#dialog").css('display','none');
+			    $('.ks-ext-mask').css('display','none');
+			    return false;
+			});
+			
+			
+		});
+	
+</script>
+<script>
+$(function(){
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("status", {$blog.status|default=1});		
+			Oscshop.setValue("allow_reply", {$blog.allow_reply|default=1});		
+	</present>
+	
+	
+	// tooltips on hover button-upload
+	$('[data-toggle=\'tooltip\']').tooltip({container: 'body', html: true});
+
+	// Makes tooltips work on ajax generated content
+	$(document).ajaxStop(function() {
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	});	
+	
+	
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+				
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		//博客图片
+		$('#thumb-image').on('click', function() {		
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'category'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_blog_images:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;
+	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+		
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+});
+</script>
+
+</block>
+
+<block name="content">
+	<link rel="stylesheet" href="__CSS__/dialog.css" />	
+	
+	
+	<div class="ks-ext-mask" style="position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 999; display:none"></div>
+	<div id="dialog" class="dialog" style="z-index: 9999; display:none;top:110px;">
+    <div class="ks-contentbox">
+      <div class="title"><span>新增分类</span><a class="ks-ext-close" href="javascript:void(0)">X</a></div>
+      <input type="hidden" name="action" value="" />	
+    	
+        <dl>
+        	<dt>分类名称</dt>
+        	<dd><input type="text" name="name" class="text" /></dd>
+        	<dt>
+        		<span title="" data-toggle="tooltip" data-original-title="">分类logo</span>
+        	</dt>
+        	<dd id="thumb">
+        		<a href="#" data-toggle="image" class="img-thumbnail">
+                 	<img osctype="image" data-placeholder="__ROOT__/Common/image/no_image_100x100.jpg"  src="__ROOT__/Common/image/no_image_100x100.jpg"  />
+					</a>
+                 <input osctype="image_input" type="hidden" name="image" value="" id="input-image" />
+        	</dd>
+        	<dd>是否推荐首页显示:
+        		<input type="radio" name="is_hot" value="0" class="is_hot0" /> 否&nbsp;&nbsp;
+        		<input type="radio" name="is_hot" value="1" class="is_hot1" />是
+        	</dd>
+        	<dd>
+        		是否搜索页显示:
+        		<input type="radio" name="is_search" value="0" class="is_search0" /> 否&nbsp;&nbsp;
+        		<input type="radio" name="is_search" value="1" class="is_search1" />是
+        	</dd>
+        	<dd>
+        		是否海淘分类:
+        		<input type="radio" name="is_haitao" value="0" class="is_haitao0" /> 否&nbsp;&nbsp;
+        		<input type="radio" name="is_haitao" value="1" class="is_haitao1" />是
+        	</dd>
+        	<dt>排序</dt>
+        	<dd><input type="text" name="sort_order" class="text" /></dd>
+			<dt>搜索排序</dt>
+        	<dd><input type="text" name="c_sort_order" class="text" /></dd>
+			
+        </dl>
+        
+        
+        <div class="J_DefaultMessage"></div>
+       	 <div class="bottom">
+        	 <a href="javascript:void(0);" class="J_SubmitPL ncsc-btn ncsc-btn-green">确认</a> 
+        	 <a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> </div>
+      
+   		</div>
+  </div>  
+	
+
+	<div class="page-header">
+	<a id="addParent" class="btn btn-primary">新增</a>
+	<a id="edit" class="btn btn-primary">编辑</a>
+	<a id="remove" class="btn btn-primary">删除</a>
+	</div>
+	
+	<div class="row">
+		<div id="category_tree" class="ztree"></div>
+	</div>
+	
+</block>
+

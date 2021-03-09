@@ -1,0 +1,148 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/subject.css">
+<div id="main">
+<?php if(!empty($subject['banner'])){ ?>
+<div class="subject-banner" >
+	<img src="/Uploads/image/{$subject.banner}" width="100%" />
+</div>
+<?php } ?>
+<section id="index-content">
+	<?php if($fromindex == 1) { ?>
+		
+	<ul class="subject-roll-message">
+		<?php if(!empty($niyuansubjects)) { ?>
+		<?php $i =1; foreach($niyuansubjects as $niyuan){ ?>
+         <li <?php if($i<3){ ?>style="color: rgb(102, 102, 102);"<?php }else{ ?>style="color: rgb(255, 0, 0);" <?php } ?> onclick="location='{:U('Subject/index',array('id' => $niyuan['id']))}'">
+             <p><?php echo $niyuan['name']; ?></p>
+         </li>
+         <?php $i++; } ?>
+         <?php } ?>
+     </ul>	
+		
+	<?php }else { ?>
+	<div class="subject-banner" style="display:none;">
+       
+    </div>
+	<?php } ?>
+	
+	
+	<div id="subject-goods-list" class="main-view tuan subject-double-goods">
+		<div class="base-list-wrapper" id="tuan_list">
+			<volist name="list" id="d">
+			<div class="subject-goods-list-item-1 double-grid-one">
+				<div class="double-grid-item gap-right" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+				    
+				    <img src="{$fan_ly_image}" class="scrollLoading" data-echo="__UPLOAD__/{$d.image}" />
+				    <p class="goods-name">{$d.name}</p>
+				    <div class="detail">
+				        <b class="price-icon">￥</b>
+				        <b class="price">{$d.pinprice}</b>
+				        <div class="info">
+				            <span>{$d.pin_count}人团</span>
+				            <span> · </span>
+				            <span>已团{$d.seller_count}件</span>
+				            <!--ms-if-->
+				        </div>
+				    </div>
+				</div>
+			</div>
+			</volist>
+			
+		</div>
+		
+		
+	</div>
+</section>
+</div>
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<include file="Widget:pin_notify" />
+<include file="Public:foot_lazy" />
+<style>
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Subject/index',array('id' => $subject_id))}";
+var req_step = 1;
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+					bindImgEvent();
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

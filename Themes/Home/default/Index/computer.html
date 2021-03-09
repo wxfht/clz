@@ -1,0 +1,157 @@
+<extend name="Public:computerbase" />
+<block name="content">  
+<style>
+.pdd-head .ph-tab{float:left;}
+.pdd-activity{margin-top: .26rem;}
+.pdd-activity .pdd-act-head{border:none;}
+.home-banner {
+    position: relative;
+    height: auto;
+    margin: 0 auto;
+    width: 100%;
+    z-index: 5;
+    overflow: hidden;
+}
+
+
+.main{width:auto;margin:0 auto;margin-top:1rem; position:relative;background-color:#f8f8f8;}
+.home-banner{position:relative;height:auto;margin:0 auto;width:100%;z-index:5;overflow:hidden;}
+.focus-pic{overflow:hidden;width:100%;}
+.focus-pic .pic-item{display:block;position:absolute;left:0;top:0;width:100%;}
+.focus-pic img{display:block;width:100%;height:auto;}
+.focus-pic .footing{position:absolute;bottom:0;left:50%;right:0;padding:0 15px;height:40px;z-index:11;text-align:left;}
+.focus-pic .pagination{position:absolute;left:0;right:0;bottom:0;height:30px;text-align:center;}
+.focus-pic .pagination-item{display:inline-block;*display:inline;*zoom:1;width:8px;height:8px;overflow:hidden;border:1px solid #fff;border-radius:50%;margin:0 3px;cursor:pointer;}
+.focus-pic .pagination-item.active{background:#ffffff;}
+
+.pdd-activity .pdd-act-pic img.cat_hover{display:none;position:absolute;top: -100%;z-index: 999;width:320px;}
+
+</style>
+<script src="__PUBLIC__/js/ui.js"></script>
+<div class="main">
+	<div class="home-banner">
+		<div class="focus-pic" id="focus-pic">
+			<?php foreach($ad_gundong as $val){ ?>
+			<a href="<?php echo $val['url']; ?>" class="pic-item"><img src="/Uploads/image/<?php echo $val['image']; ?>"></a>
+			<?php } ?>
+			<div class="footing">
+				<div class="pagination">
+					<?php $i =1; ?>
+					<?php foreach($ad_gundong as $val){ ?>
+					<span class="pagination-item <?php if($i==1){ ?>active <?php } ?>"></span>
+					<?php $i++; ?>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//焦点图
+		ui.focus('#focus-pic',2000);
+		
+		$('.cat_image').hover(function(){
+			var s_height = $(this).siblings('.cat_hover').height();
+			
+			if(  parseFloat($(this).parent().width()) >320 )
+			{
+				var s_w = ($(this).parent().width() -320)/2;
+				$(this).siblings('.cat_hover').css('left', s_w+'px');
+			}
+			
+			
+			$(this).siblings('.cat_hover').css('top','-'+s_height+'px')
+			
+			
+			$(this).siblings('.cat_hover').fadeIn();
+		},function(){
+			$(this).siblings('.cat_hover').fadeOut();
+		})
+	});
+</script>
+		
+<div class="pdd-activity" style="margin-bottom:10px;">
+	<div class="pdd-act-head">
+		<span class="pdd-act-title"></span>
+	</div>
+	<div class="pdd-act-pic">
+		<?php 
+			 $ad_1 = array_slice($plugins_slider_list,0,1);
+			 $ad_2 = array_slice($plugins_slider_list,1,1);
+			 $ad_3 = array_slice($plugins_slider_list,2,1);
+			 $ad_4 = array_slice($plugins_slider_list,3,1);
+			 $ad_5 = array_slice($plugins_slider_list,4,1);
+			 $ad_6 = array_slice($plugins_slider_list,5,1);
+		?>
+		<div class="act-pic-1">
+			<div class="cat-pic-up">    
+				<img src="/Uploads/image/<?php echo $weixin_group; ?>" class="cat_hover" />
+				<img src="/Uploads/image/<?php echo $ad_1[0]['image']; ?>" class="cat_image">
+			</div>
+			<div class="cat-pic-down">
+				<img src="/Uploads/image/<?php echo $weixin_group; ?>" class="cat_hover" />
+				<img src="/Uploads/image/<?php echo $ad_4[0]['image']; ?>" class="cat_image">
+			</div>
+		</div>
+		<div class="act-pic-2">
+			<div class="cat-pic-up">
+				<img src="/Uploads/image/<?php echo $weixin_group; ?>" class="cat_hover" />
+				<img src="/Uploads/image/<?php echo $ad_2[0]['image']; ?>" class="cat_image">
+			</div>
+			<div class="cat-pic-down">
+				<img src="/Uploads/image/<?php echo $weixin_group; ?>" class="cat_hover" />
+				<img src="/Uploads/image/<?php echo $ad_5[0]['image']; ?>" class="cat_image">
+			</div>
+		</div>
+		<div class="act-pic-3">
+			<div class="cat-pic-up">
+				<img src="/Uploads/image/<?php echo $weixin_group; ?>" class="cat_hover" />
+				<img src="/Uploads/image/<?php echo $ad_3[0]['image']; ?>" class="cat_image">
+			</div>
+			<div class="cat-pic-down cat-app-dl">
+				<img src="/Uploads/image/<?php echo $weixin_group; ?>" class="cat_hover" />
+				<img src="/Uploads/image/<?php echo $ad_6[0]['image']; ?>" class="cat_image">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="pdd-catgoods" style="display:none;">
+		<div class="pdd-cat-head">
+			<span class="pdd-act-title">精选专题</span>
+		</div>
+		<ul class="cat-list">
+			<?php foreach($subject_list as $subject){ ?>
+			<li class="cat-list-item" onclick="location.href='<?php echo U('Index/super', array('id' => $subject['id'])); ?>'">
+				<div class="clt-content">
+					<img class="clt-content-banner" src="/Uploads/image/<?php echo $subject['banner']; ?>">
+					<div class="clt-goods" id="index-cat-clothes">
+						<div class="pdd-index-glist" avalonctrl="index-cat-clothes">
+							<ul>
+								<?php foreach($subject['goods_list'] as $goods){ ?>
+								
+								<?php if(!empty($goods['fan_image'])){ 
+									$goods['image'] = $goods['fan_image'];
+									}  
+								?>
+								<li class="pi-glist-item">
+									<img alt="goods" src="/Uploads/image/<?php echo $goods['image']; ?>">
+									<p class="index-goods-name"><?php echo $goods['name']; ?></p>
+									<span class="index-goods-price"><b>￥</b><span><?php echo $goods['pinprice']; ?></span></span>
+									<span class="index-goods-mprice">￥<span><?php echo $goods['price']; ?></span></span>
+								</li>
+								<?php } ?>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</li>
+			<?php } ?>
+		</ul>
+	</div>
+
+
+
+<include file="Public:foot_computer" />
+</block>

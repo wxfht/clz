@@ -1,0 +1,66 @@
+
+<block name="content">    
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>绑定订单通知</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css"/>
+</head>
+<body>
+
+    
+    <div class="weui_cells_tips" style="margin-top:50%;">点击确认按钮，您的店铺有新的订单，将会微信消息通知您！</div>
+    <div class="weui_btn_area">
+        <a class="weui_btn weui_btn_primary" href="javascript:" id="submit-btn">确定</a>
+    </div>
+    
+    
+    <div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">绑定成功</p>
+    </div>
+    
+
+</div>
+
+ <script src="http://style.114jd.cn/style/js/global/lib/jquery/jquery-2.1.1.min.js" ></script>
+ <script>
+ 	$(document).ready(function(){
+ 		
+ 		$("#submit-btn").click(function(e){
+ 			 
+ 			 var params = $("#apply_form").serialize();
+ 			 var url="{:U('Seller/bind_post',array('seller_id' => $seller_id))}";
+ 			 var successFun=function(result){
+ 			 	if(result.code=='200'){
+ 			 		$('#toast').show();
+		 		 	setTimeout(function () {
+		                    $('#toast').hide();
+		                    location.href="{:U('Index/index')}";
+		             }, 1500);
+ 			 	}else{
+ 			 		alert(result.msg);
+ 			 	}
+ 			 };
+ 			 
+ 			  $.ajax({
+	             type: "POST",
+	             url:url,
+	             data: params,
+	             dataType: "json",
+	             success: successFun
+			});
+ 			 
+ 		});
+ 	});
+ </script>
+  
+</body>
+</html>
+
+</block>

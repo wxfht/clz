@@ -1,0 +1,128 @@
+<extend name="Public:base" />
+
+<block name="content">
+		
+	
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="panel-body">
+			<ul class="nav nav-tabs">
+            <li <?php if($state == -1){ ?>class="active" <?php } ?>>
+				<a href="{:U('SellerManage/apply' ,array('state' => -1))}">全部</a>
+			</li>
+            <li <?php if($state == 0){ ?>class="active" <?php } ?>>
+				<a href="{:U('SellerManage/apply', array('state' => 0))}">待审核</a>
+			</li>              
+            <li <?php if($state == 1){ ?>class="active" <?php } ?>>
+				<a href="{:U('SellerManage/apply', array('state' => 1))}" >已审核</a>
+			</li> 
+			<li <?php if($state == 2){ ?>class="active" <?php } ?>>
+				<a href="{:U('SellerManage/apply', array('state' => 2))}" >已拒绝</a>
+			</li>  			
+          
+          	
+          </ul>
+		</div>
+	</div>
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>											
+						<th>申请人姓名</th>
+						<th>申请人电话</th>
+						<th>店铺名称</th> 
+						<th>所在城市</th>  
+						<th>申请类型</th>
+						<th>主营类目</th>
+						<th>状态</th>
+						<th>申请时间</th>
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+						<volist name="list" id="m" empty="$empty">
+						<tr>							
+							<td>{$m.username}</td>
+							<td>{$m.mobile}</td>
+							<td>{$m.store_name}</td>
+							<td>{$m.city}</td>
+							<td>
+								<?php 
+									if($m['type'] == 0)
+									{
+										echo '<span class="green bold">个人</span>';
+									}else if($m['type'] == 1)
+									{
+										echo '<span class="red bold">企业</span>';
+									}
+								?>
+							</td>
+							<td>{$m.category_name}</td>
+							<td>
+							<?php
+								switch($m['state']){
+									case '1':
+									echo '<span class="green bold">通过</span>';
+									break;
+									case '2':
+									echo '<span class="blue bold">拒绝</span>';
+									break;
+									case '0':
+									echo '<span class="red bold">申请中</span>';
+									break;
+								}
+								?>
+							</td>
+							<td>
+								<?php echo date('Y-m-d H:i:s', $m['addtime']); ?>
+							</td>
+							<td>
+								<a  class="btn btn-xs btn-info" href='{:U("SellerManage/apply_detail",array("id"=>$m["id"]))}'>
+									<i class="icon-eye-open bigger-120"></i>查看资料
+								</a> 
+								
+								<?php if($m['state'] == 0){ ?>
+								<a class="delete btn btn-xs btn-danger" href='{:U("SellerManage/shenhe",array("id"=>$m["id"],"state" => 1))}' >
+									审核通过
+								</a>
+								
+								<a class="delete btn btn-xs btn-danger" href='{:U("SellerManage/shenhe",array("id"=>$m["id"],"state" => 2))}' >
+									残忍拒绝
+								</a>
+								<?php } ?>
+							</td>
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script>
+$(function(){
+	
+	$("#search").click(function () {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });
+	
+	
+});		
+</script>
+</block>

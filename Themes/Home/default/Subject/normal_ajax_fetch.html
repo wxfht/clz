@@ -1,0 +1,47 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<div class="subject-goods-list-item-0" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+	<div class="single-list-item" >
+	    <div class="goods-image">
+	         <img src="{$fan_ly_image}" class="scrollLoading" data-echo="__UPLOAD__/{$d.image}" style="height: 300px;">
+				        
+	    </div>
+	    <p class="goods-name" data-log="">{$d.name}</p>
+	    <div class="detail">
+	        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAMAAAANmfvwAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAEIUExURUxpcZSUlJCQkJaWlpmZmZWVlZmZmZSUlJSUlJSUlJSUlJOTk5WVlZSUlJSUlJSUlJSUlJWVlZaWlpSUlJWVlZWVlZSUlJSUlJSUlJSUlJWVlZSUlJWVlZWVlX9/f5SUlJWVlZWVlZ+fn5aWlpSUlJSUlJKSkpWVlZmZmZWVlZOTk5WVlZWVlZWVlZaWlpSUlJSUlJWVlZWVlaqqqpSUlJmZmZWVlZOTk5SUlJWVlZSUlJOTk////5WVlZOTk5WVlZWVlZOTk5WVlZWVlZSUlJWVlZaWlpSUlJWVlZycnJSUlJKSkpaWlpSUlJWVlZSUlJWVlZSUlJWVlZOTk5SUlJSUlJSUlJWVlZnIn4UAAABXdFJOUwD3FxYKdgWL+lRlQNDODOvwsD2xmDqN/jxxRm77lgJ68aIIM93VIYAZgy10Y/0s/Hx7xAOlHoxY0eDMZAHvOT9oMqzs7Z9mocgNyTsnMLyg6p5XJrtWJJVjJAMAAAFFSURBVDjL3ZHVloNAEEQbEogQiLu7u7usu2///5/sSCA5yWHfd+ulq5o7Q9MA/GH5/B70+H2/ENEwUoWjpkQEdUXMEK+BeM2QjIFkTIgcHpQzYewGYT97FkxLeVKKBlIkKS+lgwYRoN0ygM1AbABlWgN7IsbbNSjpb7KXoMZdjCMhnuqHa8glde5CHEny1AWwFpgrWAG6vJnkSJwnB7GOE4dxjogCDW5yFCqsXyHO6qZOEPfzdmiaU1dlSJXaOXUd/aPlKeJsAdq4tx+3N9ZgMUOcyjrSn+Bytd4JRz9A2K1XS5z0OWBpuBA3Ep5K2iC6GhZC2Ni+tuoZom7ZFsmOEix/vZwhb++sJACyzHx+uE+I1+9nVq8AUs77JnGj4aB9BLQHwxEpzdvrFBtYe3xQWjKIzhvXBelfqlmnBeSWojzdwb/UDwOrhGgcYFPiAAAAAElFTkSuQmCC">
+	        <a class="group-desc">
+	            {$d.pin_count}人团
+	        </a>
+	        <a class="sale-price">
+	            <i>￥</i>{$d.pinprice}
+	        </a>
+	        <del class="normal-price">
+	            单买价￥{$d.danprice}
+	        </del>
+	    </div>
+	    <div class="core" data-log="">
+	        <span>去开团</span>
+	        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAASBAMAAACdhyI/AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAnUExURf///0xpcf///////////////////////////////////////////+nkmRIAAAAMdFJOUx0AA9zdqt4eH6mPHIvMvyYAAABaSURBVAjXYxCsFgQCBvFkRhBVdsYARK05cxjIZVA9A+IyCMWAuAyCYC6DIJjLIAjmAinNM2ccgIJzzhxhBCtxAGs4wgjW7gA27AjIsDYQR5BBIgVskWADyFoA69EgN3WDDasAAAAASUVORK5CYII=">
+	    </div>
+	</div>
+</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

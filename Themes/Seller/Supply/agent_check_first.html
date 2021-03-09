@@ -1,0 +1,38 @@
+<form class="form-horizontal form-validate" action="{:U('supply/agent_check_first')}" method="post" enctype="multipart/form-data">
+	<input type='hidden' name='id' value='{$id}' />
+
+		<div class="modal-dialog">
+           <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">供应商类型审核</h4>
+            </div>
+            <div class="modal-body">
+                <label>
+					<input type="radio" name="type" value="0" checked />&nbsp;&nbsp;平台供应商
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;
+				<label>
+					<input type="radio" name="type" value="1" />&nbsp;&nbsp;独立供应商
+				</label>
+			</div>
+            <div class="modal-footer">
+				
+				<input type="hidden" id="sb_type" name="cansub" value="1" />
+				
+                <button class="btn btn-primary" type="submit" data-value="1" name="cansub">确定</button>
+                <!--<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>-->
+            </div>
+        </div>
+</form>
+<script>
+    //没有选中时间段不能导出
+    $(function () {
+        $('.btn-primary').click(function () {
+            var e = $(this).attr('data-value');
+			
+           $('#sb_type').val(e);
+		   
+        })
+    })
+</script>
+

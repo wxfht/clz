@@ -1,0 +1,12 @@
+<div class="pin-toast-container">
+    <div class="pin-toast" style="display: none;"></div>
+</div>
+<script>
+function showTip(title)
+{
+	$('.pin-toast').html(title);
+	$('.pin-toast').fadeIn(1500,function(){
+		$('.pin-toast').fadeOut(1500);
+	})
+}
+</script>

@@ -1,0 +1,276 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/rank_v2.css">
+<div id="main">
+<section id="rank-content">
+	<div id="hot-list">
+		<div id="rank-scroll" avalonctrl="hot-list">
+		    
+		    <div class="rank-scroll-header" onclick="location.href='{:U('Category/index',array('sort' =>'hot'))}';">
+		        <div class="header-title">
+		           	 热门排行
+		        </div>
+		        <div class="header-view-more" >
+		           	 查看更多
+		            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQBAMAAADdUfNzAAAAIVBMVEUAAACcnJycnJycnJycnJycnJycnJycnJycnJycnJycnJx3mU74AAAAC3RSTlMAfw5vJHdYSjUbQQwBkC0AAAAySURBVAjXY+AoYgCCicIKQFJV0AhIsgiCOY6onAQgySUYAGFDxMFqIEywXpg5IDNhAAB0CwdERcuYjQAAAABJRU5ErkJggg==">
+		        </div>
+		    </div>
+		    
+		    <div class="rank-scroll-container">
+		        <ul class="rank-wrapper rank-scroll-type-hot">
+		        	<?php $ij = 1; ?>
+		        	<volist name="hot_goods_list" id="d">
+		           	<li onclick="location.href='{:U('/goods/'.$d['goods_id'])}';">
+		                <img src="{$fan_ly_image}" class="scrollLoading rank-goods-img" data-echo="{$d.image}">
+		                <p class="goods-name">{$d.name}<?php echo $ij; ?></p>
+		                <div class="goods-detail">
+		                    <b class="price-icon">￥</b>
+		                    <b class="goods-price">{$d.pinprice}</b>
+		                    <div class="goods-info">
+								 <?php if($d['seller_count']>10000) 
+								{
+								?>
+								已团1万+件
+								<?php }else{ ?>
+								已团{$d.seller_count}件
+								<?php } ?>
+		                       	 
+		                    </div>
+		                    <!--ms-if-->
+		                </div>
+		                
+		                <?php if($ij < 4){  ?>
+		                
+		                <?php if($ij == 1){ ?>
+		                <img class="rank-mark-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAoCAMAAACcjsm3AAAAS1BMVEX/I0f/I0cAAAD/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0f/I0dL4BhjAAAAGXRSTlP1zADw3+rS2sWifjTJuq6lk3NkWU0/GQwIgwGVZQAAAJ5JREFUSMe9ljcWg0AQQ7WwYIJtcrj/SWl4qEUqRv1/sztJg/cq60Q1UMhE/aCoIviHpPyALTQ93xwB77EdRH1ucAYlZXYFYOWnhxlyhxeyKeCFHAhqie0IarVcCGrt01tgTt/TAsvUFhaIejLBvJlgdUSDeQtLDssR1QBsuagm51iFDTJXR9Sy4nqMWsi0gCjToc3ZxmpbuX082OfKBT6zBC8e3ZyZAAAAAElFTkSuQmCC">
+		                <span class="rank-mark-text rank-mark-text-white">
+		                    <?php echo $ij; ?>
+		                </span>
+		                <?php } ?>
+		                
+		                <?php if($ij == 2){ ?>
+		                <img class="rank-mark-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAoCAMAAACcjsm3AAAASFBMVEX/0gD/0gAAAAD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gD/0gAjSJLOAAAAGHRSTlP1zADw3+rS2sWifjS6rqWTc2RZTT8ZDAj0SaaDAAAAnUlEQVRIx72WORaEMAxDFQgMy7Bv978pDQ+1SIXV/+dEcSzju8o6UQ0UMlF/KKoIDpCUX7CFpveaE+AdtoOo3wMuoCRnNwCWPz3Mkge8kk0Br+RIUDO2I6i95UpQa5+eoGbPZYFlagsLRD2bYN5NsDqjwbyHmcPniGoAtlxUk/NbhX1kjo6oYcXxGDWQGQFRocOYs4PVjnJ7ebDXlRt2fwQBBkdoFAAAAABJRU5ErkJggg==">
+		                <span class="rank-mark-text rank-mark-text-white">
+                    		 <?php echo $ij; ?>
+                		</span>
+                		<?php } ?>
+                		<?php if($ij == 3){ ?>
+                		<img class="rank-mark-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAoCAMAAACcjsm3AAAAe1BMVEUez08r0FQbz04AAAAdz08fz08ez08k0FEp0FMj0FEfz08bz04r0FQbz04cz08cz04m0FIcz04bz04bz04q0FQbz04r0FQj0FEbz04j0FEj0FEj0FEj0FEj0FEj0FEj0FEcz08r0FQbz04r0FQbz04r0FQr0FQr0FQbz07ie+ymAAAAKXRSTlP1zMwA8Ory39I07cejo9/d2trS0c7OxZN+ZFlNPxkMCOC6uq6ugHxzczb80G4AAADMSURBVEjHvdFJFoJADEXRRKEoWhWQVsRe979C4wGsqfkD3/weqB/6PZOvXDEp8vYOXkiT7+CNVG2+MNVBUyywJl3RAhtStpthq4XeDHvSlk0wVEMzHXMgCThJvCaCXpk6qBu2QaAvsEMgFTIqBE+reISgJ9tAkPIXCLMDCP3jv2GA/qp9YjDiBIMB8whByxwi0GfmDoFbgXcAeiwlAAxYqvTQlPxpgD4ohdALpV4/6VSrvuHcQ7mMXWANLSMl0I9KV42LSgfPmktYdlVvFakHO+HxPKoAAAAASUVORK5CYII=">
+                		<span class="rank-mark-text rank-mark-text-white">
+                    		 <?php echo $ij; ?>
+               			</span>
+                		<?php } ?>
+                		<?php } ?>
+		            </li>
+		            <?php $ij = $ij+1; ?>
+		            </volist>
+		            <li onclick="location.href='{:U('Category/index',array('sort' =>'hot'))}';">
+		                <div class="rank-see-all">
+		                    <div>
+		                                                                         全部
+		                    </div>
+		                    <div class="see-all-en-text">
+		                        see all
+		                    </div>
+		                </div>
+		            </li>
+		            
+		        </ul>
+		    </div>
+		</div>
+	</div>
+
+	<div id="new-list">
+		<div id="rank-scroll" avalonctrl="new-list">
+		    <div class="rank-scroll-header">
+		        <div class="header-title" onclick="location.href='{:U('Category/index',array('sort' =>'new'))}';">
+		                                      新品推荐
+		        </div>
+		        <div class="header-view-more" onclick="location.href='{:U('Category/index',array('sort' =>'new'))}';">
+		                                     查看更多
+		            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQBAMAAADdUfNzAAAAIVBMVEUAAACcnJycnJycnJycnJycnJycnJycnJycnJycnJycnJx3mU74AAAAC3RSTlMAfw5vJHdYSjUbQQwBkC0AAAAySURBVAjXY+AoYgCCicIKQFJV0AhIsgiCOY6onAQgySUYAGFDxMFqIEywXpg5IDNhAAB0CwdERcuYjQAAAABJRU5ErkJggg==">
+		        </div>
+		    </div>
+		    <div class="rank-scroll-container">
+		        <ul class="rank-wrapper rank-scroll-type-new">
+		            
+		            <volist name="new_goods_list" id="d">
+		            <li onclick="location.href='{:U('/goods/'.$d['goods_id'])}';">
+		                <img src="{$fan_ly_image}" class="scrollLoading rank-goods-img" data-echo="{$d.image}">
+		                <p class="goods-name">{$d.name}</p>
+		                <div class="goods-detail">
+		                    <b class="price-icon">￥</b>
+		                    <b class="goods-price">{$d.pinprice}</b>
+		                    <!--ms-if-->
+		                    <div class="goods-info" >
+								<?php echo date('Y-m-d', strtotime($d['date_added'])); ?>
+		                    </div>
+		                </div>
+		            </li>
+		            </volist>
+		            
+		            <li onclick="location.href='{:U('Category/index',array('sort' =>'new'))}';">
+		                <div class="rank-see-all">
+		                    <div>
+		                       	 全部
+		                    </div>
+		                    <div class="see-all-en-text">
+		                        see all
+		                    </div>
+		                </div>
+		            </li>
+		        </ul>
+		    </div>
+		</div>
+</div>
+<div class="rank-subjects-title">
+            精选专题
+</div>
+<div id="subjects-list">
+	<div class="base-list-wrapper" id="tuan_list">
+		
+		<volist name="list" id="d">
+		<div class="subjects-list-item-0">
+			<div class="rank-subject-item rank-subject-first-item">
+			    <div id="subject-item-header" onclick="location.href='{:U('Subject/index', array('id' => $d['id']) )}';">
+			        <div class="item-header-title">
+			            	{$d.name}
+			        </div>
+			        <div class="item-subject-total" style="display:none;">
+			            28件商品，累计已团1.9万次
+			        </div>
+			        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQBAMAAADdUfNzAAAAIVBMVEUAAACcnJycnJycnJycnJycnJycnJycnJycnJycnJycnJx3mU74AAAAC3RSTlMAfw5vJHdYSjUbQQwBkC0AAAAySURBVAjXY+AoYgCCicIKQFJV0AhIsgiCOY6onAQgySUYAGFDxMFqIEywXpg5IDNhAAB0CwdERcuYjQAAAABJRU5ErkJggg==">
+			    </div>
+			    <div class="subject-goods-container">
+			        <ul class="subject-goods-wrapper rank-subject-scroll-subjects-list-item-0">
+			           	
+			           	<volist name="d.list" id="good">
+			           	<li onclick="location.href='{:U('/goods/'.$good['goods_id'])}';">
+			                <img src="{$fan_ly_image}" class="scrollLoading subject-goods-img" data-echo="{$good.image}">
+			                
+			                
+			                <p class="goods-name">{$good.name} </p>
+			                <div class="goods-price">
+			                    <b class="price-icon">￥</b>
+			                    <b class="price-num">{$good.pinprice}</b>
+			                </div>
+			            </li>
+			            </volist>
+			            <li onclick="location.href='{:U('Subject/index', array('id' => $d['id']) )}';">
+			                <div class="subject-see-bg">
+			                    <div class="subject-see-all">
+			                        <div>
+			                            	全部
+			                        </div>
+			                        <div class="see-all-en-text">
+			                            see all
+			                        </div>
+			                    </div>
+			                </div>
+			            </li>
+			        </ul>
+			    </div>
+			</div>
+		</div>
+		</volist>
+		
+		
+	</div>
+</div>
+
+
+</section>
+</div>
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<include file="Widget:pin_notify" />
+<include file="Public:foot_lazy" />
+<include file="Public:foot_pinduoduo" />
+<style>
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Rank/info')}";
+var req_step = 1;
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+					bindImgEvent();
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

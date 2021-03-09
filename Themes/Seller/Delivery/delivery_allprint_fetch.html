@@ -1,0 +1,55 @@
+<?php foreach($need_data as $val){ ?>
+		<div class="w794">
+			<table width ="794px" cellpadding="0">
+				<tr class="lft">
+					<td class="tdleft bold"><?php echo $shoname; ?></td>
+					<td class="tdleft bold">（团长配送清单）</td>
+				</tr>
+				<tr class="lft">
+					<td class=" ">团长名称：<?php echo $val['head_info']['head_name']; ?></td>
+					<td class=" ">团长电话：<?php echo $val['head_info']['head_mobile']; ?></td>
+				</tr>
+				<tr class="lft">
+					<td class=" ">配送地址：<?php echo $val['head_info']['head_address']; ?></td>
+					<td class=" "></td>
+				</tr>
+				<tr class="lft">
+					<td class=" ">配送单号：<?php echo $val['head_info']['list_sn']; ?></td>
+					<td class=" ">配送时间：</td>
+				</tr>
+				<tr class="lft">
+					<td class=" ">司机名称：<?php echo $val['head_info']['clerk_name']; ?></td>
+					<td class=" ">司机电话：<?php echo $val['head_info']['clerk_mobile']; ?></td>
+				</tr>
+				<tr class="lft">
+					<td class=" ">配送线路：<?php echo $val['head_info']['line_name']; ?></td>
+					
+				</tr>
+			</table>
+		</div>
+		<div class="w794">
+			<table width ="792px"  border="1"  cellpadding="0">
+			  <th colspan="6">团长配送清单</th>
+			  <tr class="a">
+				<td class="td1">序号</td>
+				<td class="td2">商品名称</td>
+				<td class="td3">数量</td>
+				<td class="td4">规格</td>
+				<td class="td5">单价</td>
+				<td class="td6">总价</td>
+			  </tr>
+			  <?php $i=1; foreach($val['order_goods_list'] as $order_goods){ ?>
+			  <tr class="a">
+				<td class="num"><?php echo $i; ?></td>
+				<td><?php echo $order_goods['goods_name']; ?></td>
+				 <td><?php echo $order_goods['goods_count']; ?></td>
+				<td data-rel="(<?php echo $order_goods['rela_goodsoption_valueid']; ?>)"><?php echo $order_goods['sku_str']; ?></td>
+				<td><?php echo $order_goods['price']; ?></td>
+				<td><?php echo $order_goods['total']; ?></td>
+			  </tr>
+			  <?php $i++; } ?>
+			</table>
+		</div>
+		<div style="height:20px;"></div>
+		<div class="PageNext"></div>		
+		<?php } ?>

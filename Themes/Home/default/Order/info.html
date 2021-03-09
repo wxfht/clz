@@ -1,0 +1,357 @@
+<extend name="Public:base" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/css/order-detail-1dc4a56c.css" media="all">
+<style>
+.address-mask{position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.7)}.address-mask .address-modal{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.address-mask .address-modal .address-form{width:14.08rem;border-radius:.384rem;background-color:#fff}.address-mask .address-modal .address-form .title{padding:.768rem 1.28rem;overflow:hidden;color:#333;text-align:center;font-size:15px}[data-dpr="2"] .address-mask .address-modal .address-form .title{font-size:30px}[data-dpr="2.5"] .address-mask .address-modal .address-form .title{font-size:37px}[data-dpr="2.75"] .address-mask .address-modal .address-form .title{font-size:41px}[data-dpr="3"] .address-mask .address-modal .address-form .title{font-size:45px}[data-dpr="4"] .address-mask .address-modal .address-form .title{font-size:60px}.address-mask .address-modal .address-form .double-input{box-sizing:border-box;font-size:14px;color:#333}[data-dpr="2"] .address-mask .address-modal .address-form .double-input{font-size:28px}[data-dpr="2.5"] .address-mask .address-modal .address-form .double-input{font-size:35px}[data-dpr="2.75"] .address-mask .address-modal .address-form .double-input{font-size:38px}[data-dpr="3"] .address-mask .address-modal .address-form .double-input{font-size:42px}[data-dpr="4"] .address-mask .address-modal .address-form .double-input{font-size:56px}.address-mask .address-modal .address-form .double-input input{padding-top:12px;padding-bottom:12px;width:48%;text-indent:.768rem}[data-dpr="2"] .address-mask .address-modal .address-form .double-input input{padding-top:24px;padding-bottom:24px}[data-dpr="2.5"] .address-mask .address-modal .address-form .double-input input{padding-top:30px;padding-bottom:30px}[data-dpr="2.75"] .address-mask .address-modal .address-form .double-input input{padding-top:33px;padding-bottom:33px}[data-dpr="3"] .address-mask .address-modal .address-form .double-input input{padding-top:36px;padding-bottom:36px}[data-dpr="4"] .address-mask .address-modal .address-form .double-input input{padding-top:48px;padding-bottom:48px}.address-mask .address-modal .address-form .single-input{position:relative;top:0;left:0;padding:.512rem 0 .512rem .512rem;color:#333;box-sizing:border-box;font-size:14px}[data-dpr="2"] .address-mask .address-modal .address-form .single-input{font-size:28px}[data-dpr="2.5"] .address-mask .address-modal .address-form .single-input{font-size:35px}[data-dpr="2.75"] .address-mask .address-modal .address-form .single-input{font-size:38px}[data-dpr="3"] .address-mask .address-modal .address-form .single-input{font-size:42px}[data-dpr="4"] .address-mask .address-modal .address-form .single-input{font-size:56px}.address-mask .address-modal .address-form .single-input input{width:80%}.address-mask .address-modal .address-form .address-selector{font-size:.55466667rem}.address-mask .address-modal .address-form .address-selector .select-container select{border:none;-moz-appearance:none;-webkit-appearance:none;appearance:none;box-sizing:border-box}.address-mask .address-modal .address-form .address-selector .select-container .province{width:28%;margin-right:4%}.address-mask .address-modal .address-form .address-selector .select-container .city{width:30%;margin-right:4%}.address-mask .address-modal .address-form .address-selector .select-container .country{width:30%}.address-mask .address-modal .address-form .address-selector .select-container option{font-size:.512rem}.address-mask .address-modal .address-form .location-icon{position:absolute;top:50%;right:5%;-webkit-transform:translate(0,-50%);transform:translate(0,-50%);width:.93866667rem;height:.93866667rem;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAe1BMVEUAAABXV1dpaWlwcHBYWFhcXFxgYGBYWFhYWFhYWFhZWVlXV1dZWVlYWFhcXFxYWFhZWVlXV1dYWFhXV1dYWFhZWVlXV1dYWFhYWFhXV1dYWFhYWFhYWFhYWFhcXFxYWFhYWFhaWlpZWVlYWFhXV1dYWFhcXFxZWVlXV1fmSIMzAAAAKHRSTlMA9wgE5BEMvWXLXtIipBbePPLrxIIylEOznE/ZfHUda0cpjteuWC6Evd7ggwAAAe1JREFUOMuNVNkSozAMIyEQSKCUq9DSltJr9f9fuDs7ObmmejIakdiy42COSOR8KMuB5yIK9nHhBAaEX3akxxogfXLMKM2OSU+A+rghDZ8AS2JLxAkDnuGaNuIgN+pz9EbAoxXtC6xd0i3Da6EOOdJDsIJDCj7P5ARmtb6a4TTzAaR1UpqmyMmEwPckxc14cJUAIK/GlxtSV/sBo7otFVBKWQKVbgll+DjiGkJFIyC78F/BnQRGRQrUTg0g6uAH0ITKnwZ4qMwIbPUJeiUocHIdKtSPPRLD5joWKNx2FxD6tNymrL1567+05q2dtUkXyGzgIENhAw0CagMHFMQGGhUiHRy8TqNS2aM0pESrG9m54k637oth6UajqjZ8s3RDaJ8zovqgOkRUvRzC7WBsJvWu2buZzQylY3+vh46mKBN1dYlUefPE2auEheYlQjZCNBLm9cWVP9DSJBWOFf6jGkNF/QH3l4sd6CDsmvO56UKTO9HO2vG4BhvIrW/2EU7r2s4YaHFGurp7YrZyZ6TI3w65gLSr7LR+hqRzLqtUu+aIBzxnFE3Re4S3ej7zy4rN9S9Avu736Jexux4fgFhI/MVrivyWaII9xNK4nTHkwT7up0kFBTgNfsPhhTr+UXsfkG6athyUelO7bOZ7Ld+/GB8qawL4/WcAAAAASUVORK5CYII=);background-repeat:no-repeat;background-size:100% 100%}.address-mask .address-modal .address-form .error-tips{padding:.512rem .768rem;color:#ff4965;overflow:hidden;min-height:14px;font-size:12px}[data-dpr="2"] .address-mask .address-modal .address-form .error-tips{min-height:28px;font-size:24px}[data-dpr="2.5"] .address-mask .address-modal .address-form .error-tips{min-height:35px;font-size:30px}[data-dpr="2.75"] .address-mask .address-modal .address-form .error-tips{min-height:38px;font-size:33px}[data-dpr="3"] .address-mask .address-modal .address-form .error-tips{min-height:42px;font-size:36px}[data-dpr="4"] .address-mask .address-modal .address-form .error-tips{min-height:56px;font-size:48px}
+.address-mask .address-modal .address-form .sbtn{background-color:#ff4965;color:#fff;text-align:center;padding:.512rem 0;border-radius:0 0 .384rem .384rem;font-size:18px}[data-dpr="2"] .address-mask .address-modal .address-form .sbtn{font-size:36px}[data-dpr="2.5"] .address-mask .address-modal .address-form .sbtn{font-size:45px}[data-dpr="2.75"] .address-mask .address-modal .address-form .sbtn{font-size:49px}[data-dpr="3"] .address-mask .address-modal .address-form .sbtn{font-size:54px}[data-dpr="4"] .address-mask .address-modal .address-form .sbtn{font-size:72px}.address-mask .address-modal .address-form .border-b{border-bottom:1px solid #999}.address-mask .address-modal .address-form .border-l{border-left:1px solid #999}.address-mask .address-modal .icon-closed{position:absolute;right:-.64rem;top:-.64rem;width:1.92rem;height:1.92rem;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAh1BMVEUAAAD/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWX/SWV+ZsJgAAAALHRSTlMA/PPx7xXqyLRrD+VOh28lCgP1zT4rGgbAjHdcOicf0mXc2LqtkIFhVzagSSpfOkgAAAG7SURBVEjHlZbXloMgEEAHxRKj0TW9F7Op8//ftycFnAHWct843jkhMAWwmN2W8Sksy/AUL28BtJAMImREg6aYIPPQwlvOwM3PyEcn3mru8ndj/JdxbvtPiQ14qelfBTYiDtxfYysD6qcCWxEp+b8SO+Bt9XlG2Im9Ot0BdmT1vV96X7FxXENJN/W58wxrFgVcmZ/fS7L8feebT3aZqB0qn59gGQDAoV4fPz850v7WvKMRACzq5QaARoRbtdSMARJBdqRyf/X2p9/VhCg7SFlWJl/nQn36t9eQ8QLTEbXvITunM/KIQpW208cK9qjQN0HZGFV4hCEaVEWDjxLsOo7rCr5bX4UjAB/Kz+2Pwt4S+ned9w80kbB3+TrijAZHOJv+BqAhooLM8hnzGJFfXMrrVvnTiztiDYmg/kT5IWbwoaiQsGPpXRIf8aIiiDHmBZRqn9Y8THgBJb6ZR9uQfAbIQ16i9Jzin5c/ZO0xOBpNAALJsiKnd3+AIqJtxm5kGfNRXOmprlytUjaMlXnvZqx5dmr3/QcKi2gdWf2Gop86xm7UNnbtwS7bB3v/p0P74ySBFoLX80cKId3Pnz84CvgkMbBytAAAAABJRU5ErkJggg==) center center no-repeat;background-size:.96rem .96rem}
+
+</style>
+
+
+  <div class="wrapper hasActions" style="display: block;"> 
+   <div class="content"> 
+    <!--状态--> 
+    
+    <div class="status waitForReceiving"> 
+     	<span class="text">{$order_status_info.name}</span> 
+     	<span class="img"></span> 
+    </div> 
+    
+    <!--快递,收货地址--> 
+    <div class="addressWrapper"> 
+      
+     
+     <div class="receiver"> 
+      <div class="r1"> 
+       <span class="name">{$order_info.shipping_name}</span> 
+       <span class="phone">{$order_info.telephone}</span> 
+      </div> 
+      <div class="address">
+       		{$shipping_province.area_name}{$shipping_city.area_name}{$shipping_country.area_name}{$order_info.shipping_address}
+      </div> 
+     </div> 
+    </div>
+     
+    <!--商品,金额明细--> 
+    <div class="goods">
+     <?php $goods_total =0; foreach($order_goods_list as $order_goods){  ?>
+     <ul class="items">
+      	<li class="item"> 
+      		<a href="javascript:;"> 
+		        <div class="img-wrapper"> 
+		         	<img class="icon" src="{$order_goods.image}" /> 
+		        </div> 
+		        <div class="title">
+					<?php if($order_goods['head_disc'] < 100){ ?>
+						<?php if($order_goods['head_disc'] ==0){ ?>
+						<font color="#ff4965">[团长免单]</font>
+						<?php }else{ ?>
+						<font color="#ff4965">[<?php echo round($order_goods['head_disc'] / 10,1); ?>折]</font>
+						<?php } ?>
+					<?php } ?>
+					
+					<?php if($order_info['type'] == 'integral'){ ?>
+					<font color="#ff4965">[积分兑换]</font>
+					<?php } ?>
+					{$order_goods.name}
+		        </div> 
+		        <div class="sku">
+		         	{$order_goods.option_str}
+		        </div> 
+		        <div class="money">
+		         <span class="price">&yen;<?php echo round($order_goods['price'],2);?></span>
+		         <span class="num">x{$order_goods.quantity}</span>
+		        </div> 
+	        </a> 
+        </li> 
+      	<li class="goodActions" <?php if( !in_array($order_info['order_status_id'], array(4)) ){ ?>style="display:none;" <?php } ?> onclick="location.href='{:U('Order/refund', array('order_id' => $order_info['order_id']))}';"> 
+	       <div class="btn highlight" data-after_sale="">
+	        <span>申请售后</span>
+	       </div> 
+	    </li> 
+		
+		
+		<li class="goodActions" <?php if( !in_array($order_info['order_status_id'],array(12,13)) ){ ?>style="display:none;" <?php } ?> onclick="location.href='{:U('Order/refunddetail', array('order_id' => $order_info['order_id']))}';"> 
+	       <div class="btn highlight" data-after_sale="">
+	        <span>退款处理中</span>
+	       </div> 
+	    </li> 
+		
+     </ul> 
+     <?php $goods_total += $order_goods['total'];} ?>
+     
+
+  
+  
+     <div class="expenses"> 
+	   		<?php if($order_info['shipping_fare']>0){?>
+	    		<div class="row">
+			       <span class="key">运费:</span>
+			       <span class="value">&yen;<?php echo round($order_info['shipping_fare'],2); ?></span>
+		     	</div> 
+	    	<?php } ?>
+      		
+      	<div class="row">
+	       <span class="key">商品金额:</span>
+	       <span class="value">&yen;<?php echo round($goods_total,2); ?></span>
+      	</div> 
+		
+		<?php if($order_info['type'] == 'integral'){ ?>
+		<div class="row">
+	       <span class="key">兑换积分:</span>
+	       <span class="value">-<?php echo intval($score); ?>积分</span>
+      	</div> 
+		<?php } ?>
+		
+		<?php if(!empty($voucher_info)){ ?>
+			<div class="row">
+			   <span class="key">优惠券:</span>
+			   <span class="value">{$voucher_info.voucher_title}</span>
+			</div> 
+        <?php } ?>
+      
+      <div class="row">
+       <span class="key">总计:</span>
+       <span class="value">&yen;<?php echo round($order_info['total'],2);?></span>
+      </div> 
+     </div> 
+    </div> 
+    <!--订单信息--> 
+    <div class="order"> 
+     <div class="row">
+      订单编号：
+      <span class="value">{$order_info.order_num_alias} &nbsp;(长按复制)</span>
+     </div> 
+     <div class="row">
+      下单时间：
+      <span class="value"><?php echo date('Y-m-d H:i', $order_info['date_added']);  ?></span>
+     </div> 
+	 
+	 <?php if($order_info['delivery'] == 'pickup'){ ?>
+		<?php if( in_array($order_info['order_status_id'],array(4,6,11,12,13))){ ?>
+			<div class="row">
+				配送方式：<span class="value">自提</span>
+			</div>
+			<div class="row">
+				自提点：<span class="value">{$pick_up.pick_name}</span>
+			</div>
+			<div class="row">
+				自提点位置：<span class="value">{$pick_up.pick_pos}</span>
+			</div>
+			<div class="row">
+				联系方式：<span class="value"><a href="tel:{$pick_up.telephone}">{$pick_up.telephone}</a></span>
+			</div>
+			<div class="row">
+				自提单号：<span class="value">
+					<?php echo $pick_order_info['pick_sn']; ?>
+					(提货状态:<span style="color:red;">
+					<?php 
+					if($pick_order_info['state'] == 0)
+					{
+						echo '未提货';
+					} else if($pick_order_info['state'] == 1){
+						echo '已提货';
+					}
+					?></span>)
+				</span>
+			</div>
+			<div class="row">
+				核销码:
+			</div>
+			<div class="row">
+				<img src="{:U('Order/get_picksn_qrcode', array('pick_sn' => $pick_order_info['pick_sn']))}" width="90%"/>
+				<div id="allmap" style="display:none;height:400px;width:100%;font-size:18px;"></div>
+			</div>
+			
+			<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=DC28bd66db60c272578c79beb570bf6d"></script>
+			<script type="text/javascript">
+			// 百度地图API功能
+			var map = new BMap.Map("allmap");
+			var point = new BMap.Point(<?php echo $pick_up['lng']; ?>, <?php echo $pick_up['lat']; ?>);
+			var marker = new BMap.Marker(point);  // 创建标注
+			map.addOverlay(marker);              // 将标注添加到地图中
+			map.centerAndZoom(point, 16);
+			var opts = {
+			  width : 200,     // 信息窗口宽度
+			  height: 100,     // 信息窗口高度
+			  title : "<?php echo $pick_up['pick_name']; ?>" , // 信息窗口标题
+			  enableMessage:true,//设置允许信息窗发送短息
+			  message:"联系电话：<?php echo $pick_up['telephone']; ?>"
+			}
+			var infoWindow = new BMap.InfoWindow("<br/>联系电话：<?php echo $pick_up['telephone']; ?>", opts);  // 创建信息窗口对象 
+			marker.addEventListener("click", function(){          
+				map.openInfoWindow(infoWindow,point); //开启信息窗口
+			});
+		</script>
+		<?php } ?>
+	<?php } ?>
+	
+    </div> 
+   </div> 
+   <style>
+   .order .row:first-child:after{display:none;}
+   </style>
+   <!--可操作项--> 
+   <?php if( in_array($order_info['order_status_id'], array(2,3,4,6,12) ) ){ ?>
+   <div class="actions"> 
+   		
+   		<?php if($order_info['order_status_id'] == 3){ ?>
+        	<div class="btn hasActions" onclick="order_pay(this)" data-pay-url="{:U('Payment/order_pay', array('order_id' => $order_info['order_id']) )}">
+	     		<span>立即支付</span>
+		    </div> 
+		    <div class="btn highlight" onclick="order_cancel(this)" data-o-id="{$order_info.order_id}">
+		     	<span>取消订单</span>
+		    </div> 
+        <?php } ?>
+         
+         
+           	<!-- 拼团中 -->
+               <?php if($order_info['order_status_id'] == 2){ ?>
+        		<div class="btn hasActions" onclick="location.href='{:U('Group/info', array('group_order_id' => $order_info['hash_order_id']))}';">
+		     		<span>邀请好友拼团</span>
+			    </div> 
+            <?php } ?>
+            
+            <!-- 待收货 -->
+           <?php if( in_array($order_info['order_status_id'], array(4,12))){ ?>
+           		<div class="btn highlight" onclick="order_receive(this)" rel="确认收货" data-o-id="{$order_info.order_id}">
+		         	<span>确认收货</span>
+		        </div> 
+		        <div class="btn " onclick="location.href='{:U('Order/goods_express', array('id' => $order_info['order_id']))}';">
+			     	<span>查看物流</span>
+			    </div> 
+            <?php } ?>
+                 
+            <!-- 待评价-->
+            <?php if($order_info['order_status_id'] == 6){ ?>
+                 <div class="btn highlight" onclick="location.href='{:U('Order/comment', array('order_id' => $order_info['order_id']))}';">
+		         	<span>立即评价</span>
+		         </div> 
+            <?php } ?>  
+   	</div> 
+	<?php }else{ ?>
+		<include file="Public:foot_pinduoduo" />
+		<style>
+			.go-top{display:none;}
+			.footer .nav-controller i{margin-bottom: 6px;}
+			.footer{max-width:3000px;display:none;}
+		</style>
+		<script>
+			$(function(){
+				var _dpr = $(window).attr('dpr');
+				if(_dpr > 1)
+				{
+					$('.footer').css('height',($('.footer').height() * _dpr)+'px');
+					$('.footer .nav-controller i').css('height',(23 * _dpr)+'px');
+					$('.footer .nav-controller i').css('width',(23 * _dpr)+'px');
+					$('.footer .nav-controller i').css('background-size',(23 * _dpr) +'px');
+					$('.footer .nav-controller i').css('margin-bottom',(4 * _dpr) +'px');
+					$('.footer .nav-controller i').css('margin-top',(6 * _dpr) +'px');
+					$('.footer a').css('font-size', (10 * _dpr) + 'px');
+					$('.footer').show();
+				}else{
+					$('.footer').show();
+				}
+			})
+		</script>
+	<?php } ?>
+  </div>
+
+<div class="popup-mask" style="display: none;position: fixed; width: 100%;height: auto;top: 50%;z-index: 999999999; background: rgba(0, 0, 0, 0);">
+	<div class="popup-main" style="     max-width: 50%;  height: auto;margin: auto;background-color: rgba(0,0,0,.8);color: #f0f0f0;font-size: 16px;padding: 10px;text-align: center;border-radius: 5px;box-shadow: 0 0 24px -1px #383838;  background: rgba(41, 49, 61, 0.701961);">
+		<div class="popup-content"><div style="color:#fff;font-size:0.6rem;margin:0"></div>
+		</div>
+	</div>
+</div>
+<script>
+var order_id = "<?php echo $order_info['order_id']; ?>";
+$(function(){
+	$('.J_icon-closed').click(function(){
+		$('.J_address-mask').addClass('hidden');
+	})
+	
+	
+	$('#J_submit_btn').click(function(){
+		var refund_reason = $('#refund-reason').val();
+			$.ajax({
+				url:"{:U('Order/refund_order')}",
+				type:'post',
+				data:{order_id:order_id,refund_reason:refund_reason},
+				success:function(ret){
+					if(ret.code ==1)
+					{
+						
+					} else {
+						
+					}
+				}
+			})
+	})
+})
+function show_mask(title)
+{
+	$('.popup-content div').html(title);
+	
+	$('.popup-mask').fadeIn(1500,function(){
+		$('.popup-mask').fadeOut(1500);
+	})
+	
+}
+
+
+//立即支付
+function order_pay(obj)
+{
+	var pay_url = $(obj).attr('data-pay-url');
+	//goto pay
+	location.href = pay_url;
+	return false;
+	
+}
+
+//确认收货
+function order_receive(obj)
+{
+	var order_id = $(obj).attr('data-o-id');
+	$.ajax({
+		url:"{:U('Order/receive_order')}",
+		type:'post',
+		data:{order_id:order_id},
+		dataType:'json',
+		success:function(result){
+			if(result.code == 1){
+				show_mask('收货成功');
+				$(obj).hide();
+			} else {
+				show_mask(result.msg);
+			}
+			
+		}
+	})
+}
+
+//取消订单
+function order_cancel(obj)
+{
+	var order_id = $(obj).attr('data-o-id');
+	var back_url = "{:U('Order/index')}";
+	$.ajax({
+		url:"{:U('Order/cancel_order')}",
+		type:'post',
+		data:{order_id:order_id},
+		dataType:'json',
+		success:function(result){
+			if(result.code == 1){
+				show_mask('取消成功');
+				location.href = back_url;
+				return false;
+			} else {
+				show_mask(result.msg);
+			}
+			
+		}
+	})	
+}
+
+</script>
+</block>

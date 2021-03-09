@@ -1,0 +1,248 @@
+<extend name="Public:base" />
+<block name="content">
+	<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>	
+	<ul class="nav nav-tabs">
+		
+	  <li class="active"><a href="#tab-member" data-toggle="tab">后台用户资料</a></li>	 
+	  
+	</ul>
+	<form class="form-horizontal" id="validation-form"  method="post" action='{$action}'>
+	<div class="tab-content">
+		<notempty name="Think.get.id">
+			<input name="s_id" type="hidden" value="{$Think.get.id}" />
+		</notempty>
+		<div class="tab-pane active" id="tab-member">
+			<table class="table table-binfoed">
+				<tr>
+				    <td>ID</td>
+				    <td>{$data.s_id}</td>
+				</tr>
+				
+				<tr>
+					<td>LOGO</td>
+					<td>
+						<div class="col-sm-10" id="thumb">
+		                  <a href="#" data-toggle="image" class="img-thumbnail">
+		                  	<img osctype="image" <if condition="$data['s_logo']"> 
+								src="__ROOT__/{$data.thumb_logo}" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_100x100.jpg" 
+								</if>  /> 
+						  </a>
+		                  <input osctype="image_input" type="hidden" name="s_logo" value="" id="input-s_logo" />
+		            	</div>
+					</td>
+				</tr>
+				<tr>
+					<td>用户名</td>
+					<td>{$data.s_uname}</td>
+				</tr>
+				<tr>
+					<td>密码</td>
+					<td><input id="pwd" name="s_passwd" type="text" style="width:400px;" value="" /></td>
+				</tr>
+				<tr>
+				    <td>店铺名称</td>
+				    <td><input name="s_true_name" type="text" style="width:400px;" value="{$data.s_true_name|default=''}" />
+					<span class="help-inline ">
+						<span class="middle red">建议8个汉字以内</span>
+					</span>
+					</td>
+				</tr>
+				  <tr>
+				    <td>联系电话</td>
+				    <td><input name="s_telephone" type="text" style="width:400px;" value="{$data.s_telephone|default=''}" /></td>
+				  
+				</tr> 
+				<tr>
+				    <td>客服电话</td>
+				    <td>
+				    <input name="s_mobile" type="text" style="width:400px;" value="{$data.s_mobile|default=''}" />
+				    </td>
+				</tr> 	
+				<tr>
+				    <td>客服qq</td>
+				    <td>
+				    <input name="s_qq" type="text" style="width:400px;" value="{$data.s_qq|default=''}" />
+				    <span class="help-inline ">
+						<span class="middle">请使用该QQ登录一次<a href="http://shang.qq.com" target="_blank">shang.qq.com</a></span>
+					</span>
+				    </td>
+				</tr> 
+				<tr>
+				    <td>微信客服</td>
+				    <td>
+				    <input name="s_weixin" type="text" style="width:400px;" value="{$data.s_weixin|default=''}" />
+				    </td>
+				</tr> 
+				<tr>
+				    <td>支付宝</td>
+				    <td>
+				    <input name="s_alipay" type="text" style="width:400px;" value="<?php echo trim($data['s_alipay']); ?>" />
+				    </td>
+				</tr> 
+				<tr>
+				    <td><span class="red">*</span>银行卡名称</td>
+				    <td>
+				    <input name="s_cardname" type="text" style="width:400px;" value="{$data.s_cardname|default=''}" />
+					<span class="help-inline ">
+						<span class="middle red">必填</span>
+					</span>
+				    </td>
+				</tr> 
+				<tr>
+				    <td><span class="red">*</span>银行卡账号</td>
+				    <td>
+						<input name="s_cardnumber" type="text" style="width:400px;" value="{$data.s_cardnumber|default=''}" />
+						<span class="help-inline ">
+							<span class="middle red">必填</span>
+						</span>
+				    </td>
+				</tr> 
+				<tr>
+				    <td><span class="red">*</span>收款名称</td>
+				    <td>
+						<input name="s_cardrealname" type="text" style="width:400px;" value="{$data.s_cardrealname|default=''}" />
+						<span class="help-inline ">
+							<span class="middle red">必填</span>
+						</span>
+				    </td>
+				</tr> 
+				<tr>
+					<td>创建时间</td>
+					<td>{$data.s_create_time|toDate='Y/m/d H:i:s'}</td>
+				</tr>
+				<tr>
+					<td>状态</td>
+					<td>	
+						<label class="radio-inline">
+						<input type="radio" checked="checked" value="1" name="s_status">启用</label>
+						<label class="radio-inline">
+						<input type="radio" value="0" name="s_status">停用</label>
+					</td>
+				</tr>
+				</table>
+				<div class="form-group">
+				
+				<div style="margin-left:20px;">
+					<input name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</div>
+		
+	
+	</div>
+	</form>	
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+$(function(){
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+				
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		$('#thumb-image').on('click', function() {		
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'seller'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_blog_images:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;
+	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+		
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+})
+</script>
+<script>
+$(function(){	
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("a_status", {$data.a_status|default=1});		
+	</present>
+	
+		
+});
+</script>							
+</block>

@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+
+  <title><?php echo $shoname; ?></title>
+
+  <link rel="shortcut icon" href="" />
+
+        
+
+  <meta name="renderer" content="webkit">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+
+ 
+
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+
+<!--[if lt IE 9]>
+
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+
+<![endif]-->  
+
+
+
+<link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+
+<link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+
+<script type="text/javascript">
+
+            window.sysinfo = {
+
+            <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+
+			
+
+            <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+
+			
+
+            <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+
+			
+
+            <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+
+			
+
+            'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+
+			
+
+            'siteroot': '{$_W['siteroot']}',
+
+                    'siteurl': '{$_W['siteurl']}',
+
+                    'attachurl': '{$_W['attachurl']}',
+
+                    'attachurl_local': '{$_W['attachurl_local']}',
+
+                    'attachurl_remote': '{$_W['attachurl_remote']}',
+
+                    'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+
+            'cookie' : {'pre': ''},
+
+            'account' : {:json_encode($_W['account'])},
+
+            };
+
+        </script>
+
+		
+
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+
+<script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+
+<script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+
+<script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+
+<script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+
+  <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+
+   <link href="/static/css/snailfish.css" rel="stylesheet">
+
+</head>
+
+<body layadmin-themealias="default">
+
+<style>
+
+.mb-3 {
+
+    margin-bottom: 1rem!important;
+
+}
+
+.card {
+
+    position: relative;
+
+    display: -webkit-box;
+
+    display: -webkit-flex;
+
+    display: -ms-flexbox;
+
+    display: flex;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-box-direction: normal;
+
+    -webkit-flex-direction: column;
+
+    -ms-flex-direction: column;
+
+    flex-direction: column;
+
+    background-color: #fff;
+
+    border: 1px solid rgba(0,0,0,.125);
+
+    border-radius: .25rem;
+
+}
+
+.card-block {
+
+    -webkit-box-flex: 1;
+
+    -webkit-flex: 1 1 auto;
+
+    -ms-flex: 1 1 auto;
+
+    flex: 1 1 auto;
+
+    padding: 1.25rem;
+
+}
+
+.del-rules-btn{
+
+	color:#44abf7 !important;
+
+}
+
+</style>
+
+<div class="layui-fluid">
+
+	<div class="layui-card">
+
+		<div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text"><?php if( !empty($item['id'])){ ?>编辑<?php  }else{  ?>添加<?php } ?>运费模板 <small><?php if( !empty($item['id'])){ ?>修改【{$item['name']}】<?php } ?></span></div>
+
+		<div class="layui-card-body" style="padding:15px;">
+
+			<form action="" method="post" class="layui-form" lay-filter="component-layui-form-item" enctype="multipart/form-data" >
+
+				
+
+				<input type="hidden" name="data[id]" value="{$item['id']}" />
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label must">配送方式名称</label>
+
+					<div class="layui-input-block">
+
+						<input type="text" name="data[name]" class="form-control" value="{$item['name']}" lay-verify="required" />
+
+					</div>
+
+				</div>
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label">排序</label>
+
+					<div class="layui-input-block">
+
+						<input type="text" name="sort_order" class="form-control" lay-verify="required" value="{$item['sort_order']}" />
+
+					</div>
+
+				</div>
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label ">是否默认</label>
+
+					<div class="layui-input-block">
+
+						 <label class='radio-inline'><input type='radio' title="是" name='isdefault' id="isdefault1" value='1' <?php if( $item['isdefault']==1){ ?>checked<?php } ?> /> </label>
+
+						 <label class='radio-inline'><input type='radio' title="否" name='isdefault' id="isdefault0" value='0' <?php if( $item['isdefault']==0){ ?>checked<?php } ?> /> </label>
+
+					</div>
+
+				</div>
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label ">计费方式</label>
+
+					<div class="layui-input-block">
+
+					   <label class='radio-inline'><input type='radio' title="按重量计费" name='type' value='1' <?php if( empty($item) || $item['type']==1){ ?>checked<?php } ?> /> </label>
+
+					   <label class='radio-inline'><input type='radio' title="按件计费" name='type' value='2' <?php if( $item['type']==2){ ?>checked<?php } ?> /> </label>
+
+					</div>
+
+				</div>
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label " style="padding-top: 11px">全局规则</label>
+
+					<div class="layui-input-block">
+
+						<table  style='width:100%;'>
+
+							<thead>
+
+								<tr>
+
+									<th style="height:40px;width:400px;">运送到</th>
+
+									<th class="show_h" style="width:110px;">首重(克)</th>
+
+									<th class="show_h" style="width:110px;">首费(元)</th>
+
+									<th class="show_h" style="width:110px;">续重(克)</th>
+
+									<th class="show_h" style="width:110px;">续费(元)</th>
+
+									<th class="show_h" style="width:110px;">包邮数量(个)</th>
+
+									<th class="show_h" style="width:110px;">包邮金额(元)</th>
+
+									<th class="show_n" style="width:110px;display:none;">首件(个)</th>
+
+									<th class="show_n" style="width:110px;display:none;">运费(元)</th>
+
+									<th class="show_n" style="width:110px;display:none;">续件(个)</th>
+
+									<th class="show_n" style="width:110px;display:none;">续费(元)</th>
+
+									<th class="show_n" style="width:110px;display:none;">包邮数量(件)</th>
+
+									<th class="show_n" style="width:110px;display:none;">包邮金额(元)</th>
+
+								</tr>
+
+							</thead>
+
+							<tbody id='tbody-areas'>
+
+							<tr>
+
+								<td style="padding:10px;">全国 [默认运费]</td>
+
+								<td class="show_h text-center">
+
+									<input type="text" value="{$item['firstweight']}"  class="form-control" name="default_firstweight" style="width:80px;"></td>
+
+								
+
+								<td class="show_h text-center">
+
+									<input type="text" value="{$item['firstprice']}"  class="form-control" name="default_firstprice"  style="width:80px;"></td>
+
+								
+
+								<td class="show_h text-center">
+
+									<input type="text" value="<?php echo empty($item['secondweight'])?1000:$item['secondweight'];?>"  class="form-control" name="default_secondweight"  style="width:80px;">
+
+								   
+
+								</td>
+
+								<td class="show_h text-center">
+
+									<input type="text" value="{$item['secondprice']}"  class="form-control" name="default_secondprice"  style="width:80px;">
+
+									
+
+								</td>
+
+								<td class="show_h text-center">
+
+									<input type="text"  value="<?php echo empty($item['weight_chao_num'])?0:$item['weight_chao_num'];?>" class="form-control" name="default_weight_chao_num"  style="width:80px;">
+
+								</td>
+
+								<td class="show_h text-center">
+
+									<input type="text"  value="<?php echo empty($item['weight_chao_price'])?0:$item['weight_chao_price'];?>" class="form-control" name="default_weight_chao_price"  style="width:80px;">
+
+								</td>
+
+								<td class="show_n text-center">
+
+									<input type="text"  value="<?php echo empty($item['firstnum'])?1:$item['firstnum'];?>" class="form-control" name="default_firstnum" style="width:80px;">
+
+								   
+
+								</td>
+
+								<td class="show_n text-center">
+
+									<input type="text"  value="{$item['firstnumprice']}" class="form-control" name="default_firstnumprice"  style="width:80px;">
+
+								</td>
+
+								<td class="show_n text-center">
+
+									
+
+									<input type="text"  value="<?php echo empty($item['secondnum'])?1:$item['secondnum'];?>" class="form-control" name="default_secondnum"  style="width:80px;">
+
+								</td>
+
+								<td class="show_n text-center">
+
+									<input type="text"  value="{$item['secondnumprice']}" class="form-control" name="default_secondnumprice"  style="width:80px;">
+
+								</td>
+
+
+
+
+								<td class="show_n text-center">
+
+									<input type="text"  value="<?php echo empty($item['jian_chao_num'])?0:$item['jian_chao_num'];?>" class="form-control" name="default_jian_chao_num"  style="width:80px;">
+
+								</td>
+								<td class="show_n text-center">
+
+									<input type="text"  value="<?php echo empty($item['jian_chao_price'])?0:$item['jian_chao_price'];?>" class="form-control" name="default_jian_chao_price"  style="width:80px;">
+
+								</td>
+
+
+							</tr>
+
+							</tbody>
+
+						</table>
+
+					   
+
+					</div>
+
+				</div>
+
+				<div class="layui-form-item row">
+
+					<label class="layui-form-label ">运费规则</label>
+
+					
+
+					<div class="layui-input-block" id="card_table">
+
+						
+
+						<a class='btn btn-default' href="javascript:;" onclick='addArea(this)'><span class="fa fa-plus"></span> 新增配送区域</a>
+
+						<span class='help-block show_h' <?php if( $item['type']==1){ ?>style='display:none'<?php } ?>>根据重量来计算运费，当物品不足《首重重量》时，按照《首重费用》计算，超过部分按照《续重重量》和《续重费用》乘积来计算</span>
+
+						<span class='help-block show_n' <?php if( $item['type']==0){ ?>style='display:none'<?php } ?>>根据件数来计算运费，当物品不足《首件数量》时，按照《首件费用》计算，超过部分按照《续件重量》和《续件费用》乘积来计算</span>
+
+						
+
+						<?php foreach( $dispatch_areas as  $row  ){ ?>
+
+							<?php $random = random(16); ?>
+
+							<!--tpl begin-->
+
+							<div class="card mb-3 {$random}">
+
+								<div class="card-block">
+
+									
+
+									<div class="mb-3">
+
+										<span class="show-first-div{$random}"><span class="show-frist"> 首重/件(克/个)：</span>{$row['frist']}</span> 
+
+										<span class="show-price-div{$random}"><span class="show-frist-price">首费(元) ：</span>{$row['frist_price']}</span> 
+
+										<span class="show-second-div{$random}"><span class="show-second">续重/件(克/个) ：</span>{$row['second']}</span> 
+
+										<span class="show-xufei-div{$random}"><span>续费(元) ：</span>{$row['second_price']}</span>
+
+						               	<span class="show-chao-num-div{$random}"><span></span>[{$row['chao_num']}件包邮]</span> 
+
+										<span class="show-chao-price-div{$random}"><span></span>[满{$row['chao_price']}元包邮]</span> 
+
+							 		<a href="javascript:" data-index="{$random}" onclick="$(this).parent().parent().parent().remove()" class="del-rules-btn float-right">[-删除条目]</a>
+									 <a href="javascript:" onclick="update_rule('{$random}')" class="del-rules-btn float-right">[-修改条目]</a>
+									</div> 
+
+									
+
+									<input type="hidden" name="random[]" value="{$random}" />
+
+									<input type="hidden" class='citys' name="citys[{$random}]" value="{$row['citys']}" />
+
+									<input type="hidden" class='citys_code' name="citys_code[{$random}]" value="{$row['citys_code']}" />
+
+									
+
+									<input type="hidden" value="{$row['firstweight']}" name="firstweight[{$random}]" />
+
+									<input type="hidden" value="{$row['firstprice']}"  name="firstprice[{$random}]" />
+
+									<input type="hidden" value="<?php echo empty($row['secondweight'])?1000:$row['secondweight'];?>" name="secondweight[{$random}]" />
+
+									<input type="hidden" value="{$row['secondprice']}" name="secondprice[{$random}]" />
+
+									<input type="hidden" value="<?php echo empty($row['firstnum'])?1:$row['firstnum'];?>" name="firstnum[{$random}]" />
+
+									<input type="hidden" value="{$row['firstnumprice']}" name="firstnumprice[{$random}]" />
+
+									<input type="hidden" value="<?php echo empty($row['secondnum'])?1:$row['secondnum'];?>" name="secondnum[{$random}]" />
+
+									<input type="hidden" value="{$row['secondnumprice']}" name="secondnumprice[{$random}]"/>
+
+									<input type="hidden" value="{$row['freeprice']}" name="freeprice[{$random}]" />
+
+
+
+									<input type="hidden" class="{$random}frist" name="detail[{$random}][frist]" value="{$row['frist']}"> 
+
+									<input type="hidden" class="{$random}frist_price" name="detail[{$random}][frist_price]" value="{$row['frist_price']}"> 
+
+									<input type="hidden" class="{$random}second" name="detail[{$random}][second]" value="{$row['second']}"> 
+
+									<input type="hidden" class="{$random}second_price" name="detail[{$random}][second_price]" value="{$row['second_price']}">
+									
+									<input type="hidden" class="{$random}chao_num" value="{$row['chao_num']}" name="detail[{$random}][chao_num]" />
+
+									<input type="hidden" class="{$random}chao_price" value="{$row['chao_price']}" name="detail[{$random}][chao_price]" />
+								
+									<div>
+
+										<span>省份：</span> 
+
+										<span class="cityshtml">
+
+										{$row['citys']}
+
+										</span>
+
+									</div>
+
+								</div>
+
+							</div>
+
+							<!--tpl end-->
+
+						<?php } ?>
+
+					</div>
+
+				</div>
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label"> </label>
+
+					<div class="layui-input-block">
+
+						<input type="submit" value="提交" lay-submit lay-filter="formDemo" class="btn btn-primary"  />
+
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+						<a class="btn btn-default" style='margin-left:10px;' href="{:U('shipping/templates',array('ok'=>'1'))}">返回列表</a>
+
+						
+
+					</div>
+
+				</div>
+
+			</form>
+
+		</div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+
+  
+
+<!--地区开始-->
+
+<style type='text/css'>
+
+    .province { float:left; position:relative;width:170px; height:35px; line-height:35px;border:1px solid #fff;padding-top: -10px}
+
+    .province:hover { border:1px solid #a6d2fe;border-bottom:1px solid #a6d2fe; background:#edf6ff;}
+
+    .province .cityall { margin-top:10px;}
+
+    .province ul { list-style: outside none none;position:absolute;padding:0;background:#edf6ff;border:1px solid #a6d2fe;display:none;
+
+    width:auto; width:250px; z-index:999999;left:-1px;top:32px;}
+
+    .province ul li  { float:left;min-width:60px;margin-left:20px; height:30px;line-height:30px; }
+
+    .checkbox-inline{
+
+        margin: 0;
+
+    }
+
+ </style>
+
+ <div id="modal-areas"  class="modal fade" tabindex="-1">
+
+    <div class="modal-dialog" style='width: 900px;'>
+
+        <div class="modal-content">
+
+            <div class="modal-header"><button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button><h3 class="codetext">选择区域</h3></div>
+
+            <div class="modal-body" style='' >
+
+				<div class="row show_type_1">
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="frist-title help-block">首重(克) ：</b> 
+
+						<input name="frist" value="1" step="1" type="number" class="form-control mb-3 frist">
+
+					</div> 
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="frist-price-title help-block">首费(元) ：</b> 
+
+						<input name="frist_price"  placeholder="默认0" value="0" step="1" type="number" class="form-control mb-3 frist_price">
+
+					</div>
+
+				</div>
+
+				<div class="row show_type_1">
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-title help-block">续重(克) ：</b> 
+
+						<input name="second"  placeholder="默认0" value="1" step="1" type="number" class="form-control mb-3 second">
+
+					</div> 
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-price-title help-block">续费（元）：</b> 
+
+						<input name="second_price"  placeholder="默认0" value="0" step="1" type="number" class="form-control mb-3 second_price">
+
+					</div>
+
+
+
+				</div>
+				<div class="row show_type_1">
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-title help-block">包邮数量 ：</b>
+
+						<input name="chao_num"  placeholder="默认0，不包邮" value="0" step="1" type="number" class="form-control mb-3 chao_num">
+
+					</div>
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-title help-block">包邮金额(元)：</b>
+
+						<input name="chao_price"  placeholder="默认0，不包邮" value="0" step="1" type="number" class="form-control mb-3 chao_price">
+
+					</div>
+				</div>
+				
+
+				<div class="row show_type_2" style="display:none;">
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="frist-title">首件(个)  ：</b> 
+
+						<input name="frist"  value="" step="1" type="number" class="form-control mb-3 frist">
+
+					</div> 
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="frist-price-title">运费(元) ：</b> 
+
+						<input name="frist_price"  placeholder="默认0" value="0" step="1" type="number" class="form-control mb-3 frist_price">
+
+					</div>
+
+				</div>
+
+				<div class="row show_type_2" style="display:none;">
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-title">续件(个) ：</b> 
+
+						<input name="second"  placeholder="默认0" value="1" step="1" type="number" class="form-control mb-3 second">
+
+					</div> 
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-price-title">续费（元）：</b> 
+
+						<input name="second_price"  placeholder="默认0" value="0" step="1" type="number" class="form-control mb-3 second_price">
+
+					</div>
+
+				</div>
+
+				<div class="row show_type_2">
+
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-title help-block">包邮数量 ：</b>
+
+						<input name="chao_num"  placeholder="默认0，不包邮" value="0" step="1" type="number" class="form-control mb-3 chao_num">
+
+					</div>
+					<div class="col-sm-6 col-xs-12">
+
+						<b class="second-title help-block">包邮金额(元)：</b>
+
+						<input name="chao_price"  placeholder="默认0，不包邮" value="0" step="1" type="number" class="form-control mb-3 chao_price">
+
+					</div>
+				</div>
+				
+
+				
+
+
+			
+
+                <?php foreach( $areas['province'] as  $value  ){ ?>
+
+				<?php if( $value['@attributes']['name']=='请选择省份'){ continue; } ?>
+
+                <div class='province'>
+
+                     <label class='checkbox-inline' style='margin-left:20px;padding: 0 0 5px 24px;'>
+
+                         <input type='checkbox' class='cityall' style="" / > {$value['@attributes']['name']}
+
+                         <span class="citycount" style='color:#ff6600'></span>
+
+                     </label>
+
+                    <?php if( count($value['city'])>0){ ?>
+
+                    <ul style="padding-bottom: 15px;">
+
+                        <?php foreach( $value['city'] as  $c  ){ ?>
+
+                        <li>
+
+                             <label class='checkbox-inline' >
+
+                                  <input type='checkbox' class='city city{$c['@attributes']['code']}' style='' code="{$c['@attributes']['code']}" city="{$c['@attributes']['name']}" /> {$c['@attributes']['name']}
+
+                            </label>
+
+                     </li>
+
+                        <?php } ?>
+
+                    </ul>
+
+                    <?php } ?>
+
+                </div>
+
+                <?php } ?>
+
+				<div style="clear:both;"></div>
+
+            </div>
+
+            <div class="modal-footer" style="padding:0px;">
+
+                <a href="javascript:;" id='btnSubmitArea' class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</a>
+
+                <a href="javascript:;" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+
+            </div>
+
+        </div>
+
+     </div>
+
+</div> 
+<input type="hidden"  class="code_are" />
+
+
+<script src="/layuiadmin/layui/layui.js"></script>
+<script>
+	layui.config({
+		base: '/layuiadmin/' //静态资源所在路径
+	}).extend({
+		index: 'lib/index' //主入口模块
+	}).use('index');
+</script>
+
+<script>
+//由于模块都一次性加载，因此不用执行 layui.use() 来加载对应模块，直接使用即可：
+var layer = layui.layer;
+var $;
+var cur_open_div;
+layui.use(['jquery', 'layer','form'], function(){ 
+  $ = layui.$;
+  var form = layui.form;
+	form.on('radio(linktype)', function(data){
+
+		if (data.value == 2) {
+
+			$('#typeGroup').show();
+
+		} else {
+
+			$('#typeGroup').hide();
+
+		}
+
+	});  
+
+	$('#chose_link').click(function(){
+
+		cur_open_div = $(this).attr('data-input');
+
+		$.post("{:U('util.selecturl', array('ok' => 1))}", {}, function(shtml){
+
+		 layer.open({
+
+			type: 1,
+
+			area: '930px',
+
+			content: shtml //注意，如果str是object，那么需要字符拼接。
+
+		  });
+
+		});
+
+	})
+
+		
+
+  //监听提交
+
+  form.on('submit(formDemo)', function(data){
+
+	 $.ajax({
+
+		url: data.form.action,
+
+		type: data.form.method,
+
+		data: data.field,
+
+		dataType:'json',
+
+		success: function (info) {
+
+		  
+
+			if(info.status == 0)
+
+			{
+
+				layer.msg(info.result.message,{icon: 1,time: 2000});
+
+			}else if(info.status == 1){
+
+				var go_url = location.href;
+
+				if( info.result.hasOwnProperty("url") )
+
+				{
+
+					go_url = info.result.url;
+
+				}
+
+				
+
+				layer.msg('操作成功',{time: 1000,
+
+					end:function(){
+
+						location.href = info.result.url;
+
+					}
+
+				}); 
+
+			}
+
+		}
+
+	});
+
+	
+
+    return false;
+
+  });
+
+  
+
+  
+
+    
+
+
+
+})
+
+
+
+</script>  
+
+<script>
+
+
+
+$(function(){
+
+   
+
+        $('.province').mouseenter(function(){
+
+              $(this).find('ul').show();
+
+        }).mouseleave(function(){
+
+              $(this).find('ul').hide();
+
+        });
+
+        
+
+        $('.cityall').click(function(){
+
+            var checked = $(this).get(0).checked;
+
+            var citys = $(this).parent().parent().find('.city');
+
+            citys.each(function(){
+
+                $(this).get(0).checked = checked;
+
+            });
+
+            var count = 0;
+
+            if(checked){
+
+                count =  $(this).parent().parent().find('.city:checked').length;
+
+            }
+
+            if(count>0){
+
+               $(this).next().html("(" + count + ")")    ;
+
+            }
+
+            else{
+
+                $(this).next().html("");
+
+            }
+
+        });
+
+        $('.city').click(function(){
+
+            var checked = $(this).get(0).checked;
+
+            var cityall = $(this).parent().parent().parent().parent().find('.cityall');
+
+          
+
+            if(checked){
+
+                cityall.get(0).checked = true;
+
+            }
+
+            var count = cityall.parent().parent().find('.city:checked').length;
+
+            if(count>0){
+
+               cityall.next().html("(" + count + ")")    ;
+
+            }
+
+            else{
+
+                cityall.next().html("");
+
+            }
+
+        });    
+
+      
+
+    });
+
+    
+
+     function clearSelects(){
+
+         $('.city').attr('checked',false).removeAttr('disabled');
+
+         $('.cityall').attr('checked',false).removeAttr('disabled');
+
+         $('.citycount').html('');
+
+    }
+
+	 function show_type(flag){
+
+        if (flag == 2) {
+
+            $('.show_h').hide();
+
+            $('.show_n').show();
+
+        } else {
+
+            $('.show_h').show();
+
+            $('.show_n').hide();
+
+        }
+
+		
+
+    }
+
+    $(function(){
+
+        show_type({$item['type']});
+
+		
+
+        $(':radio[name=type]').click(function(){
+
+            var val = $(this).val();
+
+			$('#card_table .card').remove();
+
+            show_type(val);
+
+        })
+
+       
+
+
+
+        $(':radio[name=isdispatcharea]').click(function(){
+
+            var val = $(this).val();
+
+            var name = '不';
+
+            if(val == 1) {
+
+                name = '只';
+
+            }
+
+            $("#dispatcharea_name").html(name);
+
+        })
+
+
+
+
+
+        <?php if( empty($new_area)){ ?>
+
+        $('.province').mouseenter(function(){
+
+            $(this).find('ul').show();
+
+        }).mouseleave(function(){
+
+            $(this).find('ul').hide();
+
+        });
+
+
+
+        $('.cityall').click(function(){
+
+            var checked = $(this).get(0).checked;
+
+            var citys = $(this).parent().parent().find('.city');
+
+            citys.each(function(){
+
+                $(this).get(0).checked = checked;
+
+            });
+
+            var count = 0;
+
+            if (checked){
+
+                count = $(this).parent().parent().find('.city:checked').length;
+
+            }
+
+            if (count > 0){
+
+                $(this).next().html("(" + count + ")");
+
+            }
+
+            else{
+
+                $(this).next().html("");
+
+            }
+
+        });
+
+
+
+        $('.city').click(function(){
+
+            var checked = $(this).get(0).checked;
+
+            var cityall = $(this).parent().parent().parent().parent().find('.cityall');
+
+            if (checked){
+
+                cityall.get(0).checked = true;
+
+            }
+
+            var count = cityall.parent().parent().find('.city:checked').length;
+
+            if (count > 0){
+
+                cityall.next().html("(" + count + ")");
+
+            }
+
+            else{
+
+                cityall.next().html("");
+
+            }
+
+        });
+
+        <?php } ?>
+
+
+		//弹框确认
+		$('#btnSubmitArea').unbind('click').click(function(){
+			var citystrs = "";
+			var citystrs_codes = "";
+			var s_type = $('input[name="type"]:checked ').val();
+			var s_frist = $('.frist').val();
+			if(s_frist =='' || s_frist == 0)
+			{
+				layer.msg('请填写首重'); 
+				return false;
+			}
+			
+			if(s_type == 2){
+				var s_frist_price = $('.show_type_2 .frist_price').val();
+			}else{
+				var s_frist_price = $('.show_type_1 .frist_price').val();
+			}
+
+			if(s_frist_price =='' || s_frist_price == 0)
+			{
+				layer.msg('请填写首费'); 
+				return false;
+			}
+
+			var s_second = $('.second').val();
+			if(s_second =='' || s_second == 0)
+			{
+				layer.msg('请填写续重'); 
+				return false;
+			}
+
+			$('.city:checked').each(function(){
+				citystrs += $(this).attr('city') + ";";
+				citystrs_codes += $(this).attr('code') + ";";
+			});
+
+			var s_frist = $('.frist').val();
+			if(s_frist =='' || s_frist == 0)
+			{
+				layer.msg('请填写首重'); 
+				return false;
+			}
+
+			if(s_type == 2){
+				var s_frist_price = $('.show_type_2 .frist_price').val();
+			}else{
+				var s_frist_price = $('.show_type_1 .frist_price').val();
+			}
+
+			if(s_frist_price =='' || s_frist_price == 0)
+			{
+
+				layer.msg('请填写首费'); 
+				return false;
+			}
+
+			var s_second = $('.second').val();
+			if(s_second =='' || s_second == 0)
+			{
+				layer.msg('请填写续重'); 
+				return false;
+			}
+			
+			var current = $(".code_are").val();
+			
+			
+			$('.' + current + ' .cityshtml').html(citystrs);
+			$('.' + current + ' .citys').val(citystrs);
+			$('.' + current + ' .citys_code').val(citystrs_codes);
+
+			if(s_type == 1)
+			{
+
+				var s_first = $('.show_type_1 input[name="frist"]').val();
+				var s_first_price = $('.show_type_1 input[name="frist_price"]').val();
+				var s_second = $('.show_type_1 input[name="second"]').val();
+				var s_second_price = $('.show_type_1 input[name="second_price"]').val();
+				var s_chao_num= $('.show_type_1 input[name="chao_num"]').val();
+				var s_chao_price= $('.show_type_1 input[name="chao_price"]').val();
+
+				$('.show-first-div'+current).html('<span class="show-frist"> 首重/件(克/个)：</span>'+s_first);
+				$('.show-price-div'+current).html('<span class="show-frist-price">首费(元) ：</span>'+s_first_price);
+				$('.show-second-div'+current).html('<span class="show-second">续重/件(克/个) ：</span>'+s_second);
+				$('.show-xufei-div'+current).html('<span>续费(元) ：</span>'+s_second_price);
+				$('.show-chao-num-div'+current).html('<span">['+s_chao_num+'件包邮]</span>');
+				$('.show-chao-price-div'+current).html('<span">[满'+s_chao_price+'元包邮]</span>');
+				$('.' + current + 'frist').val(s_first);
+				$('.' + current + 'frist_price').val(s_first_price);
+				$('.' + current + 'second').val(s_second);
+				$('.' + current + 'second_price').val(s_second_price);
+				$('.' + current + 'chao_num').val(s_chao_num);
+				$('.' + current + 'chao_price').val(s_chao_price);
+
+			} else{
+
+				var s_first = $('.show_type_2 input[name="frist"]').val();
+				var s_first_price = $('.show_type_2 input[name="frist_price"]').val();
+				var s_second = $('.show_type_2 input[name="second"]').val();
+				var s_second_price = $('.show_type_2 input[name="second_price"]').val();
+				var s_chao_num= $('.show_type_2 input[name="chao_num"]').val();
+				var s_chao_price= $('.show_type_2 input[name="chao_price"]').val();
+
+				$('.show-first-div'+current).html('<span class="show-frist"> 首重/件(克/个)：</span>'+s_first);
+				$('.show-price-div'+current).html('<span class="show-frist-price">首费(元) ：</span>'+s_first_price);
+				$('.show-second-div'+current).html('<span class="show-second">续重/件(克/个) ：</span>'+s_second);
+				$('.show-xufei-div'+current).html('<span>续费(元) ：</span>'+s_second_price);
+				$('.show-chao-num-div'+current).html('<span">['+s_chao_num+'件包邮]</span>');
+				$('.show-chao-price-div'+current).html('<span">[满'+s_chao_price+'元包邮]</span>');
+				$('.' + current + 'frist').val(s_first);
+				$('.' + current + 'frist_price').val(s_first_price);
+				$('.' + current + 'second').val(s_second);
+				$('.' + current + 'second_price').val(s_second_price);
+				$('.' + current + 'chao_num').val(s_chao_num);
+				$('.' + current + 'chao_price').val(s_chao_price);
+
+			}
+
+			$('#card_table .card').last().show();
+
+		})
+
+    });
+
+    function getCurrents(withOutRandom){
+
+        var citys = "";
+
+        $('.citys').each(function(){
+
+            var crandom = $(this).prev().val();
+
+            if (withOutRandom && crandom == withOutRandom){
+
+                return true;
+
+            }
+
+            citys += $(this).val();
+
+        });
+
+        return citys;
+
+    }
+
+    function getCurrentsCode(withOutRandom){
+
+        var citys = "";
+
+        $('.citys_code').each(function(){
+
+            var crandom = $(this).prev().prev().prev().val();
+
+            if (withOutRandom && crandom == withOutRandom){
+
+                return true;
+
+            }
+
+            citys += $(this).val();
+
+        });
+
+        return citys;
+
+    }
+
+    var current = '';
+
+    function addArea(btn){
+		$(".codetext").html('选择区域');
+        $(btn).button('loading');
+
+        $.ajax({
+
+            url:"{:U('shipping/tpl')}",
+
+            dataType:'json',
+
+            success:function(json){
+
+                $(btn).button('reset');
+
+                current = json.random;
+				$(".code_are").val(current);
+				var s_type = $('input[name="type"]:checked ').val();
+
+				
+
+				if(s_type == 1)
+
+				{
+
+					$('.show_type_2').hide();
+
+					$('.show_type_1').show();
+
+				} else{
+
+					$('.show_type_1').hide();
+
+					$('.show_type_2').show();
+
+				}
+
+				
+
+                $('#card_table').append(json.html);
+
+				$('#card_table .card').last().hide();
+
+                
+
+                clearSelects();
+
+                $("#modal-areas").modal();
+
+
+
+                var citystrs = "";
+
+				var citystrs_codes = "";
+
+
+
+                <?php if( empty($new_area)){ ?>
+
+                var currents = getCurrents();
+
+                currents = currents.split(';');
+
+                $('.city').each(function(){
+
+                    var parentdisabled = false;
+
+                    for (var i in currents){
+
+                        if (currents[i] != '' && currents[i] == $(this).attr('city')){
+
+                            $(this).attr('disabled', true);
+
+                            $(this).parent().parent().parent().parent().find('.cityall').attr('disabled', true);
+
+                        }
+
+                    }
+
+                });
+
+               
+
+                <?php  }else{  ?>
+
+                var currents = getCurrentsCode();
+
+                currents = currents.split(';');
+
+
+
+                var parentdisabled = false;
+
+                for (var i in currents){
+
+                    var area_info = currents[i].split(' ');
+
+                    if(area_info[0]) {
+
+                        $('#ch_pcode'+area_info[0]).prop("disabled",true);
+
+                    }
+
+                    if(area_info[1]) {
+
+                        $('#ch_ccode'+area_info[1]).prop("disabled",true);
+
+                    }
+
+                    if(area_info[2]) {
+
+                        $('#ch_acode'+area_info[2]).prop("disabled",true);
+
+                    }
+
+                }
+
+
+                <?php } ?>
+
+
+
+                var calculatetype1 = $('input[name="type"]:checked ').val();
+
+                show_type(calculatetype1);
+
+            }
+
+        })
+
+    }
+
+
+	/**
+	* @name: 修改条目
+	* @description: 
+	* @Author: htong
+	* @msg: 
+	* @param {type} params
+	* @return: 
+	*/
+	function update_rule(are){
+		//循环恢复初始值
+		$('.city').each(function(){
+			$(this).prop("checked",false);
+			parents =$(this).parent().parent().parent().parent().find('.cityall');
+			parents.prop("checked",false);
+			parents.next().html('');
+		})
+		//判断显示
+		var s_type = $('input[name="type"]:checked ').val();
+		if(s_type == 1)
+		{
+			$('.show_type_2').hide();
+			$('.show_type_1').show();
+		} else{
+			$('.show_type_1').hide();
+			$('.show_type_2').show();
+		}
+		//打开弹框
+		$("#modal-areas").modal();
+		//获取数据
+		var  citys_code = $("input[name='citys_code["+are+"]']").val();
+		var  frist = $("input[name='detail["+are+"][frist]']").val();
+		var  frist_price = $("input[name='detail["+are+"][frist_price]']").val();
+		var  second = $("input[name='detail["+are+"][second]']").val();
+		var  second_price = $("input[name='detail["+are+"][second_price]']").val();
+		var  chao_num = $("input[name='detail["+are+"][chao_num]']").val();
+		var  chao_price = $("input[name='detail["+are+"][chao_price]']").val();
+		//赋值
+		$("input[name='frist']").val(frist);
+		$("input[name='frist_price']").val(frist_price);
+		$("input[name='second']").val(second);
+		$("input[name='second_price']").val(second_price);
+		$("input[name='chao_num']").val(chao_num);
+		$("input[name='chao_price']").val(chao_price);
+		$(".codetext").html('修改选择区域');
+		$('.code_are').val(are);
+		//选中城市
+		var  data = citys_code.split(';');
+		for(i=0; i<data.length; i++){
+			if(data[i]){
+				$(".city"+data[i]).prop("checked",true);
+				var checked =  $(".city"+data[i]).prop("checked");
+				var cityall =$(".city"+data[i]).parent().parent().parent().parent().find('.cityall');
+				if(checked){
+					cityall.prop("checked",true);
+				}
+				var count = cityall.parent().parent().find('.city:checked').length;
+				if(count>0){
+					cityall.next().html("(" + count + ")");
+				}
+			}
+				
+		}
+	}
+</script>
+
+</body>
+

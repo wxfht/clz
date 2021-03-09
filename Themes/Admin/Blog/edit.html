@@ -1,0 +1,410 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+			
+			<button name="send" id="send" form="form-blog" type="submit" style="float:right;"  class="btn btn-sm btn-primary">提交</button>
+			
+		</h1>
+	</div>
+	<div class="row">
+	<div class="col-xs-12">
+		<div class="alert alert-block alert-success">
+			1、文章类型为：“商家后台”、“常见问题” 的，可以添加多篇文章<br/>
+			2、文章类型为：“拼团介绍” 的目前仅需要添加1篇文章即可
+		</div>
+	</div>
+	
+	<div class="col-xs-12">	
+		<div class="panel-body">
+        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-blog" class="form-horizontal">
+        
+        <notempty name="Think.get.id">
+			<input name="blog_id" id="blog_id" type="hidden" value="{$Think.get.id}" />
+		</notempty>
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">常规项</a></li>         
+          </ul>
+          <div class="tab-content">
+          	<!-- 常规 START -->
+	          	<div class="tab-pane active" id="tab-general">
+	          		
+	          		<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">标题：</label>
+						<div class="col-sm-10">
+							<input id="input-name2" class="form-control" type="text" placeholder="标题" name="title"  value="{$blog.title|default=''}" />
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">内容摘要：</label>
+						<div class="col-sm-10">
+							<textarea id="input-meta-description2" class="form-control" placeholder="内容摘要" rows="5" name="summary">{$blog_content.summary|default=''}</textarea>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">作者：</label>
+						<div class="col-sm-10">
+							<input id="input-name2" class="form-control" type="text" placeholder="作者" name="author" value="<?php echo empty($blog['author'])?C('SITE_NAME'):$blog['author']; ?>" />
+						</div>
+					</div>
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">文章类型：</label>
+						<div class="col-sm-10">
+							<select name="type" class="form-control">
+								<?php foreach($blog_type as $key => $type){ ?>
+								<option value="<?php echo $key; ?>" <?php if(!empty($blog['type']) && $blog['type'] == $key){ echo 'selected';} ?> ><?php echo $type;?></option>
+								<?php } ?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group required">
+		                <label class="col-sm-2 control-label" for="input-image">
+		                <span title="" data-toggle="tooltip" data-original-title="上传640x320的图片">图片：</span>
+		                </label>
+		                
+		                <div class="col-sm-10" id="thumb">
+		                  <a href="#" data-toggle="image" class="img-thumbnail">
+		                  	<img osctype="image" <if condition="!empty($blog['image'])"> 
+								src="__ROOT__{$blog.thumb_image}" 
+								<else /> 
+								src="__ROOT__/Common/image/no_image_100x100.jpg" 
+								</if>  />
+								</a>
+		                  <input osctype="image_input" type="hidden" name="image" value="{$blog.image|default=''}" id="input-image" />
+						</div>
+		            
+		            </div>   
+		            
+		           <div class="form-group">
+						<label class="col-sm-2 control-label">状态：</label>
+						<div class="col-sm-10">
+							<label class="radio-inline">
+							<input type="radio" checked="checked" value="1" name="status">启用</label>
+							<label class="radio-inline">
+							<input type="radio" value="0" name="status">停用</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+	                    <label class="col-sm-2 control-label" for="input-description">详情：</label>
+	                    <div class="col-sm-10">
+	                      <textarea id="description" name="content" >{$blog_content.content|default=''}</textarea>	
+	                    </div>
+                  	</div>
+					
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-meta-description2">Meta标签描述：</label>
+						<div class="col-sm-10">
+							<textarea id="input-meta-description2" class="form-control" placeholder="Meta标签描述" rows="5" name="meta_description">{$blog.meta_description|default=''}</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-meta-keyword2">Meta标签关键词：</label>
+						<div class="col-sm-10">
+							<textarea id="input-meta-keyword2" class="form-control" placeholder="Meta标签关键词" rows="5" name="meta_keywords">{$blog.meta_keywords|default=''}</textarea>
+						</div>
+					</div>
+					
+					
+					
+	          	</div>
+	          	<!-- 常规 END -->
+
+        
+          </div>
+        </form>
+	</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<style>
+.table thead > tr > td, .table tbody > tr > td {
+    vertical-align: middle;
+}	
+.table thead td span[data-toggle="tooltip"]:after, label.control-label span:after {
+	font-family: FontAwesome;
+	color: #1E91CF;
+	content: "\f059";
+	margin-left: 4px;
+}
+</style>	
+<script type="text/javascript" src="__PUBLIC__/js/swfobject.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/web_socket.js"></script>
+  
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    if (typeof console == "undefined") {    this.console = { log: function (msg) {  } };}
+    // 如果浏览器不支持websocket，会使用这个flash自动模拟websocket协议，此过程对开发者透明
+    WEB_SOCKET_SWF_LOCATION = "__PUBLIC__/swf/WebSocketMain.swf";
+    // 开启flash的websocket debug
+    WEB_SOCKET_DEBUG = true;
+    var ws, name, client_list={};
+	var domain = document.domain;
+	
+    // 连接服务端
+    function connect() {
+       // 创建websocket
+       ws = new WebSocket("ws://pinduoduo.liofis.com:7272");
+       // 当socket连接打开时，输入用户名
+       ws.onopen = onopen;
+       // 当有消息时根据消息类型显示不同信息
+       ws.onmessage = onmessage; 
+       ws.onclose = function() {
+    	  console.log("连接关闭，定时重连");
+          connect();
+       };
+       ws.onerror = function() {
+     	  console.log("出现错误");
+       };
+    }
+
+    // 连接建立时发送登录信息
+    function onopen()
+    {
+        //document.domain
+        // 登录
+        var login_data = '{"type":"login","client_name":"'+domain+'"}';
+        console.log("websocket握手成功，发送登录数据:"+login_data);
+        ws.send(login_data);
+    }
+
+    // 服务端发来消息时
+    function onmessage(e)
+    {
+        var data = eval("("+e.data+")");
+        switch(data['type']){
+            // 服务端ping客户端
+            case 'ping':
+                ws.send('{"type":"pong"}');
+                break;;
+            // 登录 更新用户列表
+            case 'login':
+                //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
+                say(data['client_id'], data['client_name'],  data['client_name']+' 加入了聊天室', data['time']);
+                if(data['client_list'])
+                {
+                    client_list = data['client_list'];
+                }
+                else
+                {
+                    client_list[data['client_id']] = data['client_name']; 
+                }
+                flush_client_list();
+                console.log(data['client_name']+"登录成功");
+                break;
+            // 发言
+            case 'say':
+                //{"type":"say","from_client_id":xxx,"to_client_id":"all/client_id","content":"xxx","time":"xxx"}
+                say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                break;
+            // 用户退出 更新用户列表
+            case 'logout':
+                //{"type":"logout","client_id":xxx,"time":"xxx"}
+                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
+                delete client_list[data['from_client_id']];
+                flush_client_list();
+        }
+    }
+
+
+  </script>
+<script>
+$(function(){
+	
+	var ue = UE.getEditor('description',{
+		initialFrameHeight:500,
+		serverUrl: "__PUBLIC__/ueditor/php/controller.php",
+		scaleEnabled:true
+		});
+	$(function(){
+		connect();
+		
+		$('#send').click(function(){
+			$.ajax({
+				url:"",
+				type:'post',
+				dataType:'json',
+				data:$('#form-blog').serialize(),
+				success:function(ret){
+					var s_title = $('input[name=title]').val();
+					var blog_id = $('#blog_id').val();
+					if(blog_id == undefined && $('select[name=type]').val() =='seller')
+					{
+						ws.send('{"type":"new_blog","domain":"'+domain+'","blog_id":"'+ret.blog_id+'","title":"'+s_title+'"}');
+					}
+					location.href = "{:U('Blog/index')}";
+				}
+			})
+			return false;
+		})
+	})
+})
+	
+$(function(){
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("status", {$blog.status|default=1});		
+			Oscshop.setValue("allow_reply", {$blog.allow_reply|default=1});		
+	</present>
+	
+	
+	// tooltips on hover button-upload
+	$('[data-toggle=\'tooltip\']').tooltip({container: 'body', html: true});
+
+	// Makes tooltips work on ajax generated content
+	$(document).ajaxStop(function() {
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	});	
+	
+	
+	
+	$(document).delegate('a[data-toggle=\'image\']', 'click', function(e) {
+		e.preventDefault();
+		
+		var index=$(this).attr('num');
+				
+		var element = this;
+		
+		if(index==undefined){
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" id="thumb-image"  class="btn btn-primary"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}else{
+			$(element).popover({
+				html: true,
+				placement: 'right',
+				trigger: 'manual',
+				content: function() {
+					return '<button type="button" n="'+index+'"  class="btn btn-primary button-image"><i class="icon-edit"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="icon-trash"></i></button>';
+				}
+			});
+		}
+		
+
+		
+		$(element).popover('toggle');	
+		
+		//图片
+		$('#thumb-image').on('click', function() {		
+			
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'blog2'))}",
+	            add: function(e, data) {
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                data.formData = {old_blog_images:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;
+	            	
+	            	
+	                $parent = $('#thumb');
+	                $input = $parent.find('[osctype="image_input"]');
+	                $img = $parent.find('[osctype="image"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+		});
+
+			
+		//相册
+		$('.button-image').on('click', function() {
+			$('#modal-image').remove();
+			
+			$('#form-upload').remove();
+			
+			var i=$(this).attr('n');
+			
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input osctype="btn_upload_image" type="file" name="file" /></form>');
+	
+			$('#form-upload input[name=\'file\']').trigger('click');
+			
+			$(element).popover('hide');
+			
+			$('[osctype="btn_upload_image"]').fileupload({
+				
+	        	dataType: 'json',
+	            url: "{:U('Image/upload_image',array('dir'=>'blog_gallery'))}",
+	            add: function(e, data) {
+	                $parent = $('#image-row'+i);
+	                $input = $parent.find('[osctype="gallery_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="gallery_image'+i+'"]');
+	                data.formData = {old_gallery_image:$input.val()};
+	                $img.attr('src', "__IMG__/loading.gif");
+	                data.submit();
+	            },
+	            done: function (e,data) {
+					
+	            	var image=data.result;	            	
+	            	
+	                $parent = $('#image-row'+i);
+	                $input = $parent.find('[osctype="gallery_image_input'+i+'"]');
+	                $img = $parent.find('[osctype="gallery_image'+i+'"]');
+	                if(image) {
+	                   // $img.prev('i').hide();
+	                    $img.attr('src', '__ROOT__'+image.image_thumb);
+	                    $img.show();
+	                    $input.val(image.image);
+	                } else {
+	                    alert('上传失败');
+	                }
+	            }
+   		 });
+			
+			
+			
+		});
+	
+		$('#button-clear').on('click', function() {
+			$(element).find('img').attr('src', $(element).find('img').attr('data-placeholder'));
+			
+			$(element).parent().find('input').attr('value', '');
+	
+			$(element).popover('hide');
+		});
+	});
+});
+	
+</script>
+</block>

@@ -1,0 +1,131 @@
+<section class="main-view tuan-index" id="goods_list">
+	<div class="base-list-wrapper" id="tuan_list">
+		
+		<volist name="list" id="d">
+		<div class="double-grid-one" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+			<div class="double-grid-item gap-right">
+				<img src="{$fan_ly_image}" data-echo="{$d.image}" class="scrollLoading" />
+				
+				<p class="goods-name">{$d.name}</p>
+				<div class="detail">
+					<b class="price-icon" style="font-size: .14rem;">积分</b>
+					<b class="price">{$d.pinprice}</b>
+					<div class="info">
+						<span>已兑
+						<?php if($d['seller_count']>10000) 
+	                        {
+	                        ?>
+	                        1万+</i>
+	                        <?php }else{ ?>
+	                        {$d['seller_count']}</i>
+	                        <?php } ?>件</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		</volist>
+	</div>
+</section>
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<style>
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Integral/index')}";
+var keyword = "{$keyword}";
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	var best_url = cur_url+'&page='+_pa;
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'get',
+			data:{page:_pa,keyword:keyword},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+					bindImgEvent();
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

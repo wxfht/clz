@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->  
+
+    <link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+    <link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+    <script type="text/javascript">
+        window.sysinfo = {
+            <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+            <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+            <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+            <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+            'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+            'siteroot': '{$_W['siteroot']}',
+            'siteurl': '{$_W['siteurl']}',
+            'attachurl': '{$_W['attachurl']}',
+            'attachurl_local': '{$_W['attachurl_local']}',
+            'attachurl_remote': '{$_W['attachurl_remote']}',
+            'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+            'cookie' : {'pre': ''},
+            'account' : {:json_encode($_W['account'])},
+        };
+    </script>
+            
+    <script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+    <script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+    <script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+    <script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+    <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+    <link href="/static/css/snailfish.css" rel="stylesheet">
+	<style type='text/css'>
+    .tabs-container .layui-form-item {overflow: hidden;}
+    .tabs-container .tabs-left > .nav-tabs {}
+    .tab-goods .nav li {float:left;}
+    .spec_item_thumb {position: relative; width: 30px; height: 20px; padding: 0; border-left: none;}
+    .spec_item_thumb i {position: absolute; top: -5px; right: -5px;}
+	.input-group .spec_item_thumb{padding:0px;}
+	
+    .multi-img-details {margin-top:.5em;max-width: 700px; padding:0; }
+    .multi-audio-details .multi-audio-item {width:155px; height: 40px; position:relative; float: left; margin-right: 5px;}
+	.region-goods-details {
+		background: #f8f8f8;
+		margin-bottom: 10px;
+		padding: 0 10px;
+	}
+	.region-goods-left{
+		text-align: center;
+		font-weight: bold;
+		color: #333;
+		font-size: 14px;
+		padding: 20px 0;
+	}
+	.region-goods-right{
+		border-left: 3px solid #fff;
+		padding: 10px 10px;
+	}
+	.input-group .input-group-btn .btn:hover{background-color:#5bc0de}
+	.layui-form-select{display:none;}
+	.input-group .input-group-addon{}
+	.container{width: 100%;}
+</style>
+<style>
+    tbody tr td{
+        position: relative;
+    }
+    tbody tr  .icow-weibiaoti--{
+        visibility: hidden;
+        display: inline-block;
+        color: #fff;
+        height:18px;
+        width:18px;
+        background: #e0e0e0;
+        text-align: center;
+        line-height: 18px;
+        vertical-align: middle;
+    }
+    tbody tr:hover .icow-weibiaoti--{
+        visibility: visible;
+    }
+    tbody tr  .icow-weibiaoti--.hidden{
+        visibility: hidden !important;
+    }
+    .full .icow-weibiaoti--{
+        margin-left:10px;
+    }
+    .full>span{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        vertical-align: middle;
+        align-items: center;
+    }
+    tbody tr .label{
+        margin: 5px 0;
+    }
+    .goods_attribute a{
+        cursor: pointer;
+    }
+    .newgoodsflag{
+        width: 22px;height: 16px;
+        background-color: #ff0000;
+        color: #fff;
+        text-align: center;
+        position: absolute;
+        bottom: 70px;
+        left: 57px;
+        font-size: 12px;
+    }
+	.a{cursor: pointer;}
+	.daterangepicker select.ampmselect, .daterangepicker select.hourselect, .daterangepicker select.minuteselect{
+		width:auto!important;
+	}
+	.we7-modal-dialog .modal-footer, .modal-dialog .modal-footer{padding:0px;}
+	.modal-footer{padding:0px;}
+	.daterangepicker select.ampmselect, .daterangepicker select.hourselect, .daterangepicker select.minuteselect {
+		width: auto!important;
+	}
+
+</style>
+</head>
+<body layadmin-themealias="default">
+
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text"><?php if( !empty($item['id']) ){ ?>编辑<?php }else{ ?>添加<?php } ?>群接龙<?php if( !empty($item['id']) ){ ?>({$item['title']})<?php } ?></span></div>
+            <div class="layui-card-body" style="padding:15px;">
+                <form action="" method="post" class="layui-form" lay-filter="component-layui-form-item" enctype="multipart/form-data" >
+                    <input type="hidden" name="data[id]" value="{$item['id']}"/>
+                    
+					<div class="layui-form-item">
+                        <label class="layui-form-label"><font color="red">*</font>接龙标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" id='solitaire_name' name="data[solitaire_name]" class="form-control" value="{$item['solitaire_name']}"  required  lay-verify="required">
+                        </div> 
+                    </div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label must">接龙图片<label style="color:red;font-size:16px;font-weight:900">*</label></label>
+						<div class="layui-input-block gimgs" id="gimgs_mult">
+							{:tpl_form_field_multi_image3('images_list',$item['piclist'])}
+							
+							<span class="layui-form-mid layui-word-aux image-block">可拖拽改变图片顺序</span>
+							
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+            			<label class="layui-form-label must">接龙团长</label>
+            			<div class="layui-input-block">
+                            <div class="input-group " style="margin: 0;">
+                                <input type="text" disabled value="{$item['head_id']}" class="form-control valid" name="head_dan_id" placeholder="" id="head_id">
+                                <span class="input-group-btn">
+                                    <span data-input="#head_id" id="chose_head_id"  class="btn btn-default">选择团长</span>
+                                </span>
+                            </div>
+                            <div class="input-group multi-audio-details container">
+                            
+                            <?php if( !empty($headinfo) ){ ?>    
+                                    <div class="multi-audio-item " data-id="{$headinfo['id']}">
+                                        <div class="input-group">
+                                           <input type="text" class="form-control img-textname" readonly="" value="{$headinfo['community_name']}">
+                                           <input type="hidden" value="{$headinfo['id']}" name="head_id[]">
+                                           <div class="input-group-btn">
+                                                <button class="btn btn-default" data-id="{$headinfo['id']}" onclick="cancle_head(this, {$headinfo['id']})" type="button"><i class="fa fa-remove"></i></button>
+                                           </div>
+                                        </div>
+                                    </div>
+                               
+                            <?php } ?>
+                            </div>
+            			</div>
+            		</div>
+					
+					<div class="layui-form-item" id="goods_form_item" >
+						<label class="layui-form-label">接龙商品</label>
+						<div class="layui-input-block">
+							<div class="input-group " style="margin: 0;">
+								<input type="text" disabled value="" class="form-control valid" name="" placeholder="" id="agent_id">
+								<span class="input-group-btn">
+									<span data-input="#agent_id" id="chose_agent_id"  class="btn btn-default">选择商品</span>
+								</span>
+							</div>
+							<?php if(!empty($limit_goods)){ ?>
+							<?php foreach( $limit_goods as $goods ){ ?>
+							<div class="input-group mult_choose_goodsid" data-gid="{$goods['gid']}" style="border-radius: 0;float: left;margin: 10px;margin-left:0px;width: 22%;">	
+								<div class="layadmin-text-center choose_user">		
+									<img style="" src="{$goods['image']}">		
+									<div class="layadmin-maillist-img" style="">{$goods['goodsname']}</div>		
+									<button type="button" class="layui-btn layui-btn-sm" onclick="cancle_bind(this)">
+										<i class="layui-icon"></i>
+									</button>	
+								</div>
+							</div>
+							<?php }} ?>
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<div class="layui-form-item">
+							<label class="layui-form-label">接龙时间</label>
+							<div class="layui-input-block">
+								{:tpl_form_field_daterange('time', array('starttime'=>date('Y-m-d H:i', $item['begin_time']),'endtime'=>date('Y-m-d H:i', $item['end_time'])),true);}
+							</div>
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">状态</label>
+						<div class="layui-input-block">
+							<label class="radio-inline"><input type="radio" name="data[state]" value="1" <?php if( !isset($item['state']) || $item['state'] == 1 ){ ?>checked="true"<?php } ?> title="启用" /> </label>
+							<label class="radio-inline"><input type="radio" name="data[state]" value="0" <?php if( isset($item['state']) && $item['state'] == 0 ){ ?>checked="true"<?php } ?> title="禁用" /> </label>
+						</div>
+					</div>
+						
+					<div class="layui-form-item">
+                        <label class="layui-form-label">接龙内容</label>
+                        <div class="layui-input-block">
+                            {:tpl_ueditor('data[content]',$item['content'],array('height'=>'300'))}
+                        </div>
+                    </div>
+						
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"> </label>
+                        <div class="layui-input-block">
+                            <input type="submit" value="提交" lay-submit lay-filter="formDemo" class="btn btn-primary"  />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script src="/layuiadmin/layui/layui.js"></script>
+   
+<script type="text/javascript" src="/static/js/jquery-migrate-1.1.1.js"></script>	
+<script src="/static/js/jquery-ui.min.js"></script>
+<style>
+.multi-img-details{width:100%;}
+</style>
+ <script>
+        layui.config({
+            base: '/layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use('index');
+    </script>
+    <script>
+	var rant=0;
+    var layer = layui.layer;
+    var $;
+    var cur_open_div;
+    layui.use(['jquery', 'layer','form'], function(){ 
+      $ = layui.$;
+      var form = layui.form;
+      
+        form.on('radio(linktype)', function(data){
+            if (data.value == 2) {
+                $('#typeGroup').show();
+            } else {
+                $('#typeGroup').hide();
+            }
+        });  
+		
+		$('#chose_member_id').click(function(){
+			cur_open_div = $(this).attr('data-input');
+			$.post("{:U('user/zhenquery', array('limit' => 0))}", {}, function(shtml){
+			 layer.open({
+				type: 1,
+				area: '930px',
+				content: shtml //注意，如果str是object，那么需要字符拼接。
+			  });
+			});
+		})
+
+		$('#chose_agent_id').click(function(){
+			//todo.选择团长后才能进行选择商品
+			var head_id = $('#head_id').val();
+			
+			if( !head_id )
+			{
+				layer.msg('请选择团长，再选择商品');
+				return false;
+			}
+			
+			cur_open_div = $(this).attr('data-input');
+			$.post("{:U('goods/query_normal', array('template' => 'mult','is_soli' => 1))}", {head_id:head_id}, function(shtml){
+			 layer.open({
+				type: 1,
+				area: '930px',
+				content: shtml //注意，如果str是object，那么需要字符拼接。
+			  });
+			});
+		})
+	
+        $('#chose_agent_id2').click(function(){ 
+			cur_open_div = $(this).attr('data-input');
+			$.post("{:U('goods/query_normal', array('template' => 'mult','is_recipe' => 1, 'unselect_goodsid' => $id))}", {}, function(shtml){
+			 layer.open({
+				type: 1,
+				area: '930px',
+				content: shtml //注意，如果str是object，那么需要字符拼接。
+			  });
+			});
+		})
+		
+		$(document).delegate(".agentid","click",function(){
+			cur_open_div = $(this).attr('data-input');
+			$.post("{:U('goods/query_normal', array('template' => 'mult', 'unselect_goodsid' => $id))}", {}, function(shtml){
+			 layer.open({
+				type: 1,
+				area: '930px',
+				content: shtml //注意，如果str是object，那么需要字符拼接。
+			  });
+			});
+		});
+
+		 $('#chose_head_id').click(function(){
+			cur_open_div = $(this).attr('data-input');
+			$.post("{:U('communityhead/lineheadquery', array('is_soli' => 1))}", {}, function(shtml){
+			 layer.open({
+				type: 1,
+				area: '930px',
+				content: shtml //注意，如果str是object，那么需要字符拼接。
+			  });
+			});
+		})
+		
+		$('.agent_id').click(function(){ 
+			cur_open_div = $(this).attr('data-input');
+			$.post("{:U('goods/query_normal', array('template' => 'mult', 'is_recipe' => 1, 'unselect_goodsid' => $id))}", {}, function(shtml){
+			 layer.open({
+				type: 1,
+				area: '930px',
+				content: shtml //注意，如果str是object，那么需要字符拼接。
+			  });
+			});
+		})
+		
+        $('#chose_link').click(function(){
+            cur_open_div = $(this).attr('data-input');
+            $.post("{:U('util/selecturl', array('ok' => 1))}", {}, function(shtml){
+             layer.open({
+                type: 1,
+                area: '930px',
+                content: shtml //注意，如果str是object，那么需要字符拼接。
+              });
+            });
+        })
+
+        form.verify({
+          title: [
+            /^[\S]{1,}$/,'标题不能为空'
+          ] 
+        });
+            
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+		
+			var gd_ar = [];
+			
+			//data-id="0"
+			var gd_ar = [];
+			var gd_str = '';
+			$('.mult_choose_goodsid').each(function(){
+				gd_ar.push( $(this).attr('data-gid') );
+			})
+			gd_str = gd_ar.join(',');
+			
+			if(gd_str == '')
+			{
+				layer.msg('请选择接龙商品');
+				return false;
+			}
+			
+			data.field.goods_list = gd_str;
+			
+            $.ajax({
+                url: data.form.action,
+                type: data.form.method,
+                data: data.field,
+                dataType:'json',
+                success: function (info) {
+                  
+                    if(info.status == 0)
+                    {
+                        layer.msg(info.result.message,{icon: 1,time: 2000});
+                    }else if(info.status == 1){
+                        var go_url = location.href;
+                        if( info.result.hasOwnProperty("url") )
+                        {
+                            go_url = info.result.url;
+                        }
+                        
+                        layer.msg('操作成功',{time: 1000,
+                            end:function(){
+                                var backurl = "{:U('solitaire/index',array('ok'=>'1'))}";
+                                location.href = backurl;
+                                // location.href = info.result.url;
+                            }
+                        }); 
+                    }
+                }
+            });
+            return false;
+        });
+    })
+	
+	function cans_this( obj )
+	{
+		var par_obj = $(obj).parent().parent();
+		
+		$(par_obj).next().remove();
+		$(par_obj).remove();
+	}
+	
+	 function cancle_head(obj,sdiv)
+    {
+        $('#head_id').val('');
+        $('#'+sdiv).val('');
+        $(obj).parents('.multi-audio-item').remove();
+    }
+	
+	function addCaipu()
+	{
+		rant++;
+		var s_html = '';
+		
+		s_html +='<div class="layui-form-item">';
+		s_html +='	<label class="layui-form-label">名称';
+		s_html +='&nbsp;<i class="layui-icon" onclick="cans_this(this)" style="cursor: pointer;"></i>';
+		s_html +='</label>';
+		
+		
+		s_html +='	<div class="layui-input-block">';
+		s_html +='		<input type="text" name="" data-id="0" class="form-control make_time" value="" >';
+		s_html +='	</div>';
+		s_html +='</div>';
+		
+		s_html +='<div class="layui-form-item">';
+		s_html +='	<label class="layui-form-label">商品</label>';
+		s_html +='	<div class="layui-input-block">';
+		s_html +='		<div class="input-group " style="margin: 0;">';
+		s_html +='			<input type="text" disabled value="" class="form-control valid" name="" placeholder="" id="agent_id'+rant+'">';
+		s_html +='			<span class="input-group-btn">';
+		s_html +='				<span data-input="#agent_id'+rant+'"   class="btn btn-default agentid">选择商品</span>';
+		s_html +='			</span>';
+		s_html +='		</div>';
+		s_html +='	</div>';
+		s_html +='</div>';
+		
+		
+		
+		
+		
+		$('#caipu_div').append(s_html);
+	}
+	
+	function addsp(){
+		
+        
+    }
+    $(function(){
+		$(document).delegate('.btn-del','click',function(){
+			var $btntr = $(this).parents('tr');
+			$btntr.remove();
+		})
+    });
+	
+	function cancle_bind(obj,sdiv)
+	{
+		$('#'+sdiv).val('');
+		$(obj).parent().parent().remove();
+	}
+    </script>  
+	
+	
+<script>
+    $(function () {
+        // 拖拽时开始滚动的间距
+        var scrollingSensitivity = 20
+        // 拖拽时滚动速度
+        let scrollingSpeed = 20
+        // 拖拽前的父级节点
+        let dragBeforeParentNode = null
+        // 初始化拖拽函数
+        $('.multi-img-details').sortable({
+            // 自适应placeholder的大小
+            forceHelperSize: true,
+            // 拖拽时的鼠标形状
+            cursor: '-webkit-grabbing',
+            // 拖拽的父级节点(该节点一定要注意，配置错误会导致当前屏幕外的元素没法自动滚动拖拽，两列之间拖拽的滚动也会出问题)
+            appendTo: '.layui-form-item',
+            // 拖拽时的倾斜度
+            rotate: '5deg',
+            // 延迟时间(毫秒)，避免和click同时操作时出现的冲突
+            delay: 0,
+            // 以clone方式拖拽
+            helper: '',
+            // 拖拽到边框出现滚动的间距，
+            scrollSensitivity: scrollingSensitivity,
+            // 应用于拖拽空白区域的样式
+            placeholder: 'portlet-placeholder ui-state-highlight',
+            // 允许拖拽预留空白区域
+            forcePlaceholderSize: false,
+            // 多个列表之间的拖拽的dom元素
+            connectWith: '.multi-img-details',
+            // 鼠标到区域则填充
+            tolerance: "pointer",
+            // 可以拖拽的项
+            items: '.multi-item',
+            // 填充动画
+            revert: 0,
+            // 拖拽结束函数
+            stop: (e, ui) => {
+                // 当前拽入的元素
+                let item = $(ui.item)
+                // 当前拽入元素的下标
+                let index = item.index()
+                let kid = ''
+                // xxxx 这里面可以操作数据更新
+            },
+            // 开始拖拽时的函数
+            start: (e, ui) => {
+                // 拖拽前的父级节点
+                dragBeforeParentNode = ui.item[0].parentNode
+                // 让placeholder和源高度一致
+                ui.helper.addClass('item').width(110)
+                // xxxx  这里可以记录一些拖拽前的元素属性
+            },
+            // 处理两列滚动条问题
+            sort: function (event, ui) {
+                var scrollContainer = ui.placeholder[0].parentNode
+                // 设置拽入的列表的滚动位置
+                var overflowOffset = $(scrollContainer).offset()
+                if ((overflowOffset.top + scrollContainer.offsetHeight) - event.pageY <
+                    scrollingSensitivity) {
+                    scrollContainer.scrollTop = scrollContainer.scrollTop + scrollingSpeed
+                } else if (event.pageY - overflowOffset.top < scrollingSensitivity) {
+                    scrollContainer.scrollTop = scrollContainer.scrollTop - scrollingSpeed
+                }
+            }
+        }).disableSelection()
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/suggestion_5d26e47e48fe43d546da6e44b3a131a1.css">
+
+<div class="suggestion-wrap">
+	<div class="suggestion-header">常见问题</div>
+	<div class="suggestion-body">
+		<div class="suggestion-list" id="tuan_list">
+			
+			<?php 
+			if(!empty($list)) {
+			?>
+			<volist name="list" id="d">
+			<div class="suggestion-one" onclick="location.href='{:U('User/quest_detail', array('blog_id' => $d['blog_id']))}';">
+				<div class="suggestion-title">{$d.title}</div>
+				<div class="suggestion-arrow">
+					<img src="__PUBLIC__/pinduoduo/assets/img/home_arrow-0417024bbe.png">
+				</div>
+			</div>
+			</volist>
+			<?php } ?>
+			
+		</div>
+	</div>
+</div>
+
+
+
+<include file="Widget:pin_notify" />
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<style>
+.suggestion-body{margin-top:45px;}
+.coupon-tabbar .coupon-tab { 
+	width:49%;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('User/quest')}";
+var req_step = 1;
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

@@ -1,0 +1,264 @@
+<extend name="Public:base" />
+<block name="content">
+	<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+		</h1>
+	</div>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#tab-member" data-toggle="tab">申请抽奖活动</a></li>	 
+	</ul>
+	
+	<div class="tab-content">
+		
+		<div class="tab-pane active" id="tab-member">
+			<h3 style="font-weight:bold;">第一步：选择退款时赠送的优惠券(注意均是平台券)</h3>
+			<table class="table table-binfoed">
+				<?php foreach($voucher_list as $voucher){ ?>
+				<tr>
+				    <td>
+						<label>	
+							<input type="radio" name="voucher_id" value="<?php echo $voucher['id']; ?>" />
+							优惠券:&nbsp;<?php echo $voucher['voucher_title'] ?>
+							
+						</label>
+					</td>
+					
+				    <td>
+						剩余数量:&nbsp;
+						<?php echo $voucher['total_count']-$voucher['send_count']; ?>
+					</td>
+				</tr>
+				<?php } ?>
+				
+				<tr>
+				    <td>中奖人数:&nbsp;<input type="text" name="win_quantity" value="" /></td>
+				    <td>
+						真实中奖人数:&nbsp;
+						<input type="text" name="real_win_quantity" value="" />
+					</td>
+					<td>
+						是否自动开奖:&nbsp;
+						<label><input type="radio"  name="is_auto_open" value="1" />是</label>
+						<label><input type="radio" checked name="is_auto_open" value="0" />否</label>
+					</td>
+				</tr>
+				<tr>
+					<td>开始时间:&nbsp;
+						<input type="text" name="date_added_begin" value="" id="begin_time" class="datetimepicker data_input">
+					</td>
+				    <td>
+						结束时间:&nbsp;
+						<input type="text" name="date_added_end" value="" id="end_time" class="datetimepicker data_input">
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+		<div class="row">
+			<div class="col-xs-12"> 
+				<div class="panel panel-info">
+					<div class="panel-heading">添加活动商品</div>
+						<div class="panel-body">
+							<div class="col-xs-12 search-row"> 
+								<div class="col-sm-4">
+									<span class="form-label">商品名称：</span>
+									<input type="text" id="goods_name" name="goods_name" value="">
+								</div>
+								<div class="col-sm-4"> 
+									<button name="subtype" id="search" value="search" class="btn btn-white btn-search"> <i class="icon-search"></i> 检 索 </button>
+									
+									<button name="subtype" id="baom" value="search" class="btn btn-white btn-search"> 
+									<i class="icon-ok"></i> 报名 </button>
+								</div> 
+							</div> 
+							<div class="col-xs-12 search-row"> 
+								<div class="tags" style="border:none;width:100%;">
+								</div>
+							</div> 
+					  </div>
+				</div>
+			 </div>
+			 <div class="col-xs-12" id="goods_result"> 
+			 
+			 </div>
+			 
+			 
+		</div>
+	
+	</div>
+	
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script src="__PUBLIC__/js/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+
+
+<script>
+var sub_url ="{:U('Lottery/sub_lottery', array('id' => $subject['id']))}";
+
+$(function(){
+
+		$('#begin_time').datetimepicker({
+			 format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+		});
+		
+		$('#end_time').datetimepicker({
+			 format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+			
+	$('#search').click(function(){
+		var goods_name = $('#goods_name').val();
+		$.ajax({
+			url:"{:U('Goods/goods_search')}",
+			type:'post',
+			data:{goods_name:goods_name},
+			dataType:'json',
+			success:function(ret){
+				$('#goods_result').html(ret.html);
+			}
+		})
+	});
+	$('#baom').click(function(){
+		var arr = new Array();
+		$('.tag').each(function(){
+			arr.push($(this).attr('rel_goods_id'));
+		})
+		if(arr.length == 0)
+		{
+			alert('请选择需要参加活动的商品');
+			return false;
+		}
+		
+		if($('input[name="voucher_id"]:checked').length == 0)
+		{
+			alert('请选择退款时赠送的优惠券');
+			return false;
+		}
+		var voucher_id = $('input[name="voucher_id"]:checked').val();
+		
+		var win_quantity = $('input[name="win_quantity"]').val();
+		var real_win_quantity = $('input[name="real_win_quantity"]').val();
+		
+		var begin_time = $('#begin_time').val();
+		var end_time = $('#end_time').val();
+		
+		if(win_quantity == '')
+		{
+			alert('请填写中奖人数');
+			return false;
+		}
+		if(real_win_quantity == '')
+		{
+			alert('请填写真实中奖人数');
+			return false;
+		}
+		
+		if(begin_time == '')
+		{
+			alert('请填写活动开始时间');
+			return false;
+		}
+		if(end_time == '')
+		{
+			alert('请填写活动结束时间');
+			return false;
+		}
+		
+		
+		var is_auto_open = $('input[name="is_auto_open"]:checked').val();
+		
+		
+		
+		
+		var data_obj = {};
+		data_obj.goods_ids_arr = arr;
+		data_obj.voucher_id = voucher_id;
+		data_obj.win_quantity  = win_quantity;
+		data_obj.real_win_quantity = real_win_quantity;
+		data_obj.is_auto_open = is_auto_open;
+		data_obj.begin_time = begin_time;
+		data_obj.end_time = end_time;
+		
+		$.ajax({
+			url:sub_url,
+			type:'post',
+			data:data_obj,
+			dataType:'json',
+			success:function(ret){
+				if(ret.code == 1)
+				{
+					alert('报名成功');
+					location.href = location.href;
+					return false;
+				} else {
+					alert(ret.msg);
+					return false;
+				}
+			}
+		})
+		
+	})
+	$('.close').live('click',function(){
+		$(this).parent().remove();
+	})
+	$('.cgoods_id').live('click',function(){
+		var rel_id = $(this).val();
+		var goods_name = $(this).attr('rel_name');
+		
+		if($(this).is(':checked')) { 
+			if($('.tag'+rel_id).length ==0)
+			{
+				var rel_html = '<span class="tag tag'+rel_id+'" rel_goods_id="'+rel_id+'">'+goods_name+'<button type="button" class="close">×</button></span>';
+				$('.tags').append(rel_html);
+			}
+		}else {
+			$('.tag'+rel_id).remove();
+		}
+	})
+	
+})
+</script>
+<script>
+$(function(){	
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("a_status", {$data.a_status|default=1});		
+	</present>
+	
+		
+});
+</script>							
+</block>

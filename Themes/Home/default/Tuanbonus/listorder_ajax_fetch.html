@@ -1,0 +1,45 @@
+<?php foreach($list as $val){ ?>
+			<li class="member-browse-li">
+				<div class="row member-browse-summey">
+					<a class="member-browse-summey-info" href="#">
+						<div class="member-browse-nt">
+							<span class="member-browse-name" style="font-weight:bold;">
+								订单：<?php echo $val['order_num_alias']; ?> 
+								<span class="pro-price">【<?php echo $val['status_name']; ?>】</span>
+							</span>
+						</div>
+					</a>
+				</div>
+				<div class="member-browser-pro-list">
+					<a class="member-browser-pro-a" href="#">
+						<span class="pro-img">
+							<img src="<?php echo $val['image']; ?>" />
+						</span>
+						<p class="pro-info">
+							<span class="pro-name" style="color:#999;"><?php echo $val['name']; ?></span>
+							<span class="pro-price">
+							<?php if($val['state'] ==0){ ?>
+							预估佣金：
+							<?php }else if($val['state'] ==1){ ?>
+							已获佣金：
+							<?php }else{ ?>
+							退回佣金：
+							<?php }?>
+							<strong>+<?php echo $val['money']; ?></strong>
+							</span>
+							<span class="pro-price">&nbsp;&nbsp;&nbsp;&nbsp;数量：<strong><?php echo $val['quantity']; ?></strong></span>
+						</p>
+					</a>
+				</div>
+			
+				<div class="row member-browse-summey">
+					<a class="member-browse-summey-info" href="#">
+						<div class="member-browse-nt">
+							<span class="member-browse-name" style="color:#999;">
+								购买人：<?php echo $val['uname']; ?>&nbsp;&nbsp;&nbsp;&nbsp;金额：<?php echo $val['total']; ?> <br>日期：<?php echo $val['addtime']; ?>
+							</span>
+						</div>
+					</a>
+				</div>
+			</li>
+			<?php } ?>

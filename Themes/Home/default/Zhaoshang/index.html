@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商家入驻</title>
+    <meta name="keywords" content="商家入驻">
+    <meta name="description" content="">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link href="__PUBLIC__/pinduoduo/assets/css/common_8f20fc.css" rel="stylesheet">
+	<link href="__PUBLIC__/pinduoduo/assets/css/index_71bf9f.css" rel="stylesheet">
+	<script type="text/javascript" src="__PUBLIC__/pinduoduo/js/jquery-1.10.1.min.js"></script>
+	<style type="text/css">.nb-modal{display:block}</style>
+	<style type="text/css">@media screen and (max-width:640px){body,html{background:#fff!important}header{background:#d12129;width:100%;height:60px}header .join-us{position:relative;z-index:9;width:40%;text-align:center;float:right}header .join-us .contact{margin-left:10px}header .join-us ul{background:#fff;padding:5px;text-align:left;position:absolute;font-size:14px;border:1px solid #ccc;margin-right:5px}header .join-us:hover{cursor:pointer}header .join-us p{padding:0;margin:0}header .join-us button{border:none;color:#fff;background:#d12129;padding:14px 20px;margin-top:12px;width:100%;outline:none;-webkit-filter:chroma(#000);filter:chroma(#000)}header img:hover{cursor:pointer}header .container{width:168px;margin:0;padding:10px 0 0 10px;float:left}header .container img{width:90%}header .container .login{margin-top:40px;color:#fff;position:relative;z-index:9}header .container .login span{display:inline-block;padding-right:10px;border-right:1px solid #fff}header .container .login button{border:none;background:none;border:1px solid #fff;color:#fff;padding:2px 5px}header .container .login button:nth-of-type(2){border:none}}@media screen and (min-width:650px){header{background:#d12129;width:100%;height:80px}header .join-us{position:relative;z-index:9;width:200px;text-align:center;float:right;margin-top:-59px;margin-right:2%}header .join-us .contact{margin-left:30px}header .join-us .active{background:#fff;color:#333}header .join-us ul{background:#fff;padding:20px;text-align:left;position:absolute}header .join-us:hover{cursor:pointer}header .join-us p{padding:0;margin-bottom:5px;line-height:2em}header .join-us button{border:none;color:#fff;background:#d12129;padding:14px 20px;margin-top:12px;outline:none;-webkit-filter:chroma(#000);filter:chroma(#000)}header img:hover{cursor:pointer}header .container .login{margin-top:40px;color:#fff;position:relative;z-index:9}header .container .login span{display:inline-block;padding-right:10px;border-right:1px solid #fff}header .container .login button{border:none;background:none;border:1px solid #fff;color:#fff;padding:2px 5px}header .container .login button:nth-of-type(2){border:none}}</style>
+	<style type="text/css">.container-new{height:103px;width:100%;background:#fff;position:fixed;left:0;top:0;z-index:23}.container-new .container-center{height:100%;width:1200px;margin-left:auto;margin-right:auto}.container-new .container-center img{margin-top:18px}.container-new .container-center #header-category-new{margin-bottom:0;float:right}.container-new .container-center #header-category-new li{display:inline-block;font-size:20px;border-right:1px solid #6c6c6c;width:140px;position:relative;text-align:center;margin-top:29px}.container-new .container-center #header-category-new li.active a{color:#fc475d;font-size:22px}.container-new .container-center #header-category-new li:nth-of-type(1){width:120px}.container-new .container-center #header-category-new li:nth-of-type(6){border-right:none}.container-new .container-center #header-category-new li a{color:#6c6c6c}</style>
+	<style type="text/css">#choose-entry .tips{margin-right:20px;font-size:14px;color:#ccc;text-decoration:underline}#choose-entry .jumbotron{background:#fff;margin-top:50px;padding-left:10px!important;padding-right:10px!important;height:340px}#choose-entry .jumbotron .fixed{position:absolute;bottom:94px;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%)}#choose-entry .jumbotron p{font-size:16px}#choose-entry .jumbotron p:nth-of-type(1){color:#d4d4d4}#choose-entry .jumbotron .btn{h:45px;background:#f5495e;color:#fff;width:140px;margin-top:20px;height:45px;line-height:45px;padding:0}</style>
+</head>
+<body>
+<include file="Zhaoshang:header_fetch" />
+
+<div>
+	<div class="row container" id="choose-entry">
+		<div class="col-md-5 col-md-offset-1"> <div class="jumbotron"> <h3 class="text-center">个人入驻</h3> 
+		<p class="text-center">适合个人、个体户入驻，提供身份证即可入驻</p> <p class="text-center" style="display: none;">您上次选择的是个人入驻！</p> 
+		<p class="text-center fixed"><a class="btn btn-md" href="{:U('Zhaoshang/iddEntry')}" role="button">马上入驻</a></p> </div> </div>
+		<div class="col-md-5"> 
+			<div class="jumbotron"> 
+				<h3 class="text-center">企业入驻</h3> 
+				<p class="text-center">适合公司/企业入驻，提供营业执照等资料即可入驻</p> 
+				<div class="row" style="margin-bottom:10px;display:none;"> <!--v-for-start-->
+					<div class="col-lg-3"> <input type="radio" id="mike0" value="3"> <label for="mike0">旗舰店</label> </div>
+					<div class="col-lg-3"> <input type="radio" id="mike1" value="4"> <label for="mike1">专卖店</label> </div>
+					<div class="col-lg-3"> <input type="radio" id="mike2" value="5"> <label for="mike2">专营店</label> </div>
+					<div class="col-lg-3"> <input type="radio" id="mike3" value="6"> <label for="mike3">普通店</label> </div>
+					<!--v-for-end--> 
+					<div class="pull-right"> <a data-toggle="modal" data-target="#myModal" class="tips"> 店铺类型说明 </a> </div> 
+				</div> 
+				<p class="text-center fixed"><a href="{:U('Zhaoshang/busEntry')}" class="btn btn-md" role="button">马上入驻</a></p> 
+			</div> 
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

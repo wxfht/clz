@@ -1,0 +1,196 @@
+<extend name="Public:base" />
+<block name="content">
+	<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>	
+	<ul class="nav nav-tabs">
+		
+	  <li class="active"><a href="#tab-member" data-toggle="tab">用户资料</a></li>	 
+	  
+	</ul>
+	<form class="form-horizontal" id="validation-form"  method="post" action='{$action}'>
+	<div class="tab-content">
+		
+		<div class="tab-pane active" id="tab-member">
+			<h3 style="font-weight:bold;">店铺基本信息</h3>
+			<table class="table table-binfoed">
+				<tr>
+				    <td>店铺名称:&nbsp;{$apply_relship.rel_data.store_name}</td>
+				    <td>
+						店铺logo:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.store_logo}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['store_logo'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				<tr>
+				    <td>主营类目:&nbsp;<?php 
+						if(!empty($apply_relship['rel_data']['store_category']))
+						{
+							$ct = M('goods_category')->where( array('id' =>$apply_relship['rel_data']['store_category'] ) )->find(); 
+							echo $ct['name'];
+						}
+						?></td>
+				 
+					<td>所在城市:&nbsp;{$apply_relship.rel_data.city_name}</td>
+				</tr>
+				
+				<tr>
+					<td>店铺详情:&nbsp;{$apply_relship.rel_data.store_descript}</td>
+				</tr>
+			</table>	
+			
+			<h3 style="font-weight:bold;">店铺管理人基本信息</h3>
+			<table class="table table-binfoed">
+				<tr>
+				    <td>管理人姓名:&nbsp;{$apply_relship.rel_data.admin_real_name}</td>
+					<td>管理人邮箱:&nbsp;{$apply_relship.rel_data.admin_email}</td>
+				</tr>
+				<tr>
+				    <td>管理人手机号:&nbsp;{$apply_relship.rel_data.admin_mobile}</td>
+				    <td>开店性质:&nbsp;<?php if($apply_relship['rel_data']['jiny_type'] == 1){
+						echo '海淘';
+					}else{
+						echo '非海淘';
+					}
+					?></td>
+				</tr>
+				<tr>
+				    <td>紧急联系人名称:&nbsp;{$apply_relship.rel_data.jinji_username}</td>
+					<td>紧急联系人手机号码:&nbsp;{$apply_relship.rel_data.jinji_mobile}</td>
+				</tr>
+				
+			</table>
+			
+			<h3 style="font-weight:bold;">负责人基本信息</h3>
+			<table class="table table-binfoed">
+				<tr>
+				    <td>负责人姓名:&nbsp;{$apply_relship.rel_data.fuze_realname}</td>
+					<td>负责人邮箱:&nbsp;{$apply_relship.rel_data.fuze_email}</td>
+					<td>负责人手机号码:&nbsp;{$apply_relship.rel_data.fuze_mobile}</td>
+				</tr>
+			</table>
+			
+			<h3 style="font-weight:bold;">企业信息</h3>
+			<table class="table table-binfoed">
+				<tr>
+				    <td>企业法人姓名:&nbsp;{$apply_relship.rel_data.faren_username}</td>
+					<td>身份证号:&nbsp;{$apply_relship.rel_data.faren_id_card}</td>
+					<td>公司名称:&nbsp;{$apply_relship.rel_data.faren_company}</td>
+				</tr>
+				<tr>
+				    <td>营业执照注册号:&nbsp;{$apply_relship.rel_data.faren_yingye}</td>
+					<td>组织机构代码:&nbsp;{$apply_relship.rel_data.faren_zuzhi}</td>
+					<td>纳税人识别码:&nbsp;{$apply_relship.rel_data.faren_nashui}</td>
+					<td>统一社会信用代码:&nbsp;{$apply_relship.rel_data.faren_xinyong}</td>
+				</tr>
+			</table>
+			
+			
+			<h3 style="font-weight:bold;">资质信息</h3>
+			<table class="table table-binfoed">			
+				<tr>
+					<td>法人身份证正面照片:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.fa_id_card}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['fa_id_card'], 100, 100); ?>" />
+						</a>
+					</td>
+					<td>法人身份证反面照片:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.fa_fan_id_card}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['fa_fan_id_card'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				
+				<tr>
+				    <td>身份证有效期:&nbsp;{$apply_relship.rel_data.id_card_begin_time}-{$apply_relship.rel_data.id_card_end_time}</td>
+					
+				</tr>
+				<tr>
+					<td>营业执照:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.yingye_image}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['yingye_image'], 100, 100); ?>" />
+						</a>
+					</td>
+					<td>营业执照有效期:&nbsp;{$apply_relship.rel_data.yy_begin_time}-{$apply_relship.rel_data.yy_end_time}
+					</td>
+				</tr>
+				<tr>
+					<td>税务登记证明:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.suiwu_image}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['suiwu_image'], 100, 100); ?>" />
+						</a>
+					</td>
+					<td>组织机构证明:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.zuzhi_image}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['zuzhi_image'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>组织机构有效期:&nbsp;  
+						&nbsp;{$apply_relship.rel_data.zz_begin_time}-{$apply_relship.rel_data.zz_end_time}
+					</td>
+					<td>开户许可证:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.kaihu_image}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['kaihu_image'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>商标注册证明:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.shangbiao_image}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['shangbiao_image'], 100, 100); ?>" />
+						</a>
+					</td>
+					<td>品牌授权证明:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.pingpai_image}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['pingpai_image'], 100, 100); ?>" />
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>质检报告:&nbsp;
+						<a href="/Uploads/image/{$apply_relship.rel_data.zhijian_image}" target="_blank">
+							<img src="<?php echo resize($apply_relship['rel_data']['zhijian_image'], 100, 100); ?>" />
+						</a>
+					</td>
+					
+				</tr>
+			</table>
+			
+				<div class="form-group">
+				
+				
+			</div>
+		</div>
+		
+	
+	</div>
+	</form>	
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/fileupload/jquery.ui.widget.js"></script>
+<script src="__PUBLIC__/fileupload/jquery.fileupload.js"></script>
+<script>
+$(function(){
+	
+})
+</script>
+<script>
+$(function(){	
+	
+	<present name="Think.get.id">
+			Oscshop.setValue("a_status", {$data.a_status|default=1});		
+	</present>
+	
+		
+});
+</script>							
+</block>

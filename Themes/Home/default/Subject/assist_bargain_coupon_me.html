@@ -1,0 +1,443 @@
+<extend name="Public:pinduoduobase" />
+
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pin/assets/css/react_boot_30305e74e4b4d863454d94cab029e844.css">
+<link rel="stylesheet" href="__PUBLIC__/pin/assets/css/react_common_e1852e5ddc660dd79bef5eb49d18af1d.css">
+<link rel="stylesheet" href="__PUBLIC__/pin/assets/css/react_commercial_bargain_list_1e198f619d9fd08875d2f633992f363b.css">
+   
+<style>
+.cb-order-list .cb-order-item .order-right button{background-color: #ff6699;}
+.cb-order-list .cb-order-item .order-right .remain .remain-price{color:#ff6699;}
+</style>
+<div id="main">
+   <section data-reactroot="" class="main-view container">
+    
+	
+    <div style="">
+     <div id="bargain-orders" class="react-base-list-wrapper bargain-orders" style="display: block;">
+      <ul class="cb-order-list" id="tuan_list">
+       
+	   <?php foreach($list as $goods){ ?>
+	   <li role="button" class="cb-order-item">
+		<img class="scrollLoading" src="{$fan_ly_image}" data-echo="__UPLOAD__/<?php echo $goods['image']; ?>" alt="order" />
+        <div class="order-right">
+         <p class="goods-name"><?php echo $goods['name']; ?></p>
+         
+										
+		 <?php if($goods['state'] == 0 && $goods['end_time'] > time() ){ ?>							
+		 <div class="bargain-order-item-countdown clock_div" endtime="<?php echo date('m/d/Y H:i:s', $goods['end_time']);?>">
+          <span></span>
+         </div>
+		
+		 <?php } ?>
+		 
+		 <?php if($goods['state'] == 0 && $goods['end_time'] > time() ){ ?>	
+         <div class="remain">
+          <p class="remain-desc">离免费领取</p>
+          <p class="remain-price">
+           还差
+           <i><?php echo $goods['deal_money']; ?></i>
+           元
+           </p>
+         </div> 
+         <button class="button" onclick="location.href='{:U('Subject/assist_bargain_coupon_detail', array('id' =>$goods[id] ) )}';">继续砍价</button>
+		 
+		  <?php }else if($goods['state'] == 1){ ?>
+		  <button class="button" onclick="location.href='{:U('Subject/assist_bargain_coupon_detail', array('id' =>$goods[id] ) )}';">砍价成功</button>
+		  <?php }else if( ($goods['state'] == 0 && $goods['end_time'] <  time()) || $goods['state'] == 2 ){ ?>
+		  <div class="remain">
+			  <p class="remain-desc"></p>
+			  <p class="remain-price">
+			   砍价失败
+			  </p>
+		  </div>
+          <button class="button" onclick="location.href='{:U('Subject/assist_bargain_coupon')}';">重砍一个</button>
+		  <?php } ?>
+		 
+        </div>
+		</li>
+		<?php } ?>
+      </ul>
+      <div class="cb-order-list-bottom" style="display:none;">
+       已经到底部了
+      </div>
+     </div>
+    </div>
+	
+    <div class="cb-tab">
+		<div class="tab-item" onclick="location.href='{:U('Subject/assist_bargain_coupon')}';">
+			<span class="icon-bargain ">砍价商品</span>
+		</div>
+		<div class="tab-item">
+			<span class="icon-bargain-group active">我的砍价</span>
+		</div>
+		<div class="tab-split"></div>
+    </div>
+	
+   </section>
+ </div>
+
+
+<script src="__PUBLIC__/pin/js/clocktime_coupon_free.js"></script>
+
+
+
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pin/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+
+
+
+
+<div id="jsalert-assist_free_coupon_rules1516799938453"  style="display:none;">
+    <div class="bg-fill bg-fill2"></div>
+    <div id="assist-free-coupon-rules-alert">
+        <div class="content-wrapper">
+            <div class="detail">
+                <div class="title">助力享免单规则</div>
+                <ul class="desc">
+				<?php foreach($zan_notice_arr as $val){ ?>
+                    <li><?php echo $val; ?></li>
+					<?php } ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="">
+<style>
+
+.pin-spinner-2 {
+    display: none;
+    position: fixed;
+    width: .66rem;
+    height: .66rem;
+    top: 35%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    z-index: 999999999;
+}
+.ps-inner-box {
+    width: 100%;
+    height: 100%;
+}
+.ps-rotate-img {
+    width: .25rem;
+    height: .25rem;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    animation: rotateImg 2.5s linear infinite;
+    -webkit-animation: rotateImg 2.5s linear infinite;
+    z-index: 9999999999;
+    position: absolute;
+}
+
+.ps-rotate-msg {
+    width: 100%;
+    font-size: .15rem;
+    text-align: center;
+    /*height: 11px;*/
+    color: #ffffff;
+    position: relative;
+    bottom: .12rem;
+}
+
+.spinner-background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999999999;
+}
+
+#ps-background {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    background-color: #000;
+    border-radius: .06rem;
+}
+
+.pin-spinner-wrapper-no-message {
+    display: block;
+    top: 50%;
+    margin-top: -.65rem;
+    width: .66rem;
+    height: .66rem;
+}
+
+.pin-spinner-wrapper-no-message .ps-rotate-msg {
+    display: none;
+    bottom: 0;
+}
+
+.pin-spinner-wrapper-no-message .ps-rotate-img {
+    width: .25rem;
+    height: .25rem;
+    bottom: 0;
+    top: 0;
+}
+
+.pin-spinner-wrapper-message {
+    display: block;
+    top: 50%;
+    margin-top: -.82rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+.pin-spinner-wrapper-message .ps-rotate-msg {
+    display: block;
+    bottom: .32rem;
+}
+
+.pin-spinner-wrapper-message .ps-rotate-img {
+    width: .39rem;
+    height: .39rem;
+    bottom: .43rem;
+    top: .18rem;
+}
+
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    .pin-spinner-wrapper-no-message {
+        margin-top: -.82rem;
+    }
+
+    .pin-spinner-wrapper-message {
+        margin-top: -.99rem;
+    }
+}
+
+
+@keyframes rotateImg {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    50% {
+        transform: rotateZ(180deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+@-webkit-keyframes rotateImg {
+    0% {
+        -webkit-transform: rotateZ(0deg);
+    }
+    50% {
+        -webkit-transform: rotateZ(180deg);
+    }
+    100% {
+        -webkit-transform: rotateZ(360deg);
+    }
+}
+</style>
+<div id="pin-spinner" class="pin-spinner-2">
+    <div id="ps-background"></div>
+    <div class="ps-inner-box">
+        <img id="imgInit" class="ps-rotate-img" src="data:image/png;base64,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">
+    </div>
+    <div id="msgInit" class="ps-rotate-msg"></div>
+
+</div>
+</div>
+
+<include file="Widget:pin_notify" />
+<include file="Public:foot_lazy" />
+ <include file="Widget:pin_toast" />
+
+{~W('Share/common_bargain_index_share')}
+<style>
+.qrcode-share-title-0{
+	line-height:36px;
+}
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+.m-addr-main .m-addr-close:before{
+    position: absolute;
+    top: 3px;
+    left: 10px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Subject/assist_bargain_coupon_me')}";
+var req_step = 1;
+var goods_id = 0;
+var sku_arr_str = '';
+var address_id = 0;
+var need_optionc = [];
+
+var  mult_sku_option = new Array();
+//$('.sku-specs').length
+var ajaxarea_url='{:U("/c_getarea")}';
+
+$(function(){
+	
+	$('#qrcode-share').click(function(){
+		$('#qrcode-share').hide();
+	});
+
+	$("#qrcode_share_img").click(function(event){
+		event.stopPropagation();
+	});
+
+	$('.afc-friendlist-close').click(function(){
+		$('#afc-friendlist').hide();
+	})
+	
+	$('.add-btn').click(function(){
+		
+	})
+	$('.afc-rules-button').click(function(){
+		$('#jsalert-assist_free_coupon_rules1516799938453').show();
+	})
+	
+	
+	
+	$('#assist-free-coupon-rules-alert').click(function(){
+		$('#jsalert-assist_free_coupon_rules1516799938453').hide();
+	})
+	
+	lxfEndtime();
+	
+})
+
+function get_free_order_info(obj)
+{
+	var order_id = $(obj).attr('data-order-id');
+	
+	//获取订单的助力情况
+	$.ajax({
+		url:"{:U('subject/get_order_zhudetail')}",
+		type:'get',
+		dataType:'json',
+		data:{order_id:order_id},
+		success:function(ret){
+			if(ret.code ==0)
+			{
+				$('#afc-friendlist-list').html(ret.html);
+				$('#afc-friendlist-empty').hide();
+				$('#afc-friendlist-list').show();
+			}else if(ret.code == 1){
+				$('#afc-friendlist-list').hide();
+				$('#afc-friendlist-empty').show();
+			}
+		}
+	})
+	$('#afc-friendlist').show();
+	
+	//data-order-id
+}
+
+function get_free_coup(obj)
+{
+	goods_id = $(obj).attr('data-goods-id');
+	//get sku
+	$.ajax({
+		url:"{:U('Subject/get_option_sku')}",
+		type:'get',
+		data:{goods_id:goods_id},
+		dataType:'json',
+		success:function(res){
+			//img 
+			$('#assist-num').html(res.need_person);
+			$('#qrcode_share_img').attr('src', res.img);
+			$('#qrcode-share').show();
+			
+		}
+	})
+	console.log(goods_id);
+}
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa},
+			dataType: 'json', 
+			success: function(result){
+
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					_pa++;
+					is_can_next = 1;
+					bindImgEvent();
+					lxfEndtime();
+				} else if(result.code == 0) {
+					$('#center_pullup').remove();
+					$('.cb-order-list-bottom').show();
+				}
+				
+			}
+		}
+	);
+}
+$(function(){
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

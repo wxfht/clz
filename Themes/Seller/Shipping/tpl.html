@@ -1,0 +1,44 @@
+<div class="card mb-3 {$random}">
+	<div class="card-block">
+		
+		<div class="mb-3">
+			<span class="show-first-div{$random}"><span class="show-frist"> 首重/件(克/个)：</span>{$row['frist']}</span> 
+			<span class="show-price-div{$random}"><span class="show-frist-price">首费(元) ：</span>{$row['frist_price']}</span> 
+			<span class="show-second-div{$random}"><span class="show-second">续重/件(克/个) ：</span>{$row['second']}</span> 
+			<span class="show-xufei-div{$random}"><span>续费(元) ：</span>{$row['second_price']}</span> 
+			<span class="show-chao-num-div{$random}"><span></span>[{$row['chao_num']}件包邮]</span> 
+			<span class="show-chao-price-div{$random}"><span></span>[满{$row['chao_price']}元包邮]</span> 
+			<a href="javascript:" data-index="{$random}" onclick="$(this).parent().parent().parent().remove()" class="del-rules-btn float-right">[-删除条目]</a>
+			<a href="javascript:" onclick="update_rule('{$random}')" class="del-rules-btn float-right">[-修改条目]</a>
+		</div> 
+		
+		
+		
+		<input type="hidden" name="random[]" value="{$random}" />
+        <input type="hidden" class='citys' name="citys[{$random}]" value="{$row['citys']}" />
+        <input type="hidden" class='citys_code' name="citys_code[{$random}]" value="{$row['citys_code']}" />
+		
+		<input type="hidden" value="{$row['firstweight']}" name="firstweight[{$random}]" />
+		<input type="hidden" value="{$row['firstprice']}"  name="firstprice[{$random}]" />
+		<input type="hidden" value="<?php echo empty($row['secondweight'])?1000:$row['secondweight'];?>" name="secondweight[{$random}]" />
+		<input type="hidden" value="{$row['secondprice']}" name="secondprice[{$random}]" />
+		<input type="hidden" value="<?php echo empty($row['firstnum'])?1:$row['firstnum'];?>" name="firstnum[{$random}]" />
+		<input type="hidden" value="{$row['firstnumprice']}" name="firstnumprice[{$random}]" />
+		<input type="hidden" value="<?php echo empty($row['secondnum'])?1:$row['secondnum'];?>" name="secondnum[{$random}]" />
+		<input type="hidden" value="{$row['secondnumprice']}" name="secondnumprice[{$random}]"/>
+		<input type="hidden" value="{$row['freeprice']}" name="freeprice[{$random}]" />
+		
+		<input type="hidden" class="{$random}frist" name="detail[{$random}][frist]" value="{$row['frist']}"> 
+		<input type="hidden" class="{$random}frist_price" name="detail[{$random}][frist_price]" value="{$row['frist_price']}"> 
+		<input type="hidden" class="{$random}second" name="detail[{$random}][second]" value="{$row['second']}"> 
+		<input type="hidden" class="{$random}second_price" name="detail[{$random}][second_price]" value="{$row['second_price']}"> 
+		<input type="hidden" class="{$random}chao_num" name="detail[{$random}][chao_num]" value="{$row['chao_num']}"> 
+		<input type="hidden" class="{$random}chao_price" name="detail[{$random}][chao_price]" value="{$row['chao_price']}"> 
+		<div>
+			<span>省份：</span> 
+			<span class="cityshtml">
+			{$row['citys']}
+			</span>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,121 @@
+<div style='max-height:500px;overflow:auto;min-width:850px;'>
+	<div class="input-group layui-row" style="margin:10px;">
+		<input type="text" placeholder="请输入昵称进行搜索" id="select-url-kw" value="" class="form-control">
+		<span class="input-group-addon btn btn-default select-btn" data-type="url">搜索</span>
+	</div>
+<table class="table supplyquery table-hover supplyquery" style="min-width:850px;">
+    <tbody>   
+        <?php foreach( $ds as  $row  ){ ?>
+        <tr>
+            <td><img src="{$row['avatar']}" style='width:30px;height:30px;padding1px;border:1px solid #ccc' /> {$row['nickname']}</td>
+          
+		   
+            <td>{$row['mobile']}</td>
+			 <?php if($row['exist'] == 0){ ?>
+            <td style="width:80px;"><a href="javascript:;" class="choose_dan_link" data-json='{:json_encode($row);}'>选择</a></td>
+			<?php }else{ ?>
+			 <td style="width:80px; border: #ccc">选择</td>
+			<?php } ?>
+			
+        </tr>
+        <?php } ?>
+        <?php if( count($ds)<=0){ ?>
+        <tr> 
+            <td colspan='4' align='center'>未找到会员</td>
+        </tr>
+        <?php } ?>
+    </tbody>
+	<?php if( count($ds) > 0){ ?>
+	<tfoot>
+		<tr>
+			<td colspan='4' align='center' id="pager_ajax">{$pager}</td>
+		</tr>
+	</tfoot>
+	<?php } ?>
+</table>
+    </div>
+<script>
+var query_kwd = '{$kwd}';
+<?php if( !empty($url)){ ?>
+
+var query_url = "{:U($url, array('is_not_hexiao' => $is_not_hexiao))}";
+<?php  }else{  ?>
+var query_url = "{:U('user/zhenquery', array('is_not_hexiao' => $is_not_hexiao))}";
+<?php } ?>
+var can_next = true;
+
+
+
+$(document).delegate(".choose_dan_link","click",function(){
+	
+	//data-json
+	var json_obj = JSON.parse($(this).attr('data-json')); 
+	var p_html = '';
+	p_html+= '<div class="input-group " style="margin: 0;">';
+	p_html+= '	<div class="layadmin-text-center choose_user">';
+	p_html+= '		<img style="" src="'+json_obj.avatar+'">';
+	p_html+= '		<div class="layadmin-maillist-img" style="">'+json_obj.username+'</div>';
+	p_html+= '		<button type="button" class="layui-btn layui-btn-sm" onclick="cancle_bind(this)"><i class="layui-icon">&#xe640;</i></button>';
+	p_html+= '	</div>';
+	p_html+= '</div>';
+	
+	$(cur_open_div).parent().siblings().remove();
+	$(cur_open_div).parent().after(p_html);
+	
+	$(cur_open_div).val( json_obj.member_id );
+	layer.close(layer.index); 
+});
+				
+$(".select-btn").click(function(){
+	
+	query_kwd = $.trim($("#select-url-kw").val());
+	
+	var s_page = $(this).attr('page');
+	if(!can_next)
+	{
+		return false;
+	}
+	can_next = false;
+	$.ajax({
+		url:query_url,
+		type:'post',
+		dataType:'json',
+		data:{keyword:query_kwd, page:1,is_ajax:1},
+		success:function(ret){
+			if(ret.code == 0)
+			{
+				$('.supplyquery tbody').html(ret.html);
+				
+				
+			}
+			can_next = true;
+		}
+	})
+});
+$("body").delegate(".pagination a","click",function(){
+	var s_page = $(this).attr('page');
+	if(!can_next)
+	{
+		return false;
+	}
+	can_next = false;
+	$.ajax({
+		url:query_url,
+		type:'post',
+		dataType:'json',
+		data:{keyword:query_kwd, page:s_page,is_ajax:1},
+		success:function(ret){
+			if(ret.code == 0)
+			{
+				$('.supplyquery tbody').html(ret.html);
+				$('#pager_ajax').html(ret.pager);
+				
+			}
+			can_next = true;
+		}
+	})
+})
+
+
+
+</script>

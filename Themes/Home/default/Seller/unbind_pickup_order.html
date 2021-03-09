@@ -1,0 +1,38 @@
+
+<block name="content">    
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>解除核销管理员绑定</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.2/weui.min.css"/>
+</head>
+<body>
+
+<div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">解除绑定成功</p>
+    </div>
+    
+</div>
+
+ <script src="http://style.114jd.cn/style/js/global/lib/jquery/jquery-2.1.1.min.js" ></script>
+ <script>
+ 	$(document).ready(function(){
+ 		
+ 		$('#toast').show();
+		setTimeout(function () {
+				$('#toast').hide();
+				location.href="{:U('Index/index')}";
+		 }, 1500);
+ 	});
+ </script>
+  
+</body>
+</html>
+
+</block>

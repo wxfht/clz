@@ -1,0 +1,571 @@
+<extend name="Public:base" />
+<block name="content"> 
+<link rel="stylesheet" href="__PUBLIC__/css/trade-426c0af3.css">
+<link rel="stylesheet" href="__PUBLIC__/css/address_2.css?v=11">
+<script>
+var pick_id = 0;
+var express_method = 1;
+</script>
+  <section class="wrapper J_wrapper" id="wrapper">
+	<?php 
+	if($is_ziti>0)
+	{
+	?>
+	
+	<?php if($is_ziti == 1){ ?>
+	<div class="meili-all-vue-base-tab tabs tabs-top tabs-line">
+		<div class="tabs-bar">
+			<div class="tabs-nav--container">
+				<div class="tabs-nav--wrap">
+					<div class="tabs-nav tabs-nav--animated">
+						<div class="tabs-link-bar tabs-link-bar-animated">
+							<div class="tabs-tab J-tabs-tab-key tabs-tab-active" data-index="1">
+								 快递 
+							</div>
+							<div class="tabs-tab J-tabs-tab-key" data-index="2">
+								 门店自提
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			$('.J-tabs-tab-key').click(function(){
+				var s_index = $(this).attr('data-index');
+				
+				$(this).addClass('tabs-tab-active').siblings().removeClass('tabs-tab-active');
+				//J_shippingFee
+				if(s_index == 1)
+				{
+					if(express_method != s_index)
+					{
+						var total_free = parseFloat($('.order-zj-val').attr('data-total'));
+						var yun_free =  parseFloat($('.J_shippingFee').attr('data-free'));
+						
+						total_free = (total_free+yun_free).toFixed(2)
+						yun_free = yun_free.toFixed(2);
+						
+						$('.J_shippingFee font').html(yun_free);
+						$('.order-zj-val span').html(total_free);
+					}
+					$('.pd_btop').hide();
+					$('.address_tab').show();
+				}else{
+					if(express_method != s_index)
+					{
+						var total_free = parseFloat($('.order-zj-val').attr('data-total'));
+						
+						total_free = (total_free).toFixed(2)
+						
+						$('.J_shippingFee font').html(0);
+						$('.order-zj-val span').html(total_free);
+					}
+					$('.address_tab').hide();
+					$('.pd_btop').show();
+				}
+				express_method = s_index;
+			})
+			$('#address_ziti').click(function(){
+				$('#ziti_dialog').show();
+			})
+			$('.prop-rows').click(function(){
+				var s_title = $(this).children('.prop-rows--title').html();
+				$('.address-no').html('自提点：'+s_title);
+				pick_id = $(this).attr('data-pick-id');
+				$('#ziti_dialog').hide();
+			})
+		})
+	</script>
+	<?php } ?>
+	
+	<div style="">
+		
+		<?php if($is_ziti == 1){ ?>
+		<div class="address2 address_tab" onclick="location.href='{:U('User/address', array('backcart' =>1,'buy_type' => $buy_type))}';">
+			<div class="m-icon m-icon-location address-location">
+			</div>
+			<div class="address-yes">
+				<?php if(!empty($address)){ ?>
+					<div class="address-contacter">
+						<span>收货人：{$address.name} {$address.telephone}</span>
+					</div>
+					<div class="address-addr">
+						<span>收货地址：{$address.province_name}{$address.city_name}{$address.country_name}{$address.address} </span>
+					</div>
+				<?php }else{ ?>
+					<div class="address-contacter">
+						<span>暂无收货地址</span>
+					</div>
+				<?php } ?>
+			</div>
+			<div class="m-icon m-icon-arrow-right address-arrow"></div>
+		</div>
+		<?php } ?> 
+		<div class="pd_btop" <?php if($is_ziti !=2){ ?>style="display:none;" <?php } ?>>
+			<div class="pd10">
+				<span>联系人：</span>
+				<input type="text" placeholder="请填写联系人" id="pick_name" value="{$pick_up_name}" />
+			</div>
+			<div class="pd10">
+				<span>手机号：</span>
+				<input type="text" placeholder="请填写手机号" id="pick_mobile" value="{$pick_up_mobile}" />
+			</div>
+			<div class="address2" id="address_ziti">
+				<div class="m-icon m-icon-location address-location"></div>
+				<div class="address-no">
+					自提点：请选择自提点
+				</div>
+				<div class="m-icon m-icon-arrow-right address-arrow">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="dialog is-bottom" id="ziti_dialog" style="display:none;">
+		<div class="dialog-mask"></div>
+		<div class="dialog-core">
+			<div class="sku sku m-fixed">
+				<div class="sku-content">
+					<div class="sku-content--scroll">
+						<div class="scroll">
+							<div class="fuj_mend">
+								<div class="m-icon m-icon-location address-location"></div>
+								附近自提门店
+							</div>
+							<div class="prop">
+								<?php foreach($pick_up_arr as $vv){ ?>
+								<div class="prop-rows" data-pick-id="<?php echo $vv['id']; ?>">
+									<div class="prop-rows--title">
+										<?php echo $vv['pick_name']; ?>
+									</div>
+									<div class="prop-rows--title-sumary">
+										<?php echo $vv['pick_pos']; ?>
+									</div>
+								</div>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php }else{ ?>
+	   <div class="section-wrap address-box" onclick="location.href='{:U('User/address', array('backcart' =>1,'buy_type' => $buy_type))}';">
+			<span class="location-icon"></span> 
+			<?php if(!empty($address)){ ?>
+			<p class="address-main"> 
+				<span>收货人：</span> 
+				<span class="name">{$address.name}</span> 
+				<span class="tel">{$address.telephone}</span> 
+			</p> 
+			<p class="address">{$address.province_name}{$address.city_name}{$address.country_name}{$address.address} </p> 
+			<?php }else{ ?>
+			<p class="address-main"> 
+				<span>暂无收货地址</span> 
+			</p>
+			<?php } ?>
+			
+			<span class="arrow-icon iconfont"></span>
+	   </div>
+   <?php } ?>
+   <a href="javascript:;" class="hidden section-wrap card-box J_cardBox">
+    <div class="tip-main">
+     海关叔叔提醒：
+    </div>
+    <div class="tip-summary">
+     请提供收货人的身份信息用于清关
+    </div>
+    <div class="tip-entry">
+     马上提交 
+     <span class="arrow-icon iconfont"></span>
+    </div>
+  </a>
+
+   <div class="section-wrap pay-box" <?php if($is_integer == 1){ ?> style="display:none;" <?php } ?>>
+    	<h3 class="pay-box-hd">支付方式</h3>
+	    <div class="pay-box-bd">
+	     <div id="payment_alipay" class="row  hidden">
+	      <div class="payment-icon alipay-icon"></div>
+	      <div class="payment-text">
+	       <h4>支付宝</h4>
+	       <p>安全快捷，可支持银行卡支付</p>
+	      </div>
+	      <div class="payment-method" data-method="alipay">
+	       <i class="selected iconfont"></i>
+	      </div>
+	     </div>
+	     <div id="payment_weixin" class="row  J_payment_method_select">
+	      <div class="payment-icon weixin-icon"></div>
+	      <div class="payment-text">
+	       <h4>微信支付</h4>
+	       <p>推荐已在微信中绑定银行卡的用户使用</p>
+	      </div>
+	      <div class="payment-method" data-method="weixin">
+	       <i class="iconfont"></i>
+	      </div>
+	     </div>
+	    </div>
+   </div>
+   
+   <div class="section-wrap cash-box" >
+    
+	<div class="row coupon-item">
+     <div class="cash-icon coupon-icon"></div>
+     <div class="cash-text">
+      优惠券
+     </div>
+     <div class="cash-op coupon-op">
+      <i class="cancel-coupon iconfont"></i> 
+	   <?php if($show_voucher){ ?>
+	   <p class="J_couponSelect">选择优惠券</p>
+	   <?php }else{ ?>
+	   <p class="J_couponSelect">暂无可用</p>
+	   <?php } ?>
+     </div>
+    </div>
+	
+    <div class="row point-item J_pointItem" style="display:none;">
+     <div class="cash-icon point-icon"></div>
+     <div class="cash-text">
+      可用
+      <span class="J_pointFee">0</span>个贝壳抵扣 &yen; 
+      <span class="J_pointFeeCost">0</span>
+     </div>
+     <div class="cash-op switch-op point-op disabled J_switchOp" data-use="point">
+      <i class="dot"></i>
+     </div>
+    </div>
+   </div>
+   
+   <div class="order-box">
+    <h3 class="order-box-hd">订单信息</h3>
+    <div class="order-box-bd"> 
+    
+      
+     <div class="row order-itemlist"> 
+		  
+		  <?php $total_money = 0; $quantity = 0; ?>
+		  
+		  <?php foreach($seller_goodss as $store_id => $store_val) { ?>
+		  <div class="order-from">                                               
+			  <i class="circle-icon"></i>
+			  <span><?php echo $store_val['store_info']['s_true_name']; ?></span>
+		  </div>
+     	  <?php  
+				foreach($store_val['goods']  as $val){ 
+		  ?>
+	      <div class="order-item"> 
+	       <div class="order-img"> 
+	        <img src="{$val.image}" alt="" /> 
+	       </div> 
+	       <div class="order-info"> 
+	        <h4>
+			<?php if($val['header_disc'] < 100){ ?>
+				<?php if($val['header_disc'] ==0){ ?>
+				<font color="#ff4965">[团长免单]</font>
+				<?php }else{ ?>
+				<font color="#ff4965">[<?php echo round($val['header_disc'] / 10,1); ?>折]</font>
+				<?php } ?>
+			<?php } ?>
+			{$val.name}</h4> 
+	        <p><?php foreach($val['option'] as $option){ ?>
+		          		<?php echo $option['value']; ?> &nbsp;
+		       <?php } ?></p> 
+	       </div> 
+	       <div class="order-item-price"> 
+	        <span <?php if($is_integer == 1){ ?> style="display:none;" <?php } ?>>&yen;</span> 
+			<span <?php if($is_integer == 0){ ?> style="display:none;" <?php } ?>>积分</span> 
+	        <em>{$val.price}</em>
+	        <span></span> 
+	       </div> 
+	       <div class="order-num"> 
+	        <p>&times;{$val.quantity}</p> 
+	       </div> 
+	      </div> 
+		 
+		  
+	      
+	     <div class="order-sum"> 
+	      <div> 
+	       <span class="u-sum-left">小计：</span> 
+	       <span class="u-sum-right xj"><?php if($is_integer == 1){ ?> 积分 <?php }else{ ?> &yen;<?php } ?>{$val.total}</span> 
+	      </div> 
+	     </div>  
+	     <div class="order-remark"> 
+	      	<input name="order_msg[]" data-eventid="{$val.key}" type="text" value="" placeholder="买家留言（选填）" /> 
+	     </div>
+	     <?php $total_money += $val['total']; $quantity += $val['quantity']; } } ?>
+     </div> 
+     
+     
+    </div>
+    <div class="order-box-ft">
+     <div class="order-ze">
+      <p class="order-text order-ze-text">商品总额:</p>
+      <p class="order-val order-ze-val">&yen;<span><?php echo $total_money; ?></span></p>
+     </div>
+     <div class="order-coupon J_couponValItemCont">
+      <p class="order-text order-coupon-text">现金券优惠:</p>
+      <p class="order-val order-coupon-val J_couponVal">&yen;-0.00</p>
+     </div>
+     <div class="order-point J_pointCont">
+      <p class="order-text order-point-text">贝壳抵扣:</p>
+      <p class="order-val order-point-val J_pointVal">&yen;-0.00</p>
+     </div>
+     <div class="order-shippingfee J_shippingFeeItemCont" style="">
+      <p class="order-text order-shippingfee-text">运费:</p>
+      <p class="order-val order-shippingfee-val J_shippingFee" data-free="{$trans_free_toal}">&yen;<font>{$trans_free_toal}</font></p>
+     </div>
+     <div class="order-zj">
+      <p class="order-text order-zj-text">订单总计(共<span class="J_totalNum"><?php echo $quantity; ?></span>件商品):</p>
+      <p class="order-val order-zj-val" data-total="{$total_money}"><?php if($is_integer == 1){ ?> 积分 <?php }else{ ?> &yen;<?php } ?> <span><?php echo $total_money + $trans_free_toal; ?></span></p>
+     </div>
+    </div>
+   </div>
+   <div class="gopay-bar">
+    <div class="gopay">
+     <div class="pay-info">
+      <div class="pay-sum J_pay-sum">
+       总计： 
+       <span class="pay-num J_pay_num" data-money="<?php echo $total_money + $trans_free_toal; ?>"><?php if($is_integer == 1){ ?> 积分 <?php }else{ ?> &yen;<?php } ?><?php echo $total_money + $trans_free_toal; ?></span>
+      </div>
+      <div class="pay-tips J_pay-tips">
+      <?php if($trans_free_toal == 0){ ?> (免运费)<?php } ?>
+      </div>
+     </div>
+     <a class="gopay-new-btn J_gopay-btn" href="javascript:;"><?php if($is_integer == 1){ ?> 立即兑换 <?php }else{ ?> 支付订单<?php } ?></a>
+    </div>
+   </div> 
+  </section> 
+  
+  <style>
+	.coupon-item{position:relative;}
+	.coupon-item .iconfont{display:none;}
+	.cur .iconfont{display:block;}
+  </style>
+  <section id="coupon_list" class="coupon-list hidden">
+	   <div class="close"> 
+		<a class="close-btn" ></a> 
+		<h1 class="title">使用优惠券</h1> 
+	   </div> 
+		<div class="coupon-search" style="display:none;"> 
+			<input id="" class="coupon-search-input" placeholder="输入现金券券号" /> 
+			<button class="coupon-search-btn">使用</button> 
+		</div> 
+	   <i class="coupon-img"></i> 
+	   
+	   <p class="coupon-hint">您暂时还没有可用优惠券哦</p>
+	 
+	  
+		<div class="coupon-list">
+			<?php foreach($seller_goodss as $store_id => $seller_val){ ?>
+			
+    
+			<p style="padding: .2rem .4rem .4rem;line-height: 1rem;"><?php echo $seller_val['store_info']['s_true_name']; ?></p>
+			<div>
+				<?php foreach($seller_val['voucher_list'] as $quan){    ?>
+				<div class="coupon-item  <?php if($quan['is_check'] == 1){ ?>cur <?php } ?>" data-money="<?php echo $quan['credit']; ?>" data-id="<?php echo $quan['store_id'].'_'.$quan['id']; ?>">
+					<div class="coupon-detail ">
+						<div class="coupon-condition">
+							
+							<?php if( $quan['limit_money'] >0.01 ){ ?>
+							满<?php echo $quan['limit_money']; ?>元减<?php echo $quan['credit']; ?>元
+							<?php }else{ ?>
+							无限制
+							<?php } ?>
+						
+						</div>
+						<div class="coupon-category">
+							<span><?php echo $seller_val['store_info']['s_true_name']; ?></span>
+						</div>
+						<div class="coupon-valid-period">
+						
+						</div>
+					</div>
+					<div class="coupon-stub">
+						<div class="coupon-value">
+							<span><?php echo $quan['credit']; ?>元</span>
+						</div>
+					</div>
+					<i class="selected iconfont" style="font-size: 40px;color: #ff4965;position: absolute; top: .4rem;;width: .85333333rem;height: .85333333rem; left: 9rem;">&#xe668;</i>
+			
+			   </div>
+			   <?php } ?>
+			</div>
+		    <?php } ?>
+			 <div class="coupon-search" style="margin:.2rem .4rem .4rem;text-align:right;"> 
+				<button class="coupon-search-btn">确认使用</button> 
+			</div> 
+		</div>
+	   
+	 
+	   
+  </section> 
+  
+  <section class="footer J_footer p-btm" style="">
+   <p class="info"></p>
+   <p class="tel"><span></span></p>
+   <p class="icp"><span class="J_thisYear"></span></p>
+  </section> 
+  
+<div class="popup-mask" style="display: none;position: fixed; width: 100%;height: auto;top: 50%;z-index: 999999999; background: rgba(0, 0, 0, 0);">
+	<div class="popup-main" style="     max-width: 50%;  height: auto;margin: auto;background-color: rgba(0,0,0,.8);color: #f0f0f0;font-size: 16px;padding: 10px;text-align: center;border-radius: 5px;box-shadow: 0 0 24px -1px #383838;  background: rgba(41, 49, 61, 0.701961);">
+		<div class="popup-content"><div style="color:#fff;font-size:0.6rem;margin:0"></div>
+		</div>
+	</div>
+</div>
+<div class="mui-loading-outer hidden" id="J_mui-loading"><div class="mui-loading-inner mui-loading-spin"></div></div>
+
+<div class="sk-fading-loading hidden" id="sk-fading-loading"><div class="sk-fading-circle"><div class="sk-circle1 sk-circle"></div><div class="sk-circle2 sk-circle"></div><div class="sk-circle3 sk-circle"></div><div class="sk-circle4 sk-circle"></div><div class="sk-circle5 sk-circle"></div><div class="sk-circle6 sk-circle"></div><div class="sk-circle7 sk-circle"></div><div class="sk-circle8 sk-circle"></div><div class="sk-circle9 sk-circle"></div><div class="sk-circle10 sk-circle"></div><div class="sk-circle11 sk-circle"></div><div class="sk-circle12 sk-circle"></div></div></div>
+
+  <script>
+  var buy_type ="{$buy_type}";
+  var can_sub =true;
+  <?php if(!empty($address)){ ?>
+  var has_address = true;
+  <?php } else { ?>
+  var has_address = false;
+  <?php  } ?>
+  
+  var quan_arr = [];
+  var pop_load = '';
+  function show_mask(title)
+  {
+  	$('.popup-content div').html(title);
+  
+	$('.popup-mask').fadeIn(1500,function(){
+		$('.popup-mask').fadeOut(1500);
+	})
+  }
+  
+  function load_conpon_flush()
+  {
+	var you_html = 0;
+	quan_arr = [];
+	$('.coupon-list .coupon-item.cur').each(function(){
+		you_html += parseFloat( $(this).attr('data-money') );
+		var tp_id = $(this).attr('data-id');
+		
+		quan_arr.push(tp_id)
+	})
+	var y_total_money = $('.J_pay_num').attr('data-money');
+	
+	var new_total_money = (parseFloat(y_total_money) - you_html).toFixed(2);
+	if(new_total_money <0)
+	{
+		new_total_money = 0;
+	}
+	
+	$('.J_pay_num').html('￥'+new_total_money );
+	
+	$('.J_couponSelect').html(you_html + '元');
+	$('#coupon_list').addClass('hidden');
+  }
+  	//order_msg[]
+  	$(function(){
+	
+		<?php if( !empty($check_voucher_info) ) ?>
+		load_conpon_flush();
+		<?php ?>
+		$('.coupon-search-btn').click(function(){
+			load_conpon_flush();
+		})
+		
+		<?php if($show_voucher){ ?>
+		$('.cash-box').click(function(){
+			
+			$('#coupon_list').removeClass('hidden');
+		})
+		<?php } ?>
+		$('.coupon-item').click(function(){
+			if( $(this).hasClass('cur'))
+			{
+				$(this).removeClass('cur');
+			}else{
+				$(this).addClass('cur').siblings().removeClass('cur');
+			}
+		})
+	
+  		$('.J_gopay-btn').click(function(){
+  			var order_msg_arr = [];
+  			$("input[name='order_msg[]']").each(function(){
+  				var s_key = $(this).attr('data-eventid');
+  				var s_val = $(this).val();
+  				order_msg_arr.push( s_key + '@_@' +s_val);
+  			})
+  			var order_msg_str = order_msg_arr.join('@,@');
+  			var pay_method = $('.selected').parent().attr('data-method');
+			
+			var pick_name = '';
+			var pick_mobile = '';
+			var dispatching = 'express';
+			//pick_name
+			//pick_mobile
+
+			if(express_method == 1)
+			{
+				if(!has_address){
+					show_mask('请填写收货地址');
+					return false;
+				}
+			}else{
+				dispatching = 'pickup';
+				if(pick_id == 0)
+				{
+					show_mask('请选择自提点');
+					return false;
+				}
+				pick_name = $('#pick_name').val();
+				pick_mobile = $('#pick_mobile').val();
+				
+				if(pick_name.length <=0)
+				{
+					show_mask('请填写提货人姓名');
+					return false;
+				}
+				if(pick_mobile.length <=0)
+				{
+					show_mask('请填写提货人手机');
+					return false;
+				}
+			}
+			
+  			//pickup express dispatching
+  			if(!can_sub){
+  				return false;
+  			}
+  			can_sub = false;
+  				
+  			$('#sk-fading-loading').removeClass('hidden');
+  			
+  			$.ajax({
+  				url:"{:U('Payment/pay')}",
+  				type:'post',
+  				dataType:'json',
+  				data:{order_msg_str:order_msg_str,dispatching:dispatching,pick_mobile:pick_mobile,pick_id:pick_id,pick_name:pick_name,pay_method:pay_method,buy_type:buy_type,quan_arr:quan_arr},
+  				success:function(ret){
+  					$('#sk-fading-loading').addClass('hidden');
+  					
+  					if(ret.code ==1){
+  						location.href = ret.url;
+  						return false;
+  					}else {
+  						can_sub = true;
+  						 show_mask(ret.msg);
+  					}
+  						
+  				}
+  				
+  			})
+  			console.log(order_msg_arr);
+  			
+  		})
+  	})
+  
+  </script>
+  
+</block>
+	

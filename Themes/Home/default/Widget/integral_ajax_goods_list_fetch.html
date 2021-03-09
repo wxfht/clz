@@ -1,0 +1,43 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+		<div class="double-grid-one" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+			<div class="double-grid-item gap-right">
+				<img src="{$fan_ly_image}" data-echo="{$d.image}" class="scrollLoading" />
+				
+				<p class="goods-name">{$d.name}</p>
+				<div class="detail">
+					<b class="price-icon" style="font-size: .14rem;">积分</b>
+					<b class="price">{$d.pinprice}</b>
+					<div class="info">
+						<span>已兑
+						<?php if($d['seller_count']>10000) 
+	                        {
+	                        ?>
+	                        1万+</i>
+	                        <?php }else{ ?>
+	                        {$d['seller_count']}</i>
+	                        <?php } ?>件</span>
+					</div>
+				</div>
+			</div>
+		</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

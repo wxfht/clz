@@ -1,0 +1,165 @@
+<extend name="Public:base" />
+<block name="content">
+<div class="page-header">
+		<h1>
+			{$breadcrumb2}
+			<small>
+				<i class="icon-double-angle-right"></i>
+				{$crumbs}
+			</small>
+		</h1>
+	</div>
+<div class="row">
+	<div class="col-xs-12">	
+		<form class="form-horizontal" id="validation-form"  method="post" action='{$action}'>
+			
+			<notempty name="Think.get.id">
+			<input name="weight_class_id" type="hidden" value="{$Think.get.id}" />
+			</notempty>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 优惠券名称 </label>
+			<div class="col-sm-11">
+				<div class="clearfix">
+				<input name="voucher_title" id="voucher_title" placeholder=" 优惠券名称 " class="col-xs-10 col-sm-5"  value="{$d.voucher_title|default=''}" type="text">
+				</div>
+			</div>
+			</div>
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 优惠券金额</label>
+			<div class="col-sm-11">
+				<div class="clearfix">
+				<input name="credit" id="credit" class="col-xs-10 col-sm-5" placeholder=" 优惠券金额"  value="{$d.credit|default=''}" type="text">
+				</div>
+			</div>
+			</div>
+			
+			
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 开始时间</label>
+			<div class="col-sm-11">
+				<div class="clearfix">
+				<input name="begin_time" id="begin_time" class="col-xs-10 col-sm-5"  value="<?php echo date('Y-m-d H:i:s',time()); ?>" type="text">
+				</div>
+			</div>
+			</div>
+			
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 结束时间</label>
+			<div class="col-sm-11">
+				<div class="clearfix">
+				<input name="end_time" id="end_time" class="col-xs-10 col-sm-5"  value="<?php echo date('Y-m-d H:i:s',time()+86400); ?>" type="text">
+				</div>
+			</div>
+			</div>
+			
+        
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 满多少可用</label>
+			<div class="col-sm-11">
+				<div class="clearfix">
+				<input name="limit_money" id="limit_money" placeholder=" 订单金额满多少才可用，为空或0不限制"  class="col-xs-10 col-sm-5" value="{$d.limit_money}" type="text">
+				</div>
+			</div>
+			</div>
+			
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 可领取人数</label>
+			<div class="col-sm-11">
+				<div class="clearfix">
+				<input name="total_count" id="total_count" placeholder=" 一共生成多少张优惠券"  class="col-xs-10 col-sm-5" value="{$d.total_count}" type="text">
+				</div>
+			</div>
+			</div>
+			
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 每人可领取</label>
+				<div class="col-sm-11">
+					<div class="clearfix">
+					<input name="person_limit_count" id="person_limit_count" placeholder=" 每人可领取几张，0为不限制"  class="col-xs-10 col-sm-5" value="{$d.person_limit_count}" type="text">
+					</div>
+				</div>
+			</div>
+			
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> 推荐网站首页</label>
+				<div class="col-sm-11">
+					<div class="clearfix">
+						<label><input type="radio" name="is_index_show" value="1"  <?php if($d['is_index_show'] == 1){ ?> checked <?php } ?> /> 是 </label>
+						<label><input type="radio" name="is_index_show" value="0"  <?php if($d['is_index_show'] == 0){ ?> checked <?php } ?> /> 否 </label>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script src="__JS__/jquery.validate.min.js"></script>	
+
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script src="__PUBLIC__/js/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+<script>
+$(function(){
+
+	$('#begin_time').datetimepicker({
+		 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+		 icons: {
+			time: 'btn btn-lg icon-time',
+			date: 'btn btn-lg icon-calendar',
+			up: 'fa icon-chevron-up',
+			down: 'fa icon-chevron-down',
+			previous: 'fa icon-chevron-left',
+			next: 'fa icon-chevron-right',
+			today: 'fa icon-arrows ',
+			clear: 'fa icon-trash',
+			close: 'fa icon-times'
+		 }
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		
+		$('#end_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+			
+});
+</script>					
+</block>

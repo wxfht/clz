@@ -1,0 +1,659 @@
+<extend name="Public:pinduoduobase" />
+<block name="content"> 
+
+	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
+	
+	<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/swfobject.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/web_socket.js"></script>
+	
+	<script type="text/javascript" src="__PUBLIC__/js/webuploader.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/blt.js"></script>
+	
+    <link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/boot_be1c95e75fda0728d17ebdb8dbbab6c1.css">
+    <link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/chat_detail_v3_9381d0465e9ba3bf3d51f7eb4f3cc0a5.css">
+
+<style>
+#chat-detail-container{height:auto;}
+#list-container{position:relative;}
+#send-box{position:relative;}
+#send-box {
+    position: fixed;
+    bottom: 0px;
+}
+.load_more_msg {
+    line-height: 40px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+}
+.webuploader-pick{width:60px;height:60px;}
+</style>
+
+<script type="text/javascript">
+var user_name = "<?php echo $member_info['name']; ?>";
+var avatar = "<?php echo $member_info['avatar']; ?>"; 
+var s_logo = "<?php echo $seller_info['s_logo']; ?>";
+
+
+if (typeof console == "undefined") {    this.console = { log: function (msg) {  } };}
+// 如果浏览器不支持websocket，会使用这个flash自动模拟websocket协议，此过程对开发者透明
+WEB_SOCKET_SWF_LOCATION = "__PUBLIC__/swf/WebSocketMain.swf";
+// 开启flash的websocket debug
+WEB_SOCKET_DEBUG = true;
+var ws, name, client_list={};
+var domain = document.domain;
+var cur_page = 0;
+
+// 连接服务端
+function connect() {
+   // 创建websocket
+   ws = new WebSocket("wss://mall.shiziyu888.com/wss");
+   // 当socket连接打开时，输入用户名
+   ws.onopen = onopen;
+   // 当有消息时根据消息类型显示不同信息
+   ws.onmessage = onmessage; 
+   ws.onclose = function() {
+	  console.log("连接关闭，定时重连");
+	  connect();
+   };
+   ws.onerror = function() {
+	  console.log("出现错误");
+   };
+}
+
+// 连接建立时发送登录信息
+function onopen()
+{
+	//document.domain
+	// 登录
+	var login_data = '{ "type":"login","domain":"'+domain+'","avatar":"'+avatar+'","user_name":"'+user_name+'","uid":"<?php echo $member_id; ?>","room_id":<?php echo $seller_info['s_id']; ?>} ';
+	console.log("websocket握手成功，发送登录数据:"+login_data);
+	//$user_name = $message_data['user_name'];
+	//	$avatar = $message_data['avatar'];
+	ws.send(login_data);
+		
+	//login 
+}
+
+function onsaytosellergoods(link)
+{
+	if(link.is_goods == undefined)
+	{
+		link.is_goods = 0;
+	} else {
+		link.is_goods = 1;
+	}
+	var login_data = '{ "type":"say","content_type":"goods","goods_name":"'+link.goods_name+'","goods_image":"'+link.goods_image+'","goods_price":"'+link.goods_price+'","avatar":"'+link.avatar+'","is_goods":"'+link.is_goods+'","user_name":"'+user_name+'","content":"'+encodeURIComponent(link.Text)+'","room_id":"<?php echo $seller_info['s_id']; ?>"} ';
+	
+	ws.send(login_data);
+}
+
+function onsaytosellerimage(link)
+{
+	//{ Text: text,avatar:avatar}; image,thumb_image
+	// 登录
+	//var c={b:1}; console.log(c.d == undefined)
+	if(link.is_goods == undefined)
+	{
+		link.is_goods = 0;
+	} else {
+		link.is_goods = 1;
+	}
+	var login_data = '{ "type":"say","image":"'+link.thumb_image+'","orign_image":"'+link.image+'","content_type":"image","avatar":"'+link.avatar+'","is_goods":"'+link.is_goods+'","user_name":"'+user_name+'","content":"'+encodeURIComponent(link.Text)+'","room_id":"<?php echo $seller_info['s_id']; ?>"} ';
+	
+	
+		
+	ws.send(login_data);
+		
+	//login 
+}
+
+function onsaytoseller(link)
+{
+	//{ Text: text,avatar:avatar};
+	// 登录
+	//var c={b:1}; console.log(c.d == undefined)
+	if(link.is_goods == undefined)
+	{
+		link.is_goods = 0;
+	} else {
+		link.is_goods = 1;
+	}
+	var login_data = '{ "type":"say","content_type":"text","avatar":"'+link.avatar+'","is_goods":"'+link.is_goods+'","user_name":"'+user_name+'","content":"'+encodeURIComponent(link.Text)+'","room_id":"<?php echo $seller_info['s_id']; ?>"} ';
+	
+		
+	ws.send(login_data);
+		
+	//login 
+}
+
+// 服务端发来消息时
+function onmessage(e)
+{
+	
+	var data = eval("("+e.data+")");
+	switch(data['type']){
+		// 服务端ping客户端
+		case 'ping':
+			ws.send('{"type":"pong"}');
+			break;
+			//array('type'=>'resv_blog','blog_id'=>$blog_id);
+		case 'seller_sayto_client':
+			on_seller_mes(data);
+			break;
+		case 'clientmsg_page':
+			on_clientpage(data);
+			break;
+	} 
+}
+
+/**
+	接收聊天记录
+**/
+function on_clientpage(data)
+{
+	//'page' =>1
+	console.log(data.page);
+	cur_page = data.page;
+	var msg_data = data.data;
+	
+	
+	if(msg_data.length == 0)
+	{
+		$('.load_more_msg').html('没有更多了');
+	}
+	for(var i in msg_data)
+	{
+		var msg_tmp = JSON.parse(msg_data[i]);
+		//$('#template1').tmpl(link).appendTo('#chat-detail-list');
+		
+		msg_tmp.message = decodeURIComponent(msg_tmp.message);
+		if(msg_tmp.type == 'client_sayto_seller')
+		{
+			if(msg_tmp.content_type =='image')
+			{
+				var new_content = '';
+				new_content += '<a href="'+msg_tmp.image+'" target="_blank">';
+				new_content += '<img src="'+msg_tmp.image+'" style="width: 152px;"></a>';
+				msg_tmp.message = new_content;
+				
+			}else if(msg_tmp.content_type =='goods')
+			{
+				var new_content = '';
+				new_content += '<div class="chat-goods-bubble" style="">';
+				new_content += '	<div class="goods-box">	';		
+				new_content += '		<img src="'+msg_tmp.goods_image+'">';
+				new_content += '		<div class="goods-detail">';	
+				new_content += '			<p class="bubble-goods-name">'+msg_tmp.goods_name+'</p>';	
+				new_content += '			<div class="group-info">';		
+				new_content += '				<a class="price">￥'+msg_tmp.goods_price+'</a>';
+				new_content += '				<i class="customer-num"></i>';
+				new_content += '			</div>';
+				new_content += '		</div>';
+				new_content += '	</div>';
+				new_content += '</div>';
+				msg_tmp.message = new_content;
+			}
+			
+			if(msg_tmp.is_goods != undefined && msg_tmp.is_goods ==1)
+			{
+				var link = { content: msg_tmp.message,avatar:avatar};
+				$("#chat-detail-list").prepend($('#template3').tmpl(link));
+			}else{
+				var link = { Text: msg_tmp.message,avatar:msg_tmp.avatar,sent:msg_tmp.sent};
+				$("#chat-detail-list").prepend($('#template0').tmpl(link));
+			}
+		} else{
+			var link = { Text: msg_tmp.message,avatar:msg_tmp.avatar,sent:msg_tmp.sent};
+			
+			if(msg_tmp.content_type =='image')
+			{
+				var new_content = '';
+				new_content += '<a href="'+msg_tmp.image+'" target="_blank">';
+				new_content += '<img src="'+msg_tmp.image+'" style="width: 152px;"></a>';
+				link.Text = new_content;
+				
+			}else if(msg_tmp.content_type =='goods')
+			{
+				var new_content = '';
+				new_content += '<div class="chat-goods-bubble" style="">';
+				new_content += '	<div class="goods-box">	';		
+				new_content += '		<img src="'+msg_tmp.goods_image+'">';
+				new_content += '		<div class="goods-detail">';	
+				new_content += '			<p class="bubble-goods-name">'+msg_tmp.goods_name+'</p>';	
+				new_content += '			<div class="group-info">';		
+				new_content += '				<a class="price">￥'+msg_tmp.goods_price+'</a>';
+				new_content += '				<i class="customer-num"></i>';
+				new_content += '			</div>';
+				new_content += '		</div>';
+				new_content += '	</div>';
+				new_content += '</div>';
+				link.Text = new_content;
+			}
+			$("#chat-detail-list").prepend($('#template1').tmpl(link)); 
+		}
+	}
+	if(data.page == 1)
+	{
+		rela_wind();
+	}
+}
+function on_seller_mes(data)
+{
+	/**
+	$data = array('room_id' => $room_id,'logo'=>$logo,'user_name' => $user_name, 'message' => $content, 'sent' => time(), 'type' =>'seller_sayto_client');
+	**/
+	data['message'] = decodeURIComponent(data['message']);
+	
+	var link = { Text: data['message'],avatar:data['avatar'],sent:data['sent']};
+		
+	$('#template1').tmpl(link).appendTo('#chat-detail-list');
+	
+	
+	
+	rela_wind();
+}
+$(function(){
+	connect();
+})
+</script>
+<body>	
+    <div id="chat-detail-container" >
+        <div id="list-container" >
+			<div rel="more_panel_user_1" rel_page="0" class="load_more_msg">查看更多消息</div>
+            <ul id="chat-detail-list">
+				<?php if(!empty($goods_info)){ ?>
+				<li class="chat-goods-card">
+					<p class="chat-time-label"><?php echo date('H:i'); ?></p>
+					<div class="chat-goods-box">
+						<img class="card-goods-image" src="<?php echo $goods_info['image']; ?>">
+						<div class="detail">
+							<p class="card-goods-name"><?php echo $goods_info['name']; ?></p>
+							<div class="group-info">
+								<a class="price">￥<?php echo $goods_info['pinprice']; ?></a>
+								<?php if(!empty($goods_info['pin_count'])){ ?>
+								<i class="customer-num">/<?php echo $goods_info['pin_count']; ?>人团</i>
+								<?php } ?>
+							</div>
+							<p class="card-button">发送商品链接</p>
+						</div>
+					</div>
+				</li>
+				<?php } ?>
+				<li class="chat-detail-item" id="msg-1496282825243" style="display:none;">
+					<div class="chat-item-box role-mall">
+						<img class="chat-avatar" src="<?php echo $seller_info['s_logo']; ?>">
+						<div class="chat-msg">
+							<text-content>
+								<pre>亲亲 我们的客服早上九点上班晚上24点下班哦 </pre>
+							</text-content>
+						</div>
+					</div>
+				</li>
+
+				<li class="chat-detail-item" id="msg-1496286838024" style="display:none;">
+					<div class="chat-time-label">11:13</div>
+					<div class="chat-item-box role-customer">
+						<img class="chat-avatar" src="http://pinduoduoimg.yangkeduo.com/base/mobile_user_avatar.png">
+						<div class="chat-msg">
+							<text-content>
+								<pre>d</pre>
+							</text-content>
+						</div>
+					</div>
+				</li>
+
+			</ul>
+        </div>
+		
+    </div>
+  
+	<div style="height:51px;"></div>
+	<div id="send-box" ms-visible="!showingOrderList" ms-css-height="sendBoxHeight">
+
+		<div id="chat-order-list-text-container">
+			<div id="extra-panel" style="">
+				<!--ms-if-->
+				<div class="panel-btn" style="">
+					<div class="panel-btn-image" id="send-pic"></div>
+					<div class="send-icon xo-weixin-blt-upload" id="xo-weixin-blt-upload-btn-0" data-url="{:U('Image/upload_binaryFile')}">
+					</div>
+					<input type="hidden" name="images" id="images" value="" />
+				</div>
+			</div>
+			<textarea rows="1" id="message-input" class="input-content typing" type="text" style="margin-left:60px;height: 38px;padding-left:20px;"></textarea>
+
+			<div id="extra-button" style="display: none;"> </div>
+			<div id="extra-button-fold" style="display: none;"> </div>
+			<div id="send-button" >发送</div>
+		</div>
+		
+		
+	</div>
+	<div id="order-list-positioner" style="display:none"></div>
+	
+	<style>
+		#send-box #extra-panel {
+			border-top:none;
+			padding:0px;
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			overflow: hidden;
+			top: 5px;
+			left: 5px;
+		}
+		#send-box .panel-btn {
+			background-color: #fff;
+			height: 40px;
+			width: 40px;
+			height: 40px;
+			margin-bottom: 0px;
+			margin-right: 0px;
+			display: inline-block;
+			padding: 0px;
+			border: 1px solid #dcdcdc;
+			border-radius: 8px;
+			text-align: center;
+			margin: 0px auto;
+		}
+		#send-box #send-pic {
+			position: relative;
+			margin: 0px auto;
+			margin-top: 6px;
+		}
+		.chat-goods-bubble{
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnkAAADUCAMAAADXysWKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAHOUExURUxpcUvARES7RErARUzARUrAREu/RFWqVUm/RjPMM0+/P0y/RUrAREu/RFLBS0vARQD/AEu/RUrARUvAREq/RUu/REq/RF/GWUvAREq/RUrAREjISErAREq/REu/RErARUu/RkrAREzBRn//f0u/RF/GWlHBTE3CQkrAREvARUu/RUq/REu/RUvARUy/RkbGRmLHXErARErAREnARE/CSkvDS0vAREq+Q0vARUvARUu/RUrARGHHXEu/RUvBRl7GWU29R0q/RVXDT1HCS07BSUu/RUu/REvARUvARUnCQ0u/RUvARkvARkq+RErAREu/RUu/RE28QlbDUEq/REq/Rf///0vARfv++3XPcY7XivD68KviqHfPcu/57nrRdvX89dfx1v3+/djx1/r9+uP149Pw0uT243zRd2XJYLvnufT79NXw1O357aziqe757ez4687uzWTJX2rLZd7z3XrQddry2cLqwJfak57dm93z3JnblbvnuPH68MDpvpzcmWHIXNry2O/6713GWJvcmHvRd2DHW9zz22fKYd/03rDjreD0377ovJPZj7nnt3jQdJrcl/7//tny2HHNbMTqwo/Yi9bx1dLv0Oj354jVhLPksHPJSqUAAABVdFJOUwD4D5PnfukDTAUQ6quU9VUBWOjExpH5/oMw2w5/ibrA6VZXApX+8S6CUYC52bcoEv7XKS3wEbNPkrDdhv5UW/4rXPjz8Cy2y6wm1ujrS1L6vhf9Wdo6Gr6DAAADjElEQVR42u3c15YUVQCG0eqZjpMjM0QTIiBmRckimDAgCB0mM4ksguRoRAEDKqK+rVde1ASups5Zi7X3I/zruzinurqS5H+Vcn9fT64KSyfX09dfriSP0lJoHRk+OVo7DEunNnry9MjHhZbFw+vON2btRCZmG/nuRbortf84aSAyM3msvbRgeG1j49YhQ+NjbQul91bd8Y6MD3zn184Pr/OHIcuQsRNnn5ob3sr8hF3I3ER+7g230LAKATQK6fAqrdNGIYDpJ9OPlD+p24Qg6uVUec3DJiGI4eZUeb0zJiGImd5UecVTJiGIL4qp8nJTJiGIqWWp8qoWIZCq8lAeygPloTxQHsoD5aE8UB7KA+WhPJRnEJTHY+3c08ojhq86nlMeMVzc+pLyiOHm8yXlEcGR71crjxiuv9ypPGK40vGa8ojhxoo3lEcM371QUh4xbhlj25RHDEPbdyiPGG7veVd5xHBvRZPyiOG390rKI8Yt49dB5RHDzx8ojwh+2bdSeYQ3ufdDNwzCGx0oe6pCeLX6Kk+SieDSli7lEd61V5r8bkt4X7/+orekCO+bgTe9GUqE28XIRm/DE8HVzV3KI7zjm5r894zwLqx71T+9CW/o2Q2+bkEER9f7og8xVJ9RHlHK8/08lIfyQHkoD5SH8kB5KA+Uh/JAeSgP5RkE5aE8UB7KA+WhPFAeygPloTyUpzyUh/JAeSgPlIfyQHkoD5SH8kB5KA/lgfJQHigP5YHyUB4oD+WB8lAeylMeykN5oDyUB8pDeaA8lAfKQ3koT3koD+WB8lAeKA/lgfJQHigP5YHyUB7KA+WhPFAeygPloTxQHsoD5aE8lKc8lIfyQHkoD5SH8kB5KA+Uh/JQnvJQHsoD5aE8UB7KA+WhPFAeygPloTyUB8pDeaA8lAfKQ3mgPJQHykN5KE95KA/lgfJQHigP5YHyUB4oD+WhPOWhPJQHykN5oDweq/JyUxYhRnnFUxYhRnm9MxYhRnnNwxYhiNqyVHnlukkI4kxPqrxK67RNCOHLJ1LlJYWGTQjh8mC6vKb8hFEIcMz7dnm6vKTz1pBZyNydNclczfWaXcjYTx1vzyuv1HZ03DJk6u6uncl8pfZjv9uG7Nw//s7uZEHdHz2YtQ8Z3S3+/OP95ckiWla1jpz+a9SBjyV14u+H//5z8LNPu5LFVcr9fcX9VVg6ueKhNas/P7BQb/8BiarQ/vjF/yMAAAAASUVORK5CYII=);
+		}
+		
+	</style>
+	
+	 <div id="div_template1"></div><br />
+	 <script id="template0" type="text/x-jquery-tmpl">
+		<li class="chat-detail-item" >
+		{{if sent!=''}}
+			<div class="chat-time-label">${sent}</div>
+		{{/if}}
+			<div class="chat-item-box role-customer">
+				<img class="chat-avatar" src="${avatar}">
+				<div class="chat-msg">
+					<text-content>
+						<pre>{{html Text}}</pre>
+					</text-content>
+				</div>
+			</div>
+		</li>
+	</script>
+	<script id="template1" type="text/x-jquery-tmpl">
+		<li class="chat-detail-item">
+		{{if sent!=''}}
+			<div class="chat-time-label">${sent}</div>
+		{{/if}}
+			<div class="chat-item-box role-mall">
+				<img class="chat-avatar" src="${avatar}">
+				<div class="chat-msg">
+					<text-content>
+						<pre>{{html Text}} </pre>
+					</text-content>
+				</div>
+			</div>
+		</li>
+	</script>
+	<script id="template2" type="text/x-jquery-tmpl">
+		<li class="chat-detail-item">
+			<div class="chat-item-box role-customer">
+				<img class="chat-avatar" src="${avatar}">
+				<div class="chat-goods-bubble" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnkAAADUCAMAAADXysWKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAHOUExURUxpcUvARES7RErARUzARUrAREu/RFWqVUm/RjPMM0+/P0y/RUrAREu/RFLBS0vARQD/AEu/RUrARUvAREq/RUu/REq/RF/GWUvAREq/RUrAREjISErAREq/REu/RErARUu/RkrAREzBRn//f0u/RF/GWlHBTE3CQkrAREvARUu/RUq/REu/RUvARUy/RkbGRmLHXErARErAREnARE/CSkvDS0vAREq+Q0vARUvARUu/RUrARGHHXEu/RUvBRl7GWU29R0q/RVXDT1HCS07BSUu/RUu/REvARUvARUnCQ0u/RUvARkvARkq+RErAREu/RUu/RE28QlbDUEq/REq/Rf///0vARfv++3XPcY7XivD68KviqHfPcu/57nrRdvX89dfx1v3+/djx1/r9+uP149Pw0uT243zRd2XJYLvnufT79NXw1O357aziqe757ez4687uzWTJX2rLZd7z3XrQddry2cLqwJfak57dm93z3JnblbvnuPH68MDpvpzcmWHIXNry2O/6713GWJvcmHvRd2DHW9zz22fKYd/03rDjreD0377ovJPZj7nnt3jQdJrcl/7//tny2HHNbMTqwo/Yi9bx1dLv0Oj354jVhLPksHPJSqUAAABVdFJOUwD4D5PnfukDTAUQ6quU9VUBWOjExpH5/oMw2w5/ibrA6VZXApX+8S6CUYC52bcoEv7XKS3wEbNPkrDdhv5UW/4rXPjz8Cy2y6wm1ujrS1L6vhf9Wdo6Gr6DAAADjElEQVR42u3c15YUVQCG0eqZjpMjM0QTIiBmRckimDAgCB0mM4ksguRoRAEDKqK+rVde1ASups5Zi7X3I/zruzinurqS5H+Vcn9fT64KSyfX09dfriSP0lJoHRk+OVo7DEunNnry9MjHhZbFw+vON2btRCZmG/nuRbortf84aSAyM3msvbRgeG1j49YhQ+NjbQul91bd8Y6MD3zn184Pr/OHIcuQsRNnn5ob3sr8hF3I3ER+7g230LAKATQK6fAqrdNGIYDpJ9OPlD+p24Qg6uVUec3DJiGI4eZUeb0zJiGImd5UecVTJiGIL4qp8nJTJiGIqWWp8qoWIZCq8lAeygPloTxQHsoD5aE8UB7KA+WhPJRnEJTHY+3c08ojhq86nlMeMVzc+pLyiOHm8yXlEcGR71crjxiuv9ypPGK40vGa8ojhxoo3lEcM371QUh4xbhlj25RHDEPbdyiPGG7veVd5xHBvRZPyiOG390rKI8Yt49dB5RHDzx8ojwh+2bdSeYQ3ufdDNwzCGx0oe6pCeLX6Kk+SieDSli7lEd61V5r8bkt4X7/+orekCO+bgTe9GUqE28XIRm/DE8HVzV3KI7zjm5r894zwLqx71T+9CW/o2Q2+bkEER9f7og8xVJ9RHlHK8/08lIfyQHkoD5SH8kB5KA+Uh/JAeSgP5RkE5aE8UB7KA+WhPFAeygPloTyUpzyUh/JAeSgPlIfyQHkoD5SH8kB5KA/lgfJQHigP5YHyUB4oD+WB8lAeylMeykN5oDyUB8pDeaA8lAfKQ3koT3koD+WB8lAeKA/lgfJQHigP5YHyUB7KA+WhPFAeygPloTxQHsoD5aE8lKc8lIfyQHkoD5SH8kB5KA+Uh/JQnvJQHsoD5aE8UB7KA+WhPFAeygPloTyUB8pDeaA8lAfKQ3mgPJQHykN5KE95KA/lgfJQHigP5YHyUB4oD+WhPOWhPJQHykN5oDweq/JyUxYhRnnFUxYhRnm9MxYhRnnNwxYhiNqyVHnlukkI4kxPqrxK67RNCOHLJ1LlJYWGTQjh8mC6vKb8hFEIcMz7dnm6vKTz1pBZyNydNclczfWaXcjYTx1vzyuv1HZ03DJk6u6uncl8pfZjv9uG7Nw//s7uZEHdHz2YtQ8Z3S3+/OP95ckiWla1jpz+a9SBjyV14u+H//5z8LNPu5LFVcr9fcX9VVg6ueKhNas/P7BQb/8BiarQ/vjF/yMAAAAASUVORK5CYII=&quot;);">
+					<div class="goods-box">
+						<img src="${image}">
+						<div class="goods-detail">
+							<p class="bubble-goods-name">${goods_name}</p>
+							<div class="group-info">
+								<a class="price">${price}</a>
+								<i class="customer-num">${pin_count}</i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	</script>
+	
+	<script id="template3" type="text/x-jquery-tmpl">
+		<li class="chat-detail-item">
+			<div class="chat-item-box role-customer">
+				<img class="chat-avatar" src="${avatar}">
+				{{html content}}
+			</div>
+		</li>
+	</script>
+	
+<script src="__PUBLIC__/js/jquery.tmpl.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+<script>
+$(function () {
+    var uploder_url = $('.xo-weixin-blt-upload').data('url');
+    //创建上传
+    var uploader_0 = WebUploader.create({
+        // 选完文件后，是否自动上传
+        auto: true,
+        // 文件接收服务端
+        server: uploder_url,
+        // 选择文件的按钮
+        pick: {
+            id : '#xo-weixin-blt-upload-btn-0',
+            multiple : false
+        },
+        sendAsBinary: true,
+        // 不压缩图片
+        resize: false,
+        // 只允许选择的文件
+        accept: {
+            title: '添加附件',
+            extensions: 'jpg,jpeg,png',
+            mimeTypes: 'image/jpg,image/jpeg,image/png'
+        },
+        fileNumLimit: 1,
+        fileSingleSizeLimit: 10240000  //文件大小10M
+    });
+    // 文件上传中
+    uploader_0.on('uploadProgress', function (file, percentage) {
+        $('#xo-weixin-blt-upload-btn-0').removeClass('upload-success');
+        $('#xo-weixin-blt-upload-btn-0').removeClass('upload-error');
+        $('#xo-weixin-blt-upload-btn-0').addClass('upload-progress');
+        $('#xo-weixin-blt-upload-btn-0 .webuploader-pick').html(parseInt(percentage * 100) + '%');
+    });
+    // 文件上传成功
+    uploader_0.on('uploadSuccess', function (file, response) {
+        $('#xo-weixin-blt-upload-btn-0').removeClass('upload-progress');
+        $('#xo-weixin-blt-upload-btn-0').removeClass('upload-error');
+        $('#xo-weixin-blt-upload-btn-0').addClass('upload-success');
+        uploader_0.makeThumb(file, function (error, src) {
+            if (error) {
+                //$('#xo-weixin-blt-upload-btn-0 .webuploader-pick').html('成功');
+				console.log('成功');
+                return;
+            }
+			
+			var text = '<a href="'+response.filePath+ '/'+response.fileName +'" target="_blank"><img src="'+response.filePath+ '/'+response.fileName +'" style="width: 152px;"  /></a>';
+			
+			var myDate = new Date();
+			var year = myDate.getFullYear();
+			var month = myDate.getMonth();  
+			var day = myDate.getDate(); 
+			var hour = myDate.getHours();  
+			var minute = myDate.getMinutes();  
+			var second = myDate.getSeconds();
+			
+			var cur_time = year+'-'+month+"-"+day+" "+hour+':'+minute+':'+second;
+			var link = { Text: text,avatar:avatar,sent:cur_time};
+			
+			$('#template0').tmpl(link).appendTo('#chat-detail-list');
+			$('#message-input').val(''); 
+			
+			//$('#send-button').hide();
+			//$('#extra-button').show();
+			
+			link.thumb_image = response.filePath+ '/'+response.fileName;
+			link.orign_image = response.filePath+ '/'+response.fileName;
+			
+			//k.thumb_image+'","orign_image":"'+link.image+
+			
+			//onsaytosellerimage();
+			
+			onsaytosellerimage(link);
+			rela_wind();
+            //$('#add_imglist').append('<li rel="'+response.filePath + '/' + response.fileName+'"><span class="xo-weixin-blt-upload-btn"><img src="'+src+'" style="width:53px; height:53px; vertical-align:top;"></span></li>');
+           
+        }, 180, 180);
+        uploader_0.reset();
+        $('input#attachment-0').val(response.filePath + '/' + response.fileName);
+    });
+    // 文件上传失败
+    uploader_0.on('uploadError', function (file) {
+        //$('#xo-weixin-blt-upload-btn-0 .webuploader-pick').html('失败');
+    });
+    
+    
+});
+</script>
+
+<script> 
+$(function(){
+	$('#chat-detail-container').click(function(){
+		
+	})
+	$("#message-input").keyup(function(){
+		var in_val = $(this).val();
+		in_val = $.trim(in_val);
+		
+		if(in_val.length >0)
+		{
+			//$('#extra-button').hide();
+			//$('#send-button').show();
+		} else{
+			//$('#send-button').hide();
+			//$('#extra-button').show();
+		}
+	});	
+	
+	$('#message-input').click(function(){
+		
+	})
+	
+	$(function () {
+		
+		$('#extra-button').click(function(){
+			$('#extra-panel').show();
+		});
+		
+		$('#send-box .typing').css('width', ($('#chat-order-list-text-container').width() -140) +'px')
+		
+		var users = [{ ID: '1', Name: 'xishuai1' }, { ID: '2', Name: 'xishuai2' }];
+
+		//$('#template1').tmpl(link).appendTo('#div_template1');
+		//$('#template2').tmpl(users).appendTo('#div_template2');
+	});
+	
+	$('.card-button').click(function(){
+		var goods_name = $(this).siblings('.card-goods-name').html();
+		var price = $(this).siblings('.group-info').children('.price').html();
+		var pin_count = $(this).siblings('.group-info').children('.customer-num').html();
+		
+		var image = $(this).parent().siblings('.card-goods-image').attr('src');
+		var link = { goods_name: goods_name,image:image,avatar:avatar,price:price,pin_count:pin_count};
+		
+		$('#template2').tmpl(link).appendTo('#chat-detail-list');
+		
+		// 登录
+		//var login_data = '{ "type":"say","avatar":"'+link.avatar+'","user_name":"'+user_name+'",
+		//"content":"'+link.Text+'","room_id":"<?php echo $seller_info['s_id']; ?>"} ';
+		var content = '';
+		content+= '	<div class="chat-goods-bubble" style="">';
+		content+= '		<div class="goods-box">';
+		content+= '			<img src="'+image+'">';
+		content+= '			<div class="goods-detail">';
+		content+= '				<p class="bubble-goods-name">'+goods_name+'</p>';
+		content+= '				<div class="group-info">';
+		content+= '					<a class="price">'+price+'</a>';
+		content+= '					<i class="customer-num">'+pin_count+'</i>';
+		content+= '				</div>';
+		content+= '			</div>';
+		content+= '		</div>';
+		content+= '	</div>';
+		
+		rela_wind();
+		var link_data = {avatar:avatar,goods_price:price,goods_name:goods_name,goods_image:image,is_goods:1,Text:(content)};
+		
+		
+		
+		onsaytosellergoods(link_data);
+	})
+	$('#send-button').click(function(){
+		var text = $('#message-input').val();
+		if(text == '')
+		{
+			$.toast("不能发送空消息", "text");
+			return false;
+		}
+		
+		var myDate = new Date();
+		var year = myDate.getFullYear();
+		var month = myDate.getMonth();  
+		var day = myDate.getDate(); 
+		var hour = myDate.getHours();  
+		var minute = myDate.getMinutes();  
+		var second = myDate.getSeconds();
+		
+		var cur_time = year+'-'+month+"-"+day+" "+hour+':'+minute+':'+second;
+		var link = { Text: text,avatar:avatar,sent:cur_time};
+		
+		$('#template0').tmpl(link).appendTo('#chat-detail-list');
+		$('#message-input').val(''); 
+		
+		//$('#send-button').hide();
+		//$('#extra-button').show();
+		
+		onsaytoseller(link);
+		
+		rela_wind();
+	})
+})
+
+function rela_wind()
+{
+	scrollToEnd();
+}
+$(function(){
+
+	/**
+	$('#chat-detail-container').pullToRefresh();
+	$('#chat-detail-container').on("pull-to-refresh", function() {
+	 //开始发送包
+	
+	 var login_data = '{ "type":"get_client_page","page":'+cur_page+',"room_id":"<?php echo $seller_info['s_id']; ?>"} ';
+	
+	 ws.send(login_data);
+	
+	 $('#chat-detail-container').pullToRefreshDone();
+	});
+	
+	**/
+	
+	$('.load_more_msg').click(function(){
+		var login_data = '{ "type":"get_client_page","page":'+cur_page+',"room_id":"<?php echo $seller_info['s_id']; ?>"} ';
+	
+		ws.send(login_data);
+	})
+})
+
+function scrollToEnd()
+{
+	var h = $(document).height()-$(window).height();
+	$(document).scrollTop(h); 
+}
+</script> 
+	
+</block> 

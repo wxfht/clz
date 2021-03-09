@@ -1,0 +1,244 @@
+<extend name="Public:base" />
+
+<block name="content">	
+	
+<div class="row">
+	<div class="col-xs-12 search-row">
+		<div class="panel-body">
+			<ul class="nav nav-tabs">
+            <li <?php if($order_status_id == 0){ ?>class="active" <?php } ?>><a href="{:U('Order/index')}">全部订单</a></li>
+            <li <?php if($order_status_id == 1){ ?>class="active" <?php } ?>><a href="{:U('Order/index', array('order_status_id' => 1))}">待发货</a></li>              
+            <li <?php if($order_status_id == 4){ ?>class="active" <?php } ?>><a href="{:U('Order/index', array('order_status_id' => 4))}" >配送中</a></li>     
+           <li <?php if($order_status_id == 12){ ?>class="active" <?php } ?>><a href="{:U('Order/index', array('order_status_id' => 12))}" >退款申请</a></li>
+			<li <?php if($order_status_id == 13){ ?>class="active" <?php } ?>><a href="{:U('Order/index', array('order_status_id' => 13))}" >平台介入退款</a></li>
+		    <li <?php if($order_status_id == 6){ ?>class="active" <?php } ?>><a href="{:U('Order/index', array('order_status_id' => 6))}" >已签收待评价</a></li>
+		   <li <?php if($order_status_id == 11){ ?>class="active" <?php } ?>><a href="{:U('Order/index', array('order_status_id' => 11))}" >已完成</a></li>
+		   
+		   
+          	
+          	
+          </ul>
+		</div>
+	</div>
+	
+	<div class="col-xs-12"> 
+    	<div class="panel panel-info">
+			<div class="panel-heading">筛选</div>
+			<form name="order_search" method="post" action="{:U('Order/index', array('order_status_id' => $order_status_id))}">
+				<input type="hidden" name="a" value="index" />
+				<input type="hidden" name="c" value="Order" />
+				<div class="panel-body">
+			      	<div class="col-xs-12 search-row"> 
+				       	<div class="col-sm-4">
+					        <span class="form-label">订单编号：</span>
+					        <input type="text" name="order_num_alias" class="form-item" value="{$search.order_num}">
+				     	</div> 
+				      	<div class="col-sm-4">
+					        <span class="form-label">用户ID&nbsp;：</span>
+					        <input type="text" name="member_id" class="form-item" value="{$search.member_id}">
+				       	</div> 
+				        <div class="col-sm-4">
+					        <span class="form-label">买家姓名：</span>
+					        <input type="text" name="name" class="form-item" value="{$search.user_name}">
+				       	</div> 
+			     	</div> 
+		      
+	      			<div class="col-xs-12 search-row"> 
+				       	<div class="col-sm-4">
+				         	<span class="form-label">买家电话：</span>
+				        	<input type="text" name="shipping_tel" value="{$search.shipping_tel}">
+				       	</div>
+		       
+				       	<div class="col-sm-4"> 
+				         	<span class="form-label">快递单号：</span>
+				        	<input type="text" name="shipping_no" value="{$search.shipping_no}">
+				       	</div> 
+				      	<div class="col-sm-4"> 
+							 <span class="form-label">商品ID&nbsp;：</span>
+							<input type="text" name="goods_id" value="{$search.goods_id}">
+				       	</div> 
+		         	</div> 
+			      <div class="col-xs-12 search-row">
+			       		<div class="col-sm-4">
+			        		<span class="form-label">开始时间：</span>
+			        		<input type="text" name="date_added_begin" value="<?php if(!empty($search['date_added_begin'])){ echo date('Y-m-d H:i:s', $search['date_added_begin']); } ?>" id="begin_time" class="datetimepicker data_input">
+			        	</div> 
+				       	<div class="col-sm-4">
+				       			<span class="form-label">结束时间：</span>
+				        		<input type="text" name="date_added_end" value="<?php  if(!empty($search['date_added_end'])){ echo date('Y-m-d H:i:s', $search['date_added_end']); } ?>" id="end_time" class="datetimepicker data_input">
+				        </div> 
+				        <div class="col-sm-4">
+					        <span class="form-label">订单类型：</span> 
+					        <select name="is_pin" class="combox select_width">
+						        <option value="-1">-全部-</option>
+						        <option value="0"  <?php if(isset($search['is_pin']) && $search['is_pin'] == 0){ ?> selected <?php }?>>单独购买订单</option>
+						        <option value="1" <?php if(isset($search['is_pin']) && $search['is_pin'] == 1){ ?> selected <?php }?>>团购订单</option>
+						    </select> 
+			       		</div>
+			      </div>
+			      <div class="col-xs-12 search-row">
+					 <div class="col-sm-4">
+						<span class="form-label">微信交易单号：</span>
+						<input type="text" name="transaction_id" class="form-item" value="{$search.transaction_id}">
+					 </div> 
+			      	 <div class="col-sm-4">
+			      	 	<span class="form-label">所属商家：</span> 
+				        <select name="store_id" class="combox select_width">
+					        <option value="0">-全部-</option>
+					        <?php foreach($seller_list as $seller){ ?>
+					        <option value="<?php echo $seller['s_id']; ?>"  <?php if(isset($search['store_id']) && $search['store_id'] == $seller['s_id']){ ?> selected <?php }?>><?php echo $seller['s_true_name']; ?></option>
+					        <?php } ?>
+				        </select> 
+			      	 </div>
+			      	 <div class="col-sm-4">
+			       		 <button type="submit" name="subtype"  value="search" class="btn btn-white btn-search"> <i class="icon-search"></i> 检 索 </button>
+			            <button type="submit" name="subtype" value="export" class="btn btn-white btn-exp"> <i class="icon-cloud-upload"></i> 导 出 </button> 
+			       	</div>
+			      </div>
+			  </div>
+			</form>
+		</div>
+	 </div>
+ 
+</div>
+	
+	
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>											
+						<th>ID</th>
+						<th>订单号</th> 
+						<th>商品信息</th> 
+						<th>订单类型</th>
+						<th>总计</th> 						
+						<th>会员名</th>		
+						<th>商家</th>							
+						<th>状态</th>	
+						<th>下单时间</th>					
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+						<volist name="list" id="v" empty="$empty">
+						<tr>						
+							<td>{$v.order_id}</td>
+							<td>{$v.order_num_alias}</td>
+							<td>{$v.goods_name}</td>
+							<td>
+								{$v.ordertype}
+							</td>
+							<td>{$v.total}</td>
+							
+							<td>{$v.uname}</td>
+							<td>{$v.s_true_name}</td>
+							
+							
+							<td>{$v.name}
+							<br/>
+								<?php if($v['is_balance'] ==1){ ?>
+								<b class="red">已结算</b>
+								<?php }else { ?>
+									<?php if($v['pin_state']!=2 && !in_array($v['order_status_id'], array(7,8,12,13)) ){ ?>
+									<font class="blue">待结算</font>
+									<?php }else{ ?>
+									--
+									<?php } ?>
+								<?php } ?>
+							</td>
+							<td>
+								<?php echo date('Y-m-d H:i:s',$v['date_added']); ?>
+							</td>
+							<td>
+								<a  class="btn btn-xs btn-info" href='{:U("Order/show_order",array("id"=>$v["order_id"]))}'>
+									<i class="icon-eye-open bigger-120"></i>查看
+								</a> 
+								
+								<a  class="btn btn-xs btn-info" href='{:U("Order/print_order",array("id"=>$v["order_id"]))}'>
+									<i class="icon-print bigger-120"></i>打印
+								</a> 
+								<?php 
+									if($v['order_status_id'] == 12 || $v['order_status_id'] == 13)
+									{
+								?>
+								<a  class="btn btn-xs btn-info" href='{:U("Order/show_refund",array("id"=>$v["order_id"]))}'>
+									<i class="icon-eye-open bigger-120"></i>处理退款
+								</a> 
+								
+								<?php } ?>
+							</td>
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script src="__PUBLIC__/js/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+
+<script>	
+
+$(function(){
+		$('#begin_time').datetimepicker({
+		 format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds
+		 icons: {
+			time: 'btn btn-lg icon-time',
+			date: 'btn btn-lg icon-calendar',
+			up: 'fa icon-chevron-up',
+			down: 'fa icon-chevron-down',
+			previous: 'fa icon-chevron-left',
+			next: 'fa icon-chevron-right',
+			today: 'fa icon-arrows ',
+			clear: 'fa icon-trash',
+			close: 'fa icon-times'
+		 }
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		
+		$('#end_time').datetimepicker({
+			 format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+})
+$(function(){
+   $("#search").click(function () {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });	
+});
+</script>
+</block>

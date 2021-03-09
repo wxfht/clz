@@ -1,0 +1,22 @@
+<?php foreach($list as $val){ ?>
+				<tr>
+					<td style="text-align: center;">
+						<?php echo $val['id']; ?>
+					</td>
+					<td style="text-align: center;">
+						<?php echo $val['money']; ?>
+					</td>
+					<td style="text-align: center;">
+						<?php if($val['state'] == 0){ ?>
+						审核中
+						<?php }else if($val['state'] ==1){ ?>
+						已到账
+						<?php }else if($val['state'] == 2){ ?>
+						被拒绝 
+						<?php } ?>
+					</td>
+					<td style="text-align: center;">
+						<?php echo date('Y-m-d',$val['addtime']); ?>
+					</td>
+				</tr>
+				<?php } ?>

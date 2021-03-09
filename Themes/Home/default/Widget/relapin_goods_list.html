@@ -1,0 +1,28 @@
+
+ <?php if(!empty($related_goods)){ ?>
+<h2>猜你喜欢</h2>
+<div class="poster_wrap"> 
+    <div class="goods_wall rec-show-log module_row waterfall-container clearfix" >
+     <volist name="related_goods" id="d">
+	 <div class="goods_box cube-acm-node waterfall-frame-0 waterfall-box waterfall-optimise-show" > 
+      <div class="pic_box lazyloadBg"> 
+		<a href="{:U('/goods/'.$d['goods_id'])}" class="lazyload-img-end">
+			<img src="{$d.image}" width="100%" />
+		</a>
+		
+	  </div> 
+      <div class="desc_box"> 
+       <h3>{$d.name}</h3> 
+       <div class="co_box"> 
+        <span class="price">￥{$d.pin_price}</span> 
+        <span class="fav_num">已团{$d.seller_count}件</span> 
+       </div> 
+      </div> 
+     </div>
+	 
+     </volist>
+    
+    </div> 
+    
+</div>
+<?php } ?>

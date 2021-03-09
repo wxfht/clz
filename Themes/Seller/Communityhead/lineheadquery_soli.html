@@ -1,0 +1,81 @@
+<div style='max-height:500px;overflow:auto;min-width:850px;'>
+	<div class="input-group layui-row" style="margin:10px;">
+		<input type="text" placeholder="请输入名称进行搜索" id="select-url-kw" value="" class="form-control">
+		<span class="input-group-addon btn btn-default select-btn" data-type="url">搜索</span>
+	</div>
+<table class="table table-hover supplyquery" style="min-width:850px;">
+    <tbody>   
+        
+		<?php foreach( $need_data as $row ){ ?>
+        <tr>
+            <td>{$row['community_name']}</td>
+			<td>{$row['head_name']}</td>
+			<td>{$row['head_mobile']}</td>
+            <td>{$row['fullAddress']}</td>
+            <td style="width:80px;"><a href="javascript:;" class="choose_dan_head" data-json='{:json_encode($row);}'>选择</a></td>
+        </tr>
+        <?php } ?>
+        
+		<?php if( count($need_data)<=0 ){ ?>
+        <tr> 
+            <td colspan='4' align='center'>未找到可分配的小区</td>
+        </tr>
+        <?php } ?>
+    </tbody>
+</table>
+</div>
+<style>
+.supplyquery td{padding-left:5px;}
+</style>
+<script>
+	var query_kwd = '{$kwd}';
+var query_url = "{:U('communityhead/lineheadquery', array('is_soli' => 1 ))}";
+var can_next = true;
+$(".select-btn").click(function(){
+	
+	query_kwd = $.trim($("#select-url-kw").val());
+	
+	
+	if(!can_next)
+	{
+		return false;
+	}
+	can_next = false;
+	$.ajax({
+		url:query_url,
+		type:'post',
+		dataType:'json',
+		data:{keyword:query_kwd,is_ajax:1},
+		success:function(ret){
+			if(ret.code == 0)
+			{
+				$('.supplyquery tbody').html(ret.html);
+			//	$('#pager_ajax').html(ret.pager);	
+			}
+			can_next = true;
+		}
+	})
+});
+
+ $(document).undelegate(".choose_dan_head","click").delegate(".choose_dan_head","click",function(){
+	var json_obj = JSON.parse($(this).attr('data-json'));
+	
+	$('#head_id').val(json_obj.id);
+	var p_html = '';
+	p_html+= '<div class="multi-audio-item " data-id="'+json_obj.id+'">';
+	p_html+= '    <div class="input-group">';
+	p_html+= '       <input type="text" class="form-control img-textname" readonly="" value="'+json_obj.community_name+'">';
+	p_html+= '       <input type="hidden" value="'+json_obj.id+'" name="head_id[]">';
+	p_html+= '       <div class="input-group-btn">';
+	p_html+= '            <button class="btn btn-default" data-id="'+json_obj.id+'" onclick="cancle_head(this, '+json_obj.id+')" type="button"><i class="fa fa-remove"></i></button>';
+	p_html+= '       </div>';
+	p_html+= '    </div>';
+	p_html+= '</div>';
+
+	// $(cur_open_div).parent().siblings().remove();
+	$('.multi-audio-details').html(p_html);
+	
+	// $(cur_open_div).val( json_obj.id );
+	layer.close(layer.index); 
+});
+</script>

@@ -1,0 +1,62 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+	<div class="subjects-list-item-0">
+		<div class="rank-subject-item rank-subject-first-item">
+		    <div id="subject-item-header" onclick="location.href='{:U('Subject/index', array('id' => $d['id']) )}';">
+		        <div class="item-header-title">
+		            	{$d.name}
+		        </div>
+		        <div class="item-subject-total" style="display:none;">
+		            28件商品，累计已团1.9万次
+		        </div>
+		        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQBAMAAADdUfNzAAAAIVBMVEUAAACcnJycnJycnJycnJycnJycnJycnJycnJycnJycnJx3mU74AAAAC3RSTlMAfw5vJHdYSjUbQQwBkC0AAAAySURBVAjXY+AoYgCCicIKQFJV0AhIsgiCOY6onAQgySUYAGFDxMFqIEywXpg5IDNhAAB0CwdERcuYjQAAAABJRU5ErkJggg==">
+		    </div>
+		    <div class="subject-goods-container">
+		        <ul class="subject-goods-wrapper rank-subject-scroll-subjects-list-item-0">
+		           	
+		           	<volist name="d.list" id="good">
+		           	<li onclick="location.href='{:U('/goods/'.$good['goods_id'])}';">
+		                <img src="{$fan_ly_image}" class="scrollLoading subject-goods-img" data-echo="{$good.image}">
+		                <p class="goods-name">{$good.name} </p>
+		                <div class="goods-price">
+		                    <b class="price-icon">￥</b>
+		                    <b class="price-num">{$good.pinprice}</b>
+		                </div>
+		            </li>
+		            </volist>
+		            <li onclick="location.href='{:U('Subject/index', array('id' => $d['id']) )}';">
+		                <div class="subject-see-bg">
+		                    <div class="subject-see-all">
+		                        <div>
+		                            	全部
+		                        </div>
+		                        <div class="see-all-en-text">
+		                            see all
+		                        </div>
+		                    </div>
+		                </div>
+		            </li>
+		        </ul>
+		    </div>
+		</div>
+	</div>
+</volist>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

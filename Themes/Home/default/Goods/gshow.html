@@ -1,0 +1,984 @@
+<extend name="Public:mogubase" />
+<block name="content">    
+
+<script src="__PUBLIC__/js/jquery/jquery-2.0.3.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/mogu/index.css-62d47ac4.css" /> 
+<link rel="stylesheet" href="__PUBLIC__/mogu/index.css-ef2aebcd.css" /> 
+<script src="__PUBLIC__/pinduoduo/js/clocktime.js"></script>
+<script>
+      (function(){
+        /**
+         * 初始化页面Rem
+         * @param {int} [size=100] 写在less里的size值，例如 @size: 100; width: 750rem/@size;
+         */
+        var initRem = function (size) {
+            size = +size || 100;
+			console.log(size);
+            var documentElement = window.document.documentElement;
+            var width = Math.min(documentElement.clientWidth, 750);
+            documentElement.style.fontSize = width / (750 / size) + "px";
+			console.log(size);
+        }
+
+        initRem(50);
+		$(window).resize(function() {  initRem(50); });
+      })()
+	  
+</script>
+<script src="__PUBLIC__/pinduoduo/js/TouchSlide.1.1.js"></script>
+<script>
+$(function(){
+	<?php if(!empty($goods_image)){ ?>
+	TouchSlide({ 
+			slideCell:"#focus",
+			titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+			mainCell:".tempWrap ul", 
+			delayTime:200,
+			interTime:5000,
+			autoPlay:true,
+			effect:"leftLoop", 
+			autoPage:true, //自动分页
+			switchLoad:"_src"
+		});
+	<?php } ?>
+})		
+</script>
+<style>
+.graphic-list img{width:100%;}
+.focus .hd {
+    width: 100%;
+    height: 11px;
+    position: absolute;
+    z-index: 1;
+    bottom: 5px;
+    text-align: center;
+}
+.focus .hd ul {
+    display: inline-block;
+    height: 5px;
+    padding: 3px 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 0;
+    vertical-align: top;
+}
+.focus .hd ul li {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: #8C8C8C;
+    margin: 0 5px;
+    vertical-align: top;
+    overflow: hidden;
+}
+.focus .hd ul .on {
+    background: #FE6C9C;
+}
+.focus .bd li img{width:100%;}
+.primary-info .info-price .pintuan strong {font-size: 0.88rem;}
+</style>
+
+<div id="main" > 
+   <header id="M_headBar" class="ui-head-bar"></header> 
+   <div id="views">
+    <div id="DetailPrimary"> 
+     <!-- 商品详情-首屏 --> 
+     <div class="detail-wrap detail-primary"> 
+      <!-- 导航条 --> 
+      <div class="primary-navbar clearfix hide"> 
+       <a href="javascript:void(history.back());" class="back icon-uniE809"></a> 
+       <a href="/x6/cart/list?sfrom=http%3A%2F%2Fm.meilishuo.com%2Fwap%2Fdetail%2F1klkeo0%3Fptp%3Dm1._mf80_1067_11248.0.43.DXaWEP3" class="cart icon-uniE810"></a> 
+      </div> 
+      <!-- 图片轮播 --> 
+      <div class="primary-swiper"> 
+      
+	       <div id="focus" class="focus goods-focus ect-padding-lr ect-margin-tb" > 
+	                <div class="hd focus_title">
+						<ul>
+							<?php 
+							$i =1;
+							foreach ($goods_image as $image) { ?>
+	                       <li <?php if($i == 1){ ?>class="on" <?php } ?>>1</li>
+	                       <?php $i++; }?>
+						</ul>
+					</div>
+	                <div class="bd">
+	                    <div class="tempWrap" style="overflow:hidden; position:relative;">
+							<ul style="">
+								<?php 
+									foreach ($goods_image as $image) { ?>
+								<li>
+									<img _src="<?php echo C('SITE_URL').$image['thumb'];?>">
+								</li>
+								 <?php } ?>
+							</ul>
+						</div>
+	                </div>
+	            </div>
+       
+      </div> 
+      <!-- 基本信息 --> 
+      <div class="primary-info"> 
+       <div class="info-title break"> 
+        <span>{$goods.name}</span> 
+       </div> 
+      
+       <!-- 价格 --> 
+       <div class="info-price flex J_InfoPrice"> 
+         <?php if($goods['type'] == 'integral'){ ?>
+		 <span class="flex"> 
+        	<span class="now">{$goods.score}积分</span> 
+        	<span class="market">¥{$goods.price}</span>
+         <!-- 价格后面的标志 --> 
+        </span>
+		<?php }else if($goods['type'] == 'pintuan'){ ?>
+		<span class="flex"> 
+			<span class="now">&yen;{$pin_info.pin_price}</span> 
+			<span class="market">¥{$goods.price}</span>
+		</span>
+		
+		<?php if($voucher_id >0){ ?>
+		<span class="pintuan" style="color: #f69;">券后价：<strong>¥{$pin_info.quan_pin_price}</strong></span>
+		<?php } ?>
+		
+		 <?php }else{ ?>
+		 <span class="flex"> 
+        	<span class="now">&yen;{$goods.danprice}</span> 
+        	<span class="market">¥{$goods.price}</span>
+         <!-- 价格后面的标志 --> 
+         </span>
+		<?php if($voucher_id >0){ ?>
+		<span class="pintuan">券后价：{$goods.quan_danprice}</span>
+		<?php } ?>
+		
+		 <?php } ?>
+		
+         <?php if($goods['type'] == 'pintuan'){ ?>
+         <span class="pintuan">已团{$goods.seller_count}件 · {$goods_price_arr.pin_count}人团</span>
+         <?php } ?> 
+       </div> 
+       <!-- 其他（如存在商品banner 或 非大促时，不显示上边框） --> 
+       <div class="info-other info-other-notopbor" style="display:none;"> 
+        <span class="item">销量{$goods['seller_count']}</span> 
+        <span class="item">收藏294人</span> 
+        <span class="item">72小时发货</span> 
+        <span class="item">广东 佛山</span> 
+       </div> 
+       <?php if(!empty($goods['tag'])){ ?>
+       <div class="services-container">
+        <div class="info-services" id="J_Services"> 
+         <div class="flex service-list"> 
+         
+         	<?php if(!empty($goods['tag'])){ ?>
+                 <div class="td2_info" style="position:relative;">
+                 	<?php 
+                 		$tags = $goods['tag'];
+								
+	                ?>
+                 	<?php 
+                 		if(!empty($tags)){
+								$i = 1;
+							foreach($tags as $val){
+								if($i >4)
+									break;
+	                ?>    
+			
+			<span class="service-item"> <img class="service-icon" src="__PUBLIC__/mogu/image/upload_ie4tkmbtgqztomjqhezdambqgqyde_44x44.png" /> <span class="service-name"><?php echo $val; ?></span> </span> 
+          
+			
+                     <?php $i++; } ?>
+			
+                     <?php } ?>
+                      
+                 </div>
+           <?php } ?>
+          
+         </div> 
+         <img class="service-arrow" src="https://s10.mogucdn.com/mlcdn/c45406/170711_701e7hcfi1j9fe76hgd560bj28d87_14x22.png" alt="" />
+        </div>
+       
+       </div> 
+       <?php } ?>
+	   
+       <?php if(!empty($fujin_tuan['list'])){ ?>
+	   <style>
+		.detail-wrap2 {
+			overflow: hidden;
+			max-width: 15rem;
+			margin: 0 auto;
+			background: #fff;
+		}
+		.detail-join .join-top {
+			height: .2rem;
+			background: #f2f5f8;
+		}
+		.detail-join .join-info .join-title {
+			padding: 0 .4rem;
+			height: 1.8rem;
+			line-height: 1.8rem;
+			font-size: .56rem;
+			color: #333;
+		}
+		.detail-join .join-info .join-list .join-list-item {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: flex;
+			padding: 0 .4rem;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			-moz-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			height: 2.4rem;
+			border-bottom: 1px solid #f2f5f8;
+		}
+		.detail-join .join-info .join-list .join-list-item img {
+			width: 1.6rem;
+			height: 1.6rem;
+			border-radius: 50%;
+		}
+		.detail-join .join-info .join-list .join-list-item .tuan-content {
+			width: 9rem;
+			padding-left: .32rem;
+		}
+		.detail-join .join-info .join-list .join-list-item .tuan-content .user-name {
+			font-size: .56rem;
+		}
+		.detail-join .join-info .join-list .join-list-item .tuan-info {
+			color: #999;
+			font-size: .48rem;
+		}
+		.detail-join .join-info .join-list .join-list-item .tuan-join {
+			font-size: .56rem;
+			color: #fff;
+			width: 3.6rem;
+			height: 1.2rem;
+			line-height: 1.2rem;
+			text-align: center;
+			border-radius: 1.2rem;
+			background: #f69;
+		}
+	   </style>
+	   <div class="detail-wrap2 detail-join"> 
+		   <div class="join-top"></div> 
+		   <div class="join-info"> 
+			<div class="join-title">
+			 该商品正在开团
+			</div> 
+			<ul class="join-list"> 
+			<?php $j=0; foreach($fujin_tuan['list'] as $tuan){ ?>
+			 <li class="join-list-item"> 
+				<img src="<?php echo $tuan['avatar']; ?>" /> 
+			  <div class="tuan-content"> 
+			   <div class="user-name">
+				<?php echo $tuan['name']; ?>
+			   </div> 
+			   <div class="tuan-info"> 
+				<span class="tuan-left">还差<?php echo $tuan['re_need_count']; ?>人</span> 
+				<span class="tuan-time"><span class="J_TuanCountDown clock-on clock_div" endtime="<?php echo date('m/d/Y H:i:s', $tuan['end_time']);?>">22:18:01</span></span> 
+			   </div> 
+			  </div> <a class="tuan-join" href="<?php echo $tuan['url']; ?>">去参团</a> 
+			  </li> 
+			  <?php } ?>
+			</ul> 
+		   </div>
+	  </div>
+		<script>
+			$(function(){
+				lxfEndtime();
+			})
+		</script>
+	<?php } ?>
+      </div> 
+      <!-- 下载和单品活动资源位 --> 
+      <div class="primary-promotions-container"></div> 
+      <!-- 其他 --> 
+      <div style="display:none"> 
+      </div> 
+     </div>
+    </div>
+    <!-- 商品详情-店铺 -->
+    <div class="detail-wrap detail-shop" id="DetailShop"> 
+     <!-- 顶部 --> 
+     <div class="shop-top"></div> 
+     <!-- 信息 --> 
+     
+     
+    </div>
+    <div id="recommend-primary-container" style="display:none;">
+     <!-- 商品详情-为你推荐 -->
+     <div class=" detail-wrap detail-recommend-primary"> 
+      <!-- 顶部 --> 
+      <div class="recommend-top"></div> 
+      <div class="recommend-head">
+       为你推荐
+      </div> 
+      <div class="recommend-goods"> 
+       <div class="swiper-recommend-container swiper-container-horizontal"> 
+        <div class="swiper-wrapper"> 
+         <div class="swiper-slide swiper-slide-active" style="width: 608px; margin-right: 6.848px;"> 
+          
+         </div> 
+        </div> 
+        <div class="swiper-pagination swiper-pagination-clickable">
+         <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
+         <span class="swiper-pagination-bullet"></span>
+         <span class="swiper-pagination-bullet"></span>
+         <span class="swiper-pagination-bullet"></span>
+        </div> 
+       </div> 
+      </div>
+     </div>
+    </div>
+    
+    <!-- 商品详情-标签页 -->
+    <div class="detail-wrap detail-tabpanel"> 
+     <!-- 顶部 --> 
+     <div class="tabpanel-top"></div> 
+     <!-- 占位 --> 
+     <div class="tabpanel-occupying" id="TabpanelOccupying"> 
+      <!-- 标签 --> 
+      <nav class="tabpanel-tabs center"> 
+       <li class="tab-item active"> <span><a href="#PanelGraphic">图文详情</a></span> <i></i> </li> 
+       <li class="tab-item"> <span><a href="#PanelRates">评价({$order_comment_count})</a></span> <i></i> </li> 
+       <li class="tab-item"> <span class="shop-hot"><a href="#PanelRecommend">热卖推荐</a></span> <i></i> </li> 
+      </nav> 
+     </div> 
+     <!-- 面板 --> 
+     <div class="tabpanel-panels" id="TabpanelPanels"> 
+      <!-- 图文详情 --> 
+      <div class="panel-item" id="PanelGraphic">
+       <!-- 商品详情-图文详情 -->
+       <div class="detail-graphic"> 
+       
+        <!-- 图文列表 --> 
+        <div class="graphic-list"> 
+        
+        <?php echo htmlspecialchars_decode($goods['description']); ?>
+          
+        </div> 
+       </div>
+       
+      </div> 
+      <!-- 商品参数 --> 
+      
+      <!-- 商品评价 --> 
+      <div class="panel-item" id="PanelRates">
+       <div class="detail-wrap detail-rates"> 
+        <!-- 顶部 --> 
+		<?php if($order_comment_count <= 0){ ?>	
+			<div class="rates-top"></div> 
+			<p class="empty">暂无评价</p>
+		<?php }else{ ?>
+			<div class="rates-head plr30">  
+				<a class="title" href="{:U('goods/comment', array('id' => $goods['goods_id']) )}">购买评价 
+					<span class="more">更多<i class="arrow"></i></span>
+				</a>  
+			</div>
+			<div class="rates-list plr30">  
+				<?php  foreach($comment_list as $comment){ ?>
+				<div class="rate-item"> 
+					<div class="rate-user"> 
+						<span class="user-info"> 
+							<img class="avatar" src="<?php echo $comment['avatar']; ?> "> 
+							<span class="name"><?php echo $comment['name']; ?></span> 
+						</span> 
+					</div>   
+					<div class="rate-cont">
+						<?php echo $comment['content']; ?>
+					</div>
+					<div class="rate-attr"> 
+						<span class="time"><?php echo date('Y-m-d', $comment['add_time']); ?></span> 
+						<span class="sku"><?php echo $comment['option_str']; ?></span> 
+					</div>  
+					<?php if(!empty($comment['images'])) { ?>
+					<div class="rate-imgs show-img">  
+						<?php foreach($comment['images'] as $img){ ?>
+						<a href="{:U('goods/comment', array('id' => $goods['goods_id']) )}" class="item"> 
+							<img src="<?php echo $img; ?>" > 
+						</a>  
+						<?php } ?>
+					</div>	
+					<?php } ?>
+					
+				</div>
+				<?php } ?>
+			</div>
+		<?php } ?>
+		
+		
+       </div>
+       <!-- 大图 -->
+       <div class="big-imgs-wrap" id="J_BigImgsWrap"></div>
+      </div> 
+      
+      <!-- 热卖推荐 --> 
+      <div class="panel-item" id="PanelRecommend">
+       <!-- 商品详情-热卖推荐 -->
+       <div class="detail-recommend"> 
+        <!-- 顶部 --> 
+        <div class="recommend-top"></div> 
+        <!-- 标题 --> 
+        <div class="recommend-head plr30"> 
+         <span class="title">热卖推荐</span> 
+        </div> 
+        <div class="recommend-goods"> 
+         <div class="hot-list"> 
+          <ul class="clearfix"> 
+          
+           {~W('Product/related_goods_list',array('goods_id' => $goods['goods_id']))}
+          
+           
+           
+          </ul> 
+         </div> 
+        </div> 
+       </div>
+      </div> 
+     </div>
+    </div>
+    <!-- 商品详情-底部占位 -->
+    <div class="detail-occupying"></div>
+    <!-- 普通详情页footbar -->
+    		
+				
+    <!-- 商品详情-工具条 -->
+    <div class="detail-wrap detail-footbar" id="DetailFootbar"> 
+     
+	 
+	 <div class="footbar-shop" onclick="location.href='{:U('Index/index')}';"> 
+      <i class="icon"></i> 
+      <span class="text">首页</span> 
+     </div>
+     <div class="footbar-im" onclick="location.href='{:U('Seller/kefu_seller', array('store_id' => $seller_info['s_id'],'goods_id' => $goods['goods_id'])  )}';" > 
+      <i class="icon"></i> 
+      <span class="text">客服</span> 
+     </div>  
+      
+     <!-- 喜欢 --> 
+     <div class="footbar-fav <?php if($fav_like){ ?>footbar-faved<?php } ?>"  id="favorite"> 
+      <i class="icon"></i> 
+      <span class="text">收藏</span> 
+     </div> 
+     <!-- 购买 --> 
+     <?php if($goods['type'] == 'pintuan'){ ?>
+	 <div class="footbar-buy"> 
+     	<div class="table-inner buy-cart"   id="J_buy-single"> 
+     		<div class="li16 footbar-buy-price">¥{$goods.danprice}</div> 
+     		<div class="li16 footbar-buy-text">单独购买</div> 
+     	</div>
+        <div class="table-inner buy-now" id="J_buy-tuan"> 
+     		<div class="li16 footbar-buy-price">¥{$pin_info.pin_price}</div> 
+     		<div class="li16 footbar-buy-text">立即拼团</div> 
+     	</div>
+     </div>
+	 <?php }elseif($goods['type'] == 'lottery'){ ?>
+	
+		 <?php 
+			if($lottery_info['end_time'] <= time() )
+			{
+		 ?>
+			<?php if($lottery_info['is_open_lottery'] == 1){ ?>
+			
+			 <div class="footbar-buy w752" onclick="location.href='{:U('Goods/lotteryinfo', array('goods_id' => $goods['goods_id']))}';"> 
+				<div class="table-inner buy-now" > 
+					<div class="table-inner"> <div class="fz-18">查看开奖结果</div> </div>
+				</div>
+			 </div>
+			<?php }else{?>
+			<div class="footbar-buy w752"> 
+				<div class="table-inner buy-now" > 
+					<div class="table-inner"> <div class="fz-18">等待开奖</div> </div>
+				</div>
+			 </div>
+			<?php } ?>
+		 
+		 <?php }else{ ?>
+		 <div class="footbar-buy w752"> 
+			<div class="table-inner buy-now" id="J_buy-tuan"> 
+				<div class="li16 footbar-buy-price">¥{$pin_info.pin_price}</div> 
+				<div class="li16 footbar-buy-text">立即开团参与抽奖</div> 
+			</div>
+		 </div>
+		 <?php } ?>
+	 <?php }elseif($goods['type'] == 'integral'){ ?>
+	 <div class="footbar-buy"> 
+     	<?php if($member_info['score'] >= $goods['score']){ ?>
+        <div class="table-inner buy-now" style="width:7.52rem;" id="J_buy-tuan"> 
+     		<div class="li16 footbar-buy-price">{$goods.score}积分</div> 
+     		<div class="li16 footbar-buy-text">立即兑换</div> 
+     	</div>
+		<?php }else { ?>
+		<div class="table-inner buy-now" style="width:7.52rem;background-color:#a3a1a1;" > 
+     		<div class="li16 footbar-buy-price">{$goods.score}积分</div> 
+			<div class="li16 footbar-buy-text" >积分不足</div> 
+     	</div>
+		<?php } ?>
+     </div>
+     <?php }else{ ?>
+      <div class="footbar-buy" > 
+      	<span class="buy-cart" id="J_buy-single">加入购物车</span> 
+      	<span class="buy-now"  id="J_buy-singledel">购买</span> 
+     </div> 
+     <?php } ?>
+     
+    </div>
+    
+    <style>
+	.w752 {
+		width: 7.52rem;
+	}
+	.w752 .buy-now {
+		width: 7.52rem;
+	}
+	.li16{line-height: .6rem;font-size: .56rem;padding-top: 0.4rem;}
+    </style>
+    
+    
+    <div class="confirm-315-noReasonRefound J-confirm"> 
+     <div class="confirm-content"> 
+      <div class="confirm-text"> 
+       <span>此商品不支持7天无理由退货</span> 
+       <span>请知晓哦</span> 
+      </div> 
+      <div class="confirm-btn"> 
+       <span class="confirm-btn-cancel" id="J-confirm-cancel">取消</span> 
+       <span class="confirm-btn-confirm" id="J-confirm-ok">继续购买</span> 
+      </div> 
+     </div>
+    </div>
+    
+    
+    <section id="J_GoodsSku" class="goods-sku" style="visibility: hidden;"> 
+     <div class="content"> 
+      <div class="sku-title"> 
+       <div class="sku-title-img"> 
+        <img src="<?php echo resize($goods['image'], 320, 480); ?>" alt="" id="J_sku-img" /> 
+       </div> 
+       <div class="sku-title-desc"> 
+        <span class="sku-title-text">{$goods.name}</span> 
+        <span class="sku-title-price"> 
+			
+			<span class="price" id="J_sku-price">&yen;{$goods.danprice}</span><?php if($goods['type'] == 'integral'){ ?>积分 <?php } ?>
+		
+        	<span class="sku-stock">库存<span class="stock">{$goods.quantity}</span>件</span> 
+        </span> 
+        <span class="sku-title-addon texts"></span> 
+       </div> 
+       <span class="close">╳</span> 
+      </div> 
+      <div class="scroll"> 
+       <div class="sku-list"> 
+       	
+       	<?php $ck_option_option_arr = array();
+			foreach($options['list'] as $option){ ?>
+			
+			<dl class="style clearfix"> 
+	         <dt>
+	         	<?php echo $option['name']; ?>：
+	         </dt> 
+	         <dd> 
+	          <ol class="J_StyleList style-list clearfix J_sku-list" >
+	          		<?php $i =0; foreach($option['option_value'] as $option_value){ ?>
+	           		<li class="sku-item <?php if($i==0){ ?>c <?php $ck_option_option_arr[] = $option_value['option_value_id']; } ?>" data-id="<?php echo $option_value['option_value_id']; ?>" title="<?php echo $option_value['name']; ?>"> <?php echo $option_value['name']; ?></li>
+	           		<?php $i++; } ?>
+	          </ol> 
+	         </dd> 
+	        </dl>
+		<?php } ?>	
+       </div> 
+       <div class="sku-num"> 
+        <p class="title">数量:</p> 
+        <div class="clearfix"> 
+         <div class="sku-counter"> 
+          <span class="num-reduce num-disable "> 
+          <b class="reduce-icon J_amount-minus minus">－</b> </span> 
+          <em class="num-input J_amount amount">1</em> 
+          <span class="num-add"> <b class="add-icon J_amount-plus plus">＋</b> </span> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+		<div class="action_all" id="dan_buy">
+			<div class="action" style="float:left;width:50%;"> 
+				<span class="confirm" style="background-color:#ffe817;color:#000;" id="J_sku-seleted-car">加入购物车</span> 
+			</div> 	
+			<div class="action" style="float:left;width:50%;"> 
+				<span class="confirm" style="background-color:#f69;" id="J_sku-seleted-derbuy">立即购买</span> 
+			</div> 
+			<div style="clear:both;"></div>
+		</div>
+		<div class="action"  id="pin_buy" style="display:none;"> 
+       		<span class="confirm" style="background-color:#f69;" id="J_sku-seleted-pin">立即购买</span> 
+		</div> 
+     
+     </div>
+    </section>
+    
+    <div id="M_Mask" style="display:none;" class="ui-mask"></div>
+    
+    <div class="detail-plus" id="DetailPlus"> 
+     	<a href="{:U('Cart/show_cart_goods')}" class="cart"> 
+     		<i class="cart-num" id="cart-num" >{$total}</i> 
+     	</a> 
+     	<a class="gotop" href="#" style="display: block;"></a>
+    </div>
+    
+   </div> 
+  </div>
+  
+  
+  <div class="popup-mask" style="display: none;position: fixed; width: 100%;height: auto;top: 50%;z-index: 999999999; background: rgba(0, 0, 0, 0);">
+		<div class="popup-main" style="     max-width: 50%;  height: auto;margin: auto;background-color: rgba(0,0,0,.8);color: #f0f0f0;font-size: 16px;padding: 10px;text-align: center;border-radius: 5px;box-shadow: 0 0 24px -1px #383838;  background: rgba(41, 49, 61, 0.701961);">
+			<div class="popup-content"><div style="color:#fff;font-size:0.6rem;margin:0"></div>
+			</div>
+		</div>
+  </div>
+  {~W('Share/common_goods_share',array($goods['goods_id']))}
+<include file="Widget:pin_notify" /> 
+
+
+<style>
+.pin_tips_container{
+	height: 1.2rem;
+		
+}
+.pin_tips_user_pic{
+	height: 1.12rem;
+    width: 1.12rem;
+}
+.pin_tips_info{
+	line-height: 1.2rem;
+}
+</style>
+<include file="Public:foot_lazy" />
+
+  <script>
+    var buy_type = 'dan';
+	var voucher_id = "<?php echo $voucher_id; ?>";
+    var singledel = 0;
+	var pin_price = "{$pin_info.pin_price}";
+    
+	var pin_id = "{$pin_id}";
+	<?php  if(!empty($options['list'])){ ?>
+	var has_option = true;
+	var ck_opton_val_id = "<?php echo implode('_',$ck_option_option_arr); ?>";
+	var goods_option_value_arr= {};
+	
+	<?php foreach($goods_option_mult_value_ref as  $key =>$mult_vl){ ?>
+	goods_option_value_arr['<?php echo $key; ?>'] ={pin_price:<?php echo $mult_vl['pin_price']; ?>,price:<?php echo $mult_vl['dan_price']; ?>,quantity:<?php echo $mult_vl['quantity']; ?>,image:"<?php echo $mult_vl['image']; ?>",rela_goodsoption_valueid:"<?php echo $mult_vl['rela_goodsoption_valueid']; ?>"};	
+	<?php } ?>
+	
+	<?php }else{ ?>
+	var has_option = false;
+	<?php } ?>
+	
+	var goods_id = {$goods.goods_id};
+	
+	
+	function show_mask(title)
+	{
+		$('.popup-content div').html(title);
+		
+		$('.popup-mask').fadeIn(1500,function(){
+			$('.popup-mask').fadeOut(1500);
+		})
+		
+	}
+	
+	function change_sku_price()
+	{
+		var ck_pot = [];
+		var ck_html_arr = []; 
+		$('.J_sku-list .c').each(function(){
+			ck_pot.push($(this).attr('data-id'));
+			ck_html_arr.push( $(this).html() );
+		})
+		if(ck_pot.length <=0)
+		{
+			return false;
+		}
+		var ck_opt_str = ck_pot.join('_');
+		
+		if(goods_option_value_arr[ck_opt_str]  == undefined)
+		{
+			ck_pot = ck_pot.reverse();
+			ck_opt_str = ck_pot.join('_');
+		}
+		var ck_html_str = ck_html_arr.join(' ');
+		
+		var option_obj = goods_option_value_arr[ck_opt_str];
+		
+		var J_amount = parseInt( $('.J_amount').html());
+		
+		if(J_amount >option_obj.quantity){
+			J_amount =option_obj.quantity;
+			$('.J_amount').html(J_amount);
+		}
+		
+		if(buy_type == 'dan'){
+			
+			$('.stock').html(option_obj.quantity);
+			$('#J_sku-price').html( (option_obj.price * J_amount).toFixed(2));
+		} else {
+			$('#J_sku-price').html( (option_obj.pin_price * J_amount).toFixed(2) );
+		}
+		
+		$('#J_sku-img').attr('src', option_obj.image);
+		
+		$('.texts').html('已选 '+ck_html_str);
+		
+	}
+	function get_choose_sku()
+	{
+		var ck_pot = [];
+		var ck_html_arr = []; 
+		$('.J_sku-list .c').each(function(){
+			ck_pot.push($(this).attr('data-id'));
+			ck_html_arr.push( $(this).html() );
+		})
+		if(ck_pot.length <=0)
+		{
+			return false;
+		}
+		var ck_opt_str = ck_pot.join('_');
+		
+		if(goods_option_value_arr[ck_opt_str]  == undefined)
+		{
+			ck_pot = ck_pot.reverse();
+			ck_opt_str = ck_pot.join('_');
+		}
+		var ck_html_str = ck_html_arr.join(' ');
+		
+		var option_obj = goods_option_value_arr[ck_opt_str];
+		return option_obj;
+	}
+	//提交购物车
+	function submit_cart()
+	{
+		var sku_str = '';
+		var quantity = 1;
+		//goods_id  Cart/add
+		
+		var option_obj = get_choose_sku();
+		//rela_goodsoption_valueid  
+		quantity = parseInt( $('.J_amount').html());
+		
+		if(has_option)
+		{
+			sku_str = option_obj.rela_goodsoption_valueid
+		}
+		
+		$.ajax({
+			url:"{:U('Cart/add')}",
+			type:'post',
+			data:{goods_id:goods_id,quantity:quantity,sku_str:sku_str,buy_type:buy_type,pin_id:pin_id,singledel:singledel},
+			dataType:'json',
+			success:function(ret){
+				
+				if(ret.code == 1){
+					//单独加入购物车成功
+					$('#J_GoodsSku').css('visibility','hidden');
+					$('#cart-num').html(ret.total);
+					show_mask('加入购物车成功');
+					$("#M_Mask").hide();
+					if(singledel == 1){
+						location.href = "{:U('Cart/checkout', array('singledel' =>1, 'voucher_id' => $voucher_id))}";
+						return false;
+					}
+						
+				}else if(ret.code ==2){
+					//活动购物加入购物车成功
+					location.href = "{:U('Cart/checkout',array('buy_type'=>'pin' , 'voucher_id' => $voucher_id))}";
+				}
+				else if(ret.code ==3)
+				{
+					show_mask(ret.msg);
+				}
+				else if(ret.code ==0){
+					//错误 可能需要跳转
+					if(ret.url !=''){
+						location.href = ret.url;
+						return false;
+					}else {
+						show_mask(ret.msg);
+					}
+				}
+				
+			}
+		})
+		
+		
+	}
+	
+	$(function(){
+		
+		$('.tabpanel-tabs .tab-item').click(function(){
+			$(this).addClass('active').siblings().removeClass('active');
+		})
+		
+		
+		$('#J_sku-seleted-car').click(function(){
+			singledel = 0;
+			submit_cart();
+		})
+		$('#J_sku-seleted-derbuy').click(function(){
+			singledel =1;
+			submit_cart();
+		})	
+		$('#J_sku-seleted-pin').click(function(){
+			submit_cart();
+		})
+			
+		$('#J_sku-seleted').click(function(){
+			submit_cart();
+		})
+		
+		$('.J_amount-plus').click(function(){
+			
+			
+			var option_obj =  get_choose_sku();
+			
+			var J_amount = parseInt( $('.J_amount').html());
+			
+			if(option_obj.quantity <=J_amount){
+				J_amount = option_obj.quantity
+			}else{
+				J_amount = J_amount +1;
+			}	
+			
+			$('.J_amount').html(J_amount);
+			change_sku_price();
+		})
+		$('.J_amount-minus').click(function(){
+			var J_amount = parseInt( $('.J_amount').html());
+			if(J_amount == 1){
+				return false;
+			}else if(J_amount >1){
+				J_amount = J_amount -1;
+				$('.J_amount').html(J_amount);
+				change_sku_price();
+			}
+		})
+		$('#J_sku-closed').click(function(){
+			$('#J_sku-masks').hide();
+		})
+		
+		$('#J_buy-tuan').click(function(){
+			
+			$('#pin_buy').show();
+			$('#dan_buy').hide();
+			
+			buy_type = 'pin';
+			$('#J_sku-price').html( pin_price);
+			if(has_option)
+			{
+				change_sku_price();
+				$('#J_GoodsSku').css('visibility','visible');
+			} else {
+			
+				submit_cart();
+			}
+		})
+		
+		$('.sku-item').click(function(){
+			$(this).addClass('c').siblings().removeClass('c');
+			change_sku_price();
+		})
+		
+		
+		$('#J_buy-singledel').click(function(){
+			buy_type = 'dan';
+			singledel = 1;
+			
+			$('#pin_buy').hide();
+			$('#dan_buy').show();
+			
+			if(has_option)
+			{
+				$("#M_Mask").show();
+				change_sku_price(); 
+				$('#J_GoodsSku').css('visibility','visible');
+				//todo dire to 
+				//location.href = "{:U('Cart/checkout')}";
+				return false;
+			} else {
+				submit_cart();
+				
+			}
+		})
+		$('.close').click(function(){
+			$('#J_GoodsSku').css('visibility','hidden');
+			$("#M_Mask").hide();
+		})
+		$('#J_buy-single').click(function(){
+			buy_type = 'dan';
+			singledel = 0;
+			
+			//pin_buy
+			$('#pin_buy').hide();
+			$('#dan_buy').show();
+			
+		//	if(has_option)
+			//{
+				$("#M_Mask").show();
+				change_sku_price(); 
+				
+				$('#J_GoodsSku').css('visibility','visible');
+			//} else {
+			//	submit_cart();
+			//}
+		})
+		
+		$('#J_shop-collect').click(function(){
+			$.ajax({
+				url:'{:U("User/fav_storetoggle")}',
+				type:'get',
+				data:{store_id:<?php echo $seller_info['s_id']; ?>},
+				dataType:'json',
+				success:function(ret){
+					if(ret.code == 1){
+						$('#J_shop-collect').removeClass('marked');
+					} else if(ret.code ==2){
+						show_mask('收藏成功');
+						$('#J_shop-collect').addClass('marked');
+						return false;
+					}
+				}
+				
+			})
+		})
+		$('#favorite').click(function(){
+			
+			$.ajax({
+				url:'{:U("User/fav_toggle")}',
+				type:'get',
+				data:{goods_id:goods_id},
+				dataType:'json',
+				success:function(ret){
+					if(ret.code == 1){
+						$('#favorite').removeClass('footbar-faved');
+					} else if(ret.code ==2){
+						$('#favorite').addClass('footbar-faved');
+						show_mask('收藏成功');
+					//	location.href = ret.url;
+						return false;
+					} else if(ret.code ==0){
+						show_mask(ret.msg);
+						return false;
+					}
+					
+				}
+				
+			})
+		})
+	})
+  </script>
+  
+</block>

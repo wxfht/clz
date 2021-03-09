@@ -1,0 +1,26 @@
+
+<div class="recommend"> 
+    <div class="recommend-hd">
+     流行单品
+     <span></span>
+    </div> 
+    <div class="recommend-bd waterfall-container" id="j-recommend-list" > 
+     <volist name="related_goods" id="d">
+	 <a href="{:U('/goods/'.$d['goods_id'])}" class="goods-item j-goods-item waterfall-frame-0 waterfall-box waterfall-optimise-show" > 
+      <div class="goods-cover lazyloadBg"> 
+		<div class="img">
+			<img src="{$d.image}" width="100%" />
+		</div>
+		
+      </div> 
+      <div class="goods-props"> 
+        <span style="background:none;">{$d.name}</span> 
+      </div> 
+      <div class="goods-price">
+       &yen;{$d.danprice}
+      </div> 
+	  </a>
+	   </volist>
+	
+    </div> 
+   </div> 

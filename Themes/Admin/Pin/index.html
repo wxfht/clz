@@ -1,0 +1,187 @@
+<extend name="Public:base" />
+
+<block name="content">	
+<style>
+.search-row {
+    margin-bottom: 10px;
+}
+</style>
+	<div class="row">
+		<div class="col-xs-12 search-row">
+			<div class="">
+				<ul class="nav nav-tabs">
+	            <li <?php if($state == -1){ ?>class="active" <?php } ?>><a href="{:U('Pin/index')}">全部拼团</a></li>
+	            <li <?php if($state == 1){ ?>class="active" <?php } ?>><a href="{:U('Pin/index', array('state' => 1))}">拼团成功</a></li>              
+	            <li <?php if($state == 2){ ?>class="active" <?php } ?>><a href="{:U('Pin/index', array('state' => 2))}" >拼团失败</a></li>      
+	            <li <?php if($state == 0){ ?>class="active" <?php } ?>><a href="{:U('Pin/index', array('state' => 0))}" >拼团中</a></li>
+	          </ul>
+			</div>
+		</div>
+	</div>
+	
+<div class="row" style="display:none;">
+	<div class="col-xs-12">		    	
+	<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+				<div class="panel-body">
+					
+			    <form id="list-form" method="get" action="#"> 
+			      <div class="col-xs-12 search-row"> 
+			       <div class="col-sm-4">
+			         <span class="form-label">团编号：</span>
+			        <input type="text" name="gid" class="form-item" value="">
+			       </div> 
+			       <div class="col-sm-4">
+			        <span class="form-label">商品ID：</span>
+			        <input type="text" name="goodsId" class="form-item" value="">
+			       </div> 
+			       <div class="col-sm-4">
+			            <span class="form-label">团购状态： </span>
+			            <select name="order_status" class="combox form-item ">
+			            <option value="">all</option>
+			                                    <option value="W">待付款</option>
+			                                                <option value="D">已取消</option>
+			                                                <option value="E">已过期</option>
+			                                                <option value="C">已完成</option>
+			                                                <option value="N">进行中</option>
+			                                    </select> 
+			       </div>
+			      </div> 
+			      <div class="col-xs-12 search-row"> 
+			       
+			        <div class="col-sm-4">
+			         <span class="form-label"> 团购人数：</span>
+			           <input type="text" name="groupNum" class="form-item" value="" placeholder="支持>、<、＝,如>5">
+			       </div>
+			     <div class="col-sm-4">
+			        		<span class="form-label">开始时间：</span>
+			        		<input type="text" name="createStartTime" value="" id="datetimepicker0" class="datetimepicker data_input">
+			        		<a class="red reset" data-did="datetimepicker0" href="#"><i class="icon-trash bigger-130"></i></a>
+			        		
+			        	</div> 
+			       	<div class="col-sm-4">
+			       			<span class="form-label">结束时间：</span>
+			        		<input type="text" name="createEndTime" value="" id="datetimepicker1" class="datetimepicker data_input">
+			        		<a class="red reset" data-did="datetimepicker1" href="#"><i class="icon-trash bigger-130"></i></a>
+			        		
+			        	
+			        	</div> 
+			      </div> 
+			      
+			      <div class="col-xs-12 search-row"> 
+			      
+			          <div class="col-sm-4">
+			        		<span class="form-label">团长UID：</span>
+			        		<input type="text" name="uid" class="form-item" value="">
+			        	</div> 
+			       	<div class="col-sm-4">
+			       			<div class="onlySuper">
+			       				<span class="form-label">所属用户：</span>
+			       				<select title="选择用户" name="muid">
+				      	 				<option value="">全部</option>
+					    				<option value="-1">超级用户</option>
+					    																					<option value="100009">管理员</option>
+													    					
+					    																					<option value="100013">花千千</option>
+													    					
+					    																					<option value="100014">聚啦商城</option>
+													    					
+					    																					<option value="100015">水果商城</option>
+													    					
+					    																					<option value="100016">测试马东</option>
+													    					
+					    																					<option value="100017">花仁网全球精品水果</option>
+													    					
+					    				               		 </select>
+			       			</div>
+			        	</div> 
+			        	   <div class="col-sm-4"> 
+			        <button type="submit" class="btn btn-white"> <i class="icon-search"></i>  检 索 </button> 
+			         <button type="button" class="btn btn-white btn-exp"> <i class="icon-cloud-upload"></i> 导 出 </button> 
+			           
+			       </div> 
+			      </div>
+			      
+			     </form>
+			  
+			</div>
+	</div>	
+</div>
+</div>	
+	
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>			
+						<th>拼团ID</th> 
+						<th>商品ID</th>
+						<th>商品名称</th>
+						<th>状态</th> 						
+						<th>已买/总需</th>					
+						<th>开团时间</th>	
+						<th>到期时间</th>					
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+						<volist name="list" id="v" empty="$empty">
+						<tr>					
+							<td>{$v.pin_id}</td>
+							<td>{$v.goods_id}</td>
+							<td>
+								{$v.name}
+							</td>
+							<td>
+								<?php if($v['state'] == 0){ ?>
+								<span class="blue">拼团中</span>
+								<?php }else if($v['state'] == 1){ ?>
+								<span class="red">已完成</span>
+								<?php }else if($v['state'] == 2){ ?>
+								<span class="grey">已过期</span>
+								<?php } ?>
+							
+							</td>
+							<td><span class="red">{$v.buy_count}</span>/{$v.need_count}</td>
+							<td><?php echo date('Y-m-d H:i:s',$v['begin_time']);?></td>
+							<td>
+								<?php echo date('Y-m-d H:i:s',$v['end_time']);?>
+							</td>
+							<td>
+							
+								<a href='{:U("Pin/show_order",array("pin_id"=>$v["pin_id"]))}' class="btn btn-success btn-sm">查看团信息</a>
+								
+								
+							</td>
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script>	
+$(function(){
+   $("#search").click(function () {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });	
+});
+</script>
+</block>

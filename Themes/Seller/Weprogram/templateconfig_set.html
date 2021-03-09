@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->  
+
+<link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+<link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+<script type="text/javascript">
+            window.sysinfo = {
+            <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+			
+            <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+			
+            <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+			
+            <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+			
+            'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+			
+            'siteroot': '{$_W['siteroot']}',
+                    'siteurl': '{$_W['siteurl']}',
+                    'attachurl': '{$_W['attachurl']}',
+                    'attachurl_local': '{$_W['attachurl_local']}',
+                    'attachurl_remote': '{$_W['attachurl_remote']}',
+                    'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+            'cookie' : {'pre': ''},
+            'account' : {:json_encode($_W['account'])},
+            };
+        </script>
+		
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+<link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+<link href="/static/css/snailfish.css" rel="stylesheet">
+
+   
+<script type="text/javascript" src="/static/js/dist/area/cascade.js"></script>
+<script src="https://map.qq.com/api/js?v=2.exp&key=6R4BZ-WAB3W-JITRG-OE7GY-R2753-P3BZ2" type="text/javascript" charset="utf-8"></script>
+   
+</head>
+<body layadmin-themealias="default">
+
+<div class="layui-fluid">
+	<div class="layui-card">
+		<div class="layui-card-header layui-elem-quote">当前位置：<span class="line-text">消息设置</span></div>
+		<div class="layui-card-body" style="padding:15px;">
+			<form action="" method="post" class="layui-form" lay-filter="component-layui-form-item" enctype="multipart/form-data" >
+			
+				<div class="layui-form-item">
+					<label class="layui-form-label">使用模板消息类型：</label>
+					<div class="layui-input-block">
+						<div class="input-group fixsingle-input-group">
+								
+							<label class='radio-inline'><input type='radio' name='parameter[weprogram_use_templatetype]' value='0' <?php if( !isset($data['weprogram_use_templatetype']) || $data['weprogram_use_templatetype']=='0' ){ ?>checked<?php } ?> title="模板消息" /> </label>
+
+							<label class='radio-inline'><input type='radio' name='parameter[weprogram_use_templatetype]' value='1' <?php if( !empty($data['weprogram_use_templatetype']) && $data['weprogram_use_templatetype'] == 1 ){ ?>checked<?php } ?> title="订阅消息" /> </label>
+							<span class='help-block'>模板消息即将下线，请尽快切换成订阅消息</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label"></label>
+					<div class="layui-input-block">
+						<input type="submit" lay-submit lay-filter="formDemo"  value="提交" class="btn btn-primary"  />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="/layuiadmin/layui/layui.js"></script>
+
+<script>
+	layui.config({
+		base: '/layuiadmin/' //静态资源所在路径
+	}).extend({
+		index: 'lib/index' //主入口模块
+	}).use('index');
+</script>
+
+<script>
+//由于模块都一次性加载，因此不用执行 layui.use() 来加载对应模块，直接使用即可：
+var layer = layui.layer;
+var $;
+
+var cur_open_div;
+
+var can_sub = true;
+layui.use(['jquery', 'layer','form'], function(){ 
+  $ = layui.$;
+  var form = layui.form;
+  
+  form.on('radio(linktype)', function(data){
+		if (data.value == 2) {
+			$('#typeGroup').show();
+		} else {
+			$('#typeGroup').hide();
+		}
+	});  
+
+	form.on('radio(all_msg_send_type)', function(data){
+            if (data.value == 1) {
+                
+				$('#type_1').show();
+				
+            } else if( data.value == 2 )
+			{
+				$('#type_1').hide();
+				$('#type_2').show();
+			}
+			else if( data.value == 3 )
+			{
+				$('#type_1').hide();
+				$('#type_2').hide();
+			}
+			
+        });
+		
+	
+
+	//subtitle
+	$(document).on("input propertychange","#subtitle",function(){
+        
+		//("\r|\n|\\s", "");
+		var s_content = $('#subtitle').val();
+		s_content.replace(/\r|\n|\\s/g,"");
+		
+		var regex3 = /\{\{(.+?)\}\}/g; // {}
+		
+		var new_arr = s_content.match(regex3);
+		
+		var s_html = "";
+		
+		for( var i in  new_arr )
+		{
+			s_html+='	<div class="layui-form-item">';
+			s_html+='		<label class="layui-form-label">'+new_arr[i]+'内容</label>';
+			s_html+='		<div class="layui-input-block">';
+			s_html+='			<input type="text" name="datas['+new_arr[i]+']" class="layui-input" lay-required="true" value="" />';
+			s_html+='		</div>';
+			s_html+='	</div>';
+			
+		}
+		
+		$('#analy_div').html(s_html);
+		
+    });
+	
+	
+	
+	$('#chose_member_id').click(function(){
+		cur_open_div = $(this).attr('data-input');
+		$.post("{:U('user/zhenquery', array('ok' => 1))}", {}, function(shtml){
+		 layer.open({
+			type: 1,
+			area: '930px',
+			content: shtml //注意，如果str是object，那么需要字符拼接。
+		  });
+		});
+	})
+	
+	$('#chose_agent_id').click(function(){
+		cur_open_div = $(this).attr('data-input');
+		$.post("{:U('user/zhenquery_many', array('template' => 'mult'))}", {}, function(shtml){
+		 layer.open({
+			type: 1,
+			area: '930px',
+			content: shtml //注意，如果str是object，那么需要字符拼接。
+		  });
+		});
+	})
+	
+	
+	$('#chose_link').click(function(){
+		cur_open_div = $(this).attr('data-input');
+		$.post("{:U('util/selecturl', array('ok' => 1))}", {}, function(shtml){
+		 layer.open({
+			type: 1,
+			area: '930px',
+			content: shtml //注意，如果str是object，那么需要字符拼接。
+		  });
+		});
+	})
+  
+  
+  form.on('submit(auto_get)', function(data){
+	var loadingIndex = layer.load(); // 加载中动画遮罩层（1）
+	
+	$.ajax({
+		url: "{:U('weprogram/autotemplateconfig',array('ok'=>'1'))}",
+		type: 'get',
+		dataType:'json',
+		success: function (info) {
+		   layer.close(loadingIndex); // 提交成功失败都需要关闭
+			if(info.status == 0)
+			{
+				layer.msg('请选择会员',{time: 1000});
+				
+			}else if(info.status == 1){
+				
+				layer.msg('操作成功',{time: 1000,
+					end:function(){
+						var backurl = "{:U('weprogram/templateconfig')}";
+						location.href = backurl;
+						// location.href = info.result.url;
+					}
+				});
+
+				can_sub = true;				
+			}
+		}
+	});
+	return false;
+	
+  })
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+	 
+	 
+	var gd_ar = [];
+	var gd_str = '';
+	$('.mult_choose_member_id').each(function(){
+		gd_ar.push( $(this).attr('data-member-id') );
+	})
+	gd_str = gd_ar.join(',');
+	
+	data.field.limit_user_list = gd_str;
+	
+	 $.ajax({
+		url: data.form.action,
+		type: data.form.method,
+		data: data.field,
+		dataType:'json',
+		success: function (info) {
+		  
+			if(info.status == 0)
+			{
+				layer.msg(info.result.message,{icon: 1,time: 2000});
+			}else if(info.status == 1){
+				var go_url = location.href;
+				if( info.result.hasOwnProperty("url") )
+				{
+					go_url = info.result.url;
+				}
+				
+				layer.msg('操作成功',{time: 1000,
+					end:function(){
+						location.href = info.result.url;
+					}
+				}); 
+			}
+		}
+	});
+	
+    return false;
+  });
+})
+
+
+function cancle_bind(obj,sdiv)
+{
+	$('#'+sdiv).val('');
+	$(obj).parent().parent().remove();
+}
+
+
+
+</script>  
+</body>

@@ -1,0 +1,293 @@
+<extend name="Public:pinduoduobase" />
+<block name="content">    
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/spike_fa7d87b5cdf7fae91acff20eb96ae665.css">
+<style>
+.spike-goods{margin-left:0.2rem;}
+</style>
+<div id="main">
+<div id="spike-list" style="margin-top:20px;">
+	<div class="base-list-wrapper" id="tuan_list">
+		
+		
+		
+		<volist name="list" id="d">
+		
+		<div class="spike-list-item-0" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+			<div avalonctrl="spike-list-item-0">
+				<?php 
+					$to_night = strtotime(date('Y-m-d')." 23:59:59");
+					$tomo_night = $to_night + 86400;
+					$aftmo_night = $to_night + 86400*2;
+					
+				?>
+			    <?php if(empty($cur_btime) ){ 
+			    	$cur_btime = $d['begin_time'];//首次进入
+					
+			    ?>
+				    <?php if($d['begin_time'] <= time() && $d['end_time'] > time() ){ 
+					
+				    $is_first = true;
+				    ?>
+				    <!-- 正在进行中,并且首次进入 -->
+				     <div class="time-line" style="display:none;">
+				        <!--ms-if-->
+				        <span class="icon"><div class="time-icon time-icon-current"></div><span>
+				        <span class="time-show time-show-current"> <?php echo date('H').':00'; ?> 正在进行中</span> 
+				   	 	</span></span>
+				    </div>
+			    	<?php } else if($d['begin_time'] < $to_night){ ?>
+			    		 <div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $to_night && $d['begin_time'] < $tomo_night){ ?>
+			    		<!-- 明日 -->
+			    		<div class="time-line">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">明日 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $tomo_night && $d['begin_time'] < $aftmo_night){ ?>
+			    		<!-- 后日 -->
+			    		<div class="time-line">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">后天 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>
+			    		<?php }else{ $is_first = false; ?>
+			    		<!-- 很多天以后 -->
+			    		<div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('Y-m-d H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>	
+			    		<?php } ?>
+			    <?php }else if($d['begin_time'] != $cur_btime){ 
+			    	$cur_btime = $d['begin_time'];
+					$is_first = false;
+			    ?>
+			    	  	<?php if($d['begin_time'] < $to_night){ ?>
+			    		 <div class="time-line" style="display:none;">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $to_night && $d['begin_time'] < $tomo_night){ ?>
+			    		<!-- 明日 -->
+			    		<div class="time-line">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">明日 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					    	</span></span>
+					    </div>
+			    		<?php }else if($d['begin_time'] > $tomo_night && $d['begin_time'] < $aftmo_night){ ?>
+			    		<!-- 后日 -->
+			    		<div class="time-line">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show">后天 <?php echo date('H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>
+			    		<?php }else{ ?>
+			    		<!-- 很多天以后 -->
+			    		<div class="time-line">
+					        <!--ms-if-->
+					        <span class="icon"><div class="time-icon"></div><span>
+					        <span class="time-show"> <?php echo date('Y-m-d H',$d['begin_time']).':00'; ?> </span> 
+					   	 	</span></span>
+					    </div>	
+			    		<?php } ?>
+			    <?php }else { 
+			   		 $cur_btime = $d['begin_time'];
+					 $is_first = false;
+			    ?>
+			   <?php } ?>
+			    <div class="spike-goods">
+			    	<?php if($is_first){ ?>
+			        <div class="line line-current" style="display:none;"></div>
+			        <?php }else { ?>
+			        <div class="line " style="display:none;"></div>
+			        <?php } ?>
+			        <img class="spike-img scrollLoading" src="{$fan_ly_image}" data-echo="{$d.image}">
+			        <div class="spike-info">
+			            <div class="spike-goods-name">{$d.name}</div>
+			            <div class="spike-buy">
+			                <div class="all-price">
+			                    <span class="sale-symbol">￥</span>
+			                    <span class="sale-price">{$d.pinprice}</span>
+			                    <span class="market-price">￥<span class="market">{$d.price}<span></span>
+			                </span></span></div>
+			                <?php if($d['quantity'] != 0 && $d['begin_time'] <= time() && $d['end_time'] > time()){ ?>
+			                <div class="left-time spike-button-on">
+			                    <div class="quantity">
+			                        <span class="head">剩余</span>
+			                        <div class="quantity-detail">
+			                            <span>{$d.quantity}件</span>
+			                        </div>
+			                    </div>
+			                    <span class="btnClass">马上抢</span>
+			                </div>
+			                 <?php } ?>
+			                <?php if($d['quantity'] == 0){ ?>
+			                <div class="left-time spike-button-off">
+			                    <div class="quantity">
+			                        <span class="head">剩余</span>
+			                        <div class="quantity-detail">
+			                            <span>{$d.quantity}件</span>
+			                        </div>
+			                    </div>
+			                    <span class="btnClass">已售罄</span>
+			                </div>
+			                <?php } ?>
+			                
+			                <?php if($d['quantity'] != 0 && $d['begin_time'] > time()) { ?>
+			                <div class="left-time spike-button-coming">
+			                    <div class="quantity">
+			                        <span class="head">限量</span>
+			                        <div class="quantity-detail">
+			                            <span>{$d.quantity}件</span>
+			                        </div>
+			                    </div>
+			                    <span class="btnClass">即将开抢</span>
+			                </div>
+			                <?php } ?>
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <!--ms-if-->
+			    <?php if($is_first){ ?>
+			    <div class="view-more" id="more" style="display:none;">
+			        <span>查看之前时间段已售罄商品</span>
+			    </div>
+			    <?php } ?>
+			    <div class="final-icon" style="display:none;"></div>
+			    <!--ms-if-->  
+			</div>
+		</div>
+		<?php $last_btime = $d['begin_time']; ?>
+		</volist>
+		
+	</div>
+</div>
+</div>
+
+<div class="center" id="center_pullup" style="display:none;">
+	 <span><img class="img_rotate" src="__PUBLIC__/pinduoduo/assets/img/pull_loading_8eba142.png"/>
+	 </span><span class="orders_text"></span>
+</div>
+<include file="Public:foot_lazy" />
+<style>
+.center {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.img_rotate {
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 5px;
+    -webkit-animation: loading 1s linear 0s infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.orders_text {
+    line-height: 45px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+</style>
+<script>
+var offset = 0;
+var _pa = 2;
+var is_can_next = 1;
+var cur_url = "{:U('Spike/index')}";
+var wait_url = "{:U('Spike/wait')}";
+var over_url = "{:U('Spike/over')}";
+
+var last_btime = "{$last_btime}";
+var req_step = 1;
+
+
+function loaddata()
+{ 
+	var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());     //浏览器的高度加上滚动条的高度 
+
+	if ($(document).height() <= totalheight+200)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+	{ 
+		if(is_can_next == 1)//加载数据
+		{
+			is_can_next = 0;
+			nextpage();
+		}
+	} 
+}
+
+function nextpage()
+{	
+	$('#center_pullup').show();
+	$.ajax(
+		{ 
+			url: cur_url, 
+			type:'post',
+			data:{page:_pa,last_btime:last_btime},
+			dataType: 'json', 
+			success: function(result){
+				
+				if(result.code == 1)
+				{
+					$('#tuan_list').append(result.html);
+					$('#center_pullup').hide();
+					last_btime = result.fc_last_end_time;
+					
+					_pa++;
+					is_can_next = 1;
+					bindImgEvent();
+				} else if(result.code == 0) {
+					$('#center_pullup').hide();
+					if(req_step == 1){
+						req_step++;
+						_pa = 1;
+						cur_url = wait_url;
+						is_can_next = 0;
+						nextpage();
+					} else if(req_step == 2) {
+						req_step++;
+						_pa = 1;
+						cur_url = over_url;
+						is_can_next = 0;
+						nextpage();
+					} else if(req_step == 3) {
+						$('#center_pullup').remove();
+					}
+					
+				}
+			}
+		}
+	);
+}
+$(function(){
+	nextpage();
+	$(window).scroll( function() { 
+		loaddata();
+	});
+})
+
+</script>
+</block>

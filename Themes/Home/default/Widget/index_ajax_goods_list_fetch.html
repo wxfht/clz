@@ -1,0 +1,90 @@
+
+<?php 
+if(!empty($list)) {
+?>
+<volist name="list" id="d">
+<div class="single-list-item" onclick="location.href='{:U('/goods/'.$d['goods_id'])}'">
+	<div class="goods-image">
+		<img src="{$index_ly_image}" data-echo="__UPLOAD__/{$d.image}" class="scrollLoading" data-url="__UPLOAD__/{$d.image}" width="100%">
+		
+	</div>
+	<p class="goods-name" data-log="" data-reactid="89">
+		{$d.name}
+	</p>
+	<div class="detail" style="height: .5rem;">
+		<div class="local-groups">
+			<span></span>
+			<?php foreach($d['avatar_list'] as $avatar){ ?>
+			<div class="avatar">
+				<img src="<?php echo $avatar['avatar']; ?>">
+			</div>
+			<?php } ?>
+		</div>
+	</div>
+	<div class="detail" data-reactid="90">
+		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAMAAAANmfvwAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAEIUExURUxpcZSUlJCQkJaWlpmZmZWVlZmZmZSUlJSUlJSUlJSUlJOTk5WVlZSUlJSUlJSUlJSUlJWVlZaWlpSUlJWVlZWVlZSUlJSUlJSUlJSUlJWVlZSUlJWVlZWVlX9/f5SUlJWVlZWVlZ+fn5aWlpSUlJSUlJKSkpWVlZmZmZWVlZOTk5WVlZWVlZWVlZaWlpSUlJSUlJWVlZWVlaqqqpSUlJmZmZWVlZOTk5SUlJWVlZSUlJOTk////5WVlZOTk5WVlZWVlZOTk5WVlZWVlZSUlJWVlZaWlpSUlJWVlZycnJSUlJKSkpaWlpSUlJWVlZSUlJWVlZSUlJWVlZOTk5SUlJSUlJSUlJWVlZnIn4UAAABXdFJOUwD3FxYKdgWL+lRlQNDODOvwsD2xmDqN/jxxRm77lgJ68aIIM93VIYAZgy10Y/0s/Hx7xAOlHoxY0eDMZAHvOT9oMqzs7Z9mocgNyTsnMLyg6p5XJrtWJJVjJAMAAAFFSURBVDjL3ZHVloNAEEQbEogQiLu7u7usu2///5/sSCA5yWHfd+ulq5o7Q9MA/GH5/B70+H2/ENEwUoWjpkQEdUXMEK+BeM2QjIFkTIgcHpQzYewGYT97FkxLeVKKBlIkKS+lgwYRoN0ygM1AbABlWgN7IsbbNSjpb7KXoMZdjCMhnuqHa8glde5CHEny1AWwFpgrWAG6vJnkSJwnB7GOE4dxjogCDW5yFCqsXyHO6qZOEPfzdmiaU1dlSJXaOXUd/aPlKeJsAdq4tx+3N9ZgMUOcyjrSn+Bytd4JRz9A2K1XS5z0OWBpuBA3Ep5K2iC6GhZC2Ni+tuoZom7ZFsmOEix/vZwhb++sJACyzHx+uE+I1+9nVq8AUs77JnGj4aB9BLQHwxEpzdvrFBtYe3xQWjKIzhvXBelfqlmnBeSWojzdwb/UDwOrhGgcYFPiAAAAAElFTkSuQmCC">
+		<a class="group-desc" data-reactid="92">
+			{$d.pin_count}人团
+		</a>
+		<a class="sale-price" data-reactid="95">
+			<i data-reactid="96">￥</i>
+			{$d.pinprice}
+		</a>
+		<a class="normal-price" >
+			已团{$d.seller_count}
+		</a>
+	</div>
+	<div class="core" data-log="" data-reactid="101">
+		<span data-reactid="102">去开团</span>
+		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAASBAMAAACdhyI/AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAnUExURf///0xpcf///////////////////////////////////////////+nkmRIAAAAMdFJOUx0AA9zdqt4eH6mPHIvMvyYAAABaSURBVAjXYxCsFgQCBvFkRhBVdsYARK05cxjIZVA9A+IyCMWAuAyCYC6DIJjLIAjmAinNM2ccgIJzzhxhBCtxAGs4wgjW7gA27AjIsDYQR5BBIgVskWADyFoA69EgN3WDDasAAAAASUVORK5CYII=" data-reactid="103">
+	</div>
+</div>
+</volist>
+<?php if(!empty($sublist_list)){  ?>
+<volist name="sublist_list" id="sd">
+<div class="tuan_recommend" style="height: 355.6px;">
+	<div class="tuan_recommend_head">
+	{$sd.name}
+	</div>
+	<div class="tuan_read_more" onclick="location.href='{:U('Subject/index',array('id' => $sd['id']) )}'; ">
+		<span>查看更多</span>
+		<i class="arrow"></i>
+	</div>
+	<ul class="subject-scroll-goods_list_item-24 tuan_bd">
+		
+		<?php  foreach($sd['goods_list'] as $sdcv){ ?>
+		<li onclick="location.href='{:U('/goods/'.$sdcv['goods']['goods_id'])}'">
+			
+			<img src="{$fan_ly_image}" data-echo="<?php echo $sdcv['goods']['image']; ?>"  class="scrollLoading tuan_recommand_forward" style="width: 220px;height:220px;" >
+			
+			<div class="tuan_recommend_title" style="width: 217.6px;">
+			<?php echo $sdcv['goods']['name']; ?>
+			</div>
+			<div class="tuan_recommend_price">
+				￥
+				<span><?php echo $sdcv['goods']['pinprice']; ?></span>
+			</div>
+		</li>
+		<?php } ?>
+	</ul>
+	<div class="fugai"></div>
+</div>
+</volist>
+<?php } ?>
+		
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

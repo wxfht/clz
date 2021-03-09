@@ -1,0 +1,29 @@
+<table class="table table-binfoed">
+	<tr>
+		<th>商品ID</th>
+		<th>商品名称</th>
+		<th>商品图片</th>
+		<th>商品价格</th>
+		<th>商品数量</th>
+	</tr>
+	<?php if(!empty($goods_list)){ ?>
+	<?php foreach($goods_list as $goods){ ?>	
+	<tr>
+		<td><input type="checkbox" class="cgoods_id" rel_name="<?php echo $goods['name']; ?>"  name="goods_id[]" value="<?php echo $goods['goods_id']; ?>" /></td>
+		<td>商品名称:&nbsp;<?php echo $goods['name']; ?></td>
+		<td>
+			<img src="<?php echo resize($goods['image'], 100, 100); ?>" />
+		</td>
+		<td>
+			拼团价：<?php echo $goods['pinprice']; ?>元<br/>
+			单独价：<?php echo $goods['danprice']; ?>元
+		</td>
+		<td>
+			<?php echo $goods['quantity']; ?>
+		</td>
+	</tr>
+	<?php } ?>
+	<?php }else { ?>
+	<tr><td>为搜索到您需要的商品。换个名称试试</td></tr>
+	<?php } ?>
+</table>

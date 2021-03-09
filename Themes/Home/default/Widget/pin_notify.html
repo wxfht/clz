@@ -1,0 +1,143 @@
+<div id="ws-for-push" class="pin_tips_container pin_tips_fadeOut" onclick=''> 
+	<img class="pin_tips_user_pic fl" id="ws-for-avatar" src="https://s17.mogucdn.com/css/images/0.gif"> 
+	<div class="pin_tips_info fl">  
+		<span class="fl">最新拼团来自</span>  
+		<span class="pin_tips_info_name fl" id="ws-for-name"></span>  
+		<span class="fl" id="ws-for-miao"></span> 
+	</div>
+</div>
+
+
+<link rel="stylesheet" href="__PUBLIC__/mogu/pinIndex-126e28067f.css">
+<script type="text/javascript" src="__PUBLIC__/js/swfobject.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/web_socket.js"></script>
+<script>
+if (typeof console == "undefined") {    this.console = { log: function (msg) {  } };}
+// 如果浏览器不支持websocket，会使用这个flash自动模拟websocket协议，此过程对开发者透明
+WEB_SOCKET_SWF_LOCATION = "__PUBLIC__/swf/WebSocketMain.swf";
+// 开启flash的websocket debug
+WEB_SOCKET_DEBUG = true;
+var ws, name, client_list={};
+var domain = document.domain;
+var cur_page = 0;
+
+// 连接服务端
+function connect() {
+   // 创建websocket wss  
+   ws = new WebSocket("wss://mall.shiziyu888.com/wss");
+   // 当socket连接打开时，输入用户名
+   ws.onopen = onopen;
+   // 当有消息时根据消息类型显示不同信息
+   ws.onmessage = onmessage; 
+   ws.onclose = function() {
+	  console.log("连接关闭，定时重连");
+	  connect();
+   };
+   ws.onerror = function() {
+	  console.log("出现错误");
+   };
+}
+
+// 连接建立时发送登录信息
+function onopen()
+{
+	//document.domain
+	// 登录
+	var login_data = '{ "type":"membre_login","domain":"'+domain+'"} ';
+	console.log("websocket握手成功，发送登录数据:"+login_data);
+	ws.send(login_data);
+	//login 
+}
+
+// 服务端发来消息时
+function onmessage(e)
+{
+	var data = eval("("+e.data+")");
+	console.log(data);
+	switch(data['type']){
+		// 服务端ping客户端
+		case 'ping':
+			ws.send('{"type":"pong"}');
+			break;
+			//array('type'=>'resv_blog','blog_id'=>$blog_id);
+		case 'member_buy_msg':
+			on_member_buy_msg(data);
+			break;
+	} 
+}
+function on_member_buy_msg(data)
+{
+	//cur_page = data.page;
+	
+	jarray.push(data);
+}
+
+function send_bao_notify(res)
+{
+	
+	var buy_data = '{ "type":"member_buy","avatar":"'+res.avatar+'","miao":"'+res.miao+'","order_id":"'+res.order_id+'","username":"'+res.username+'","order_url":"'+res.order_url+'"} ';
+	
+	ws.send(buy_data);
+}
+
+	var jarray=[];
+	var t;
+	var d;
+	var ck_lo_pt = "<?php echo U('Order/notify_order', array('rt' => mt_rand(1,99999))); ?>";
+	$(function(){
+		t = setTimeout(shownoticeorder,1000);
+		connect();
+		d=setInterval(checknoticeorder,4000);
+		
+	})
+	function shownoticeorder()
+	{
+		$.ajax({
+			url:ck_lo_pt,
+			type:'get',
+			dataType:'json',
+			success:function(res){
+				if(res.ret == 1)
+				{
+					send_bao_notify(res);
+					//send_bao_notify
+					//show_or(res);
+				}
+			}
+		})
+	}
+	function checknoticeorder()
+	{
+		if(jarray.length >0)
+		{
+			var res  = jarray.pop();
+			show_or(res);
+		}
+	}
+	function show_or(res)
+	{
+		$('#ws-for-push').attr('onclick', "location.href='"+res.order_url+"';");
+		$('#ws-for-avatar').attr('src', res.avatar);
+		
+		$('#ws-for-name').html(res.username);
+		$('#ws-for-miao').html('，'+res.miao+'秒前');
+		
+		
+		$('#ws-for-push').removeClass('pin_tips_fadeOut');
+		$('#ws-for-push').addClass('pin_tips_fadeIn');
+		
+		clearTimeout(t);
+		t=setTimeout(hidenoticeorder,2000);
+		
+		//t=setTimeout("timedCount()",1000)
+		//clearTimeout(t)
+	}
+	function hidenoticeorder()
+	{
+		$('#ws-for-push').removeClass('pin_tips_fadeIn');
+		$('#ws-for-push').addClass('pin_tips_fadeOut');
+		clearTimeout(t);
+		t=setTimeout("shownoticeorder()",3000);
+		
+	}
+</script>

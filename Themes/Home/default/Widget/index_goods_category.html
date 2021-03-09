@@ -1,0 +1,19 @@
+
+
+<div class="cf-container">
+	<ul class="cf-content" id="nav-bar">
+		<a href="{:U("Index/index")}">
+		<li class="cf-tab-item" >
+			<span <?php if(empty($gid)){ ?>class="cur-cf-tab"<?php } ?>>首页</span>
+		</li>
+		</a>
+		
+		<volist name='hot_list' id='cate'>	
+		<?php if(!empty($cate['name'])) { ?>
+		<li class="cf-tab-item" onclick="location.href='{:U('category/info',array('gid' => $cate['id']))}';">
+			<span <if condition="$gid eq $cate['id']" >class="cur-cf-tab"</if> >{$cate.name}</span>
+		</li>
+		<?php } ?>
+		</volist>	
+	</ul>
+</div>

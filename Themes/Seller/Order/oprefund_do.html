@@ -1,0 +1,37 @@
+<form class="form-horizontal form-validate" action="{:U('order/oprefund_do')}" method="post" enctype="multipart/form-data">
+	<input type='hidden' name='id' value='{$id}' />
+
+	<div class="modal-dialog">
+           <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">退款金额</h4>
+				 
+            </div>
+            <div class="modal-body" style = "padding: 10px;" >
+			        <?php $total = $item['total']+$item['shipping_fare']-$item['voucher_credit']-$item['fullreduction_money'];
+						  $score_for_money = $item['score_for_money'];
+						  $free_tongji = $total - $score_for_money;
+						  if($free_tongji < 0){
+							$free_tongji = 0;
+						  }
+					?>
+					<?php if( !empty( $score_for_money ) && $score_for_money > 0 ){ ?>
+					<p style="line-height:26px;font-size:13px;">积分抵扣：￥{$score_for_money}</p>
+					<?php } ?>
+					<p style="line-height:26px;font-size:13px;">最多退款：￥{$free_tongji}</p>		
+                    <div style="height:8px;"></div>
+					<input type="text" name="refund_money" placeholder="退款金额" value="{:round($free_tongji ,2)}" class="form-control" />
+					
+					<div style="height:8px;"></div>
+					<p style="line-height:26px;font-size:13px;">佣金：<span class="label label-success">{$commiss_state}</span></p>
+					<p style="line-height:26px;font-size:13px;">
+						备注：此操作会改变整个订单的状态。当佣金未结算前操作，全部佣金视为无效。当佣金发生结算后操作，将不再追回所有已发生结算的佣金。
+					</p>
+		   </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">提交</button>
+                <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            </div>
+        </div>
+</form>

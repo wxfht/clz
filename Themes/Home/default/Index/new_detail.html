@@ -1,0 +1,25 @@
+<extend name="Public:computerbase" />
+<block name="content">  
+<link rel="stylesheet" href="__PUBLIC__/pinduoduo/assets/css/help_1708eff81d63610afafa36201260924c.css">
+<style>
+.pdd-head .ph-tab{float:left;}
+.pdd-help-content{margin-top:1.2rem;}
+.pdd-help-content .pdd-help-nav-content{float:none;}
+</style>
+
+<div class="pdd-help-content">
+	<div class="pdd-help-nav-content">
+		<div class="title">
+			<div class="title-2">{$blog_info.title}</div>
+		</div>
+		<div class="content">
+			<div class="ul-content">
+				{$blog_content.content}
+			</div>
+		</div>
+	</div>
+</div>
+
+<include file="Public:foot_computer" />
+</block>
+

@@ -1,0 +1,157 @@
+<extend name="Public:base" />
+
+<block name="content">
+<div class="col-xs-12"> 
+    	<div class="panel panel-info">
+			<div class="panel-heading">筛选</div>
+			<form name="order_search"  method="get" >
+			    <div class="panel-body"> 
+			      <div class="col-xs-12 search-row">
+						<div class="col-sm-3">
+							<span class="form-label">所属商家：</span> 
+							<select name="seller_id" class="combox select_width">
+								<option value="0">-全部-</option>
+								<?php foreach($seller_list as $seller){ ?>
+								<option value="<?php echo $seller['s_id']; ?>"  <?php if(isset($post_data['seller_id']) && $post_data['seller_id'] == $seller['s_id']){ ?> selected <?php }?>><?php echo $seller['s_true_name']; ?></option>
+								<?php } ?>
+							</select> 
+						 </div>
+			       		<div class="col-sm-3">
+			        		<span class="form-label">开始时间：</span>
+			        		<input type="text" name="begin_time" value="<?php if(!empty($post_data['begin_time'])){ echo $post_data['begin_time']; } ?>" id="begin_time" class="datetimepicker data_input">
+			        	</div> 
+				       	<div class="col-sm-3">
+				       			<span class="form-label">结束时间：</span>
+				        		<input type="text" name="end_time" value="<?php  if(!empty($post_data['end_time'])){ echo $post_data['end_time']; } ?>" id="end_time" class="datetimepicker data_input">
+				        </div> 
+						<div class="col-sm-3"> 
+							 <input type="hidden" name="c" value="Balance" />
+							 <button type="submit" name="subtype"  value="search" class="btn btn-white btn-search"> <i class="icon-search"></i> 检 索 </button>
+						</div>
+			      </div>
+			  </div>
+			</form>
+		</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>											
+						<th>ID</th>
+						<th>卖家</th>
+						<th>可提现金额</th>			
+						<th>结算日期</th> 
+						<th>总金额</th>	
+						<th>结算金额</th>			
+						<th>扣除金额</th>			
+						<th>结算状态</th>
+						<th>收款银行</th>
+						<th>收款账号</th>
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+						<volist name="list" id="data" empty="$empty">
+						<tr>						
+							<td>{$data.bid}</td>
+							<td>
+								<?php echo $data['seller']['s_true_name']; ?>
+							</td>
+							<td>
+								<?php echo $seller_money_arr[$data['seller_id']]['money']; ?> 元
+							</td>
+							<td>
+								<?php echo date('Y-m-d H:i:s',$data['balance_time']); ?>
+							</td>
+							<td><?php echo $data['money']+$data['redusmoney']; ?>元</td>
+							<td>{$data.money}元</td>
+							<td>{$data.redusmoney}元</td>
+							<td>
+								<?php if($data['state'] == 0){ ?>
+									<span class="blue">商家未确认</span>
+								<?php }else if($data['state'] == 1){ ?>
+									<span class="red">商家已确认，平台准备审核</span>
+								<?php }else if($data['state'] == 2){ ?>
+								<span class="green">平台已确认，资金转入余额</span>
+								<?php } ?>
+							</td>
+							
+							<td>
+								<?php echo $data['seller']['s_cardname']; ?>
+							</td>
+							<td>
+								<?php echo $data['seller']['s_cardnumber']; ?>
+							</td>
+							<td>
+								<?php if($data['state'] == 1){ ?>
+								<a class="delete btn btn-xs btn-danger" href='{:U("Balance/suremoney",array("bid"=>$data["bid"]))}' >
+									<i class="icon-edit bigger-120">确认无误</i>
+								</a>
+								<?php } ?>
+								
+								<a  class="btn btn-xs btn-info" href='{:U("Balance/orderlook",array("bid"=>$data["bid"]))}'>
+									<i class="icon-edit bigger-120">查看结算详情</i>
+								</a> 
+							</td>
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+</block>
+
+<block name="javascript">
+<script src="__PUBLIC__/js/moment/moment.js"></script>
+<script src="__PUBLIC__/js/moment/locale/zh-cn.js"></script> 
+
+<script src="__PUBLIC__/js/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+
+<script>	
+
+$(function(){
+		$('#begin_time').datetimepicker({
+		 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+		 icons: {
+			time: 'btn btn-lg icon-time',
+			date: 'btn btn-lg icon-calendar',
+			up: 'fa icon-chevron-up',
+			down: 'fa icon-chevron-down',
+			previous: 'fa icon-chevron-left',
+			next: 'fa icon-chevron-right',
+			today: 'fa icon-arrows ',
+			clear: 'fa icon-trash',
+			close: 'fa icon-times'
+		 }
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		
+		$('#end_time').datetimepicker({
+			 format: 'YYYY/MM/DD H:mm:ss',//use this option to display seconds
+			 icons: {
+				time: 'btn btn-lg icon-time',
+				date: 'btn btn-lg icon-calendar',
+				up: 'fa icon-chevron-up',
+				down: 'fa icon-chevron-down',
+				previous: 'fa icon-chevron-left',
+				next: 'fa icon-chevron-right',
+				today: 'fa icon-arrows ',
+				clear: 'fa icon-trash',
+				close: 'fa icon-times'
+			 }
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+})
+</script>
+</block>

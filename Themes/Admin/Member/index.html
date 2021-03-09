@@ -1,0 +1,130 @@
+<extend name="Public:base" />
+
+<block name="content">
+	
+<div class="page-header">
+	
+</div>		
+	
+<table class="table table-striped table-bordered table-hover search-form">
+	<thead>
+		<th><input name="name" type="text" placeholder="输入用户名" value="{:I('name')}" /></th>
+		<th><input name="tel" type="text" placeholder="输入手机号码" value="{:I('tel')}" /></th>
+		<th>
+			<a class="btn btn-primary" href="javascript:;" id="search" url="{:U('Member/index')}">查询</a>
+			
+			<button type="submit" name="subtype" id="export" url="{:U('Member/export')}" class="btn btn-white btn-exp"> <i class="icon-cloud-upload"></i> 导 出 </button> 
+			
+		</th>
+	</thead>
+</table>	
+	
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>											
+						<th>用户名</th>
+						<th>手机号码</th>  
+						<th>是否分销</th>
+						<th>上级</th>
+						<th>创建时间</th>
+						<th>最后登录</th>
+						<th>状态</th>
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+						<volist name="list" id="m" empty="$empty">
+						<tr>							
+							<td>{$m.uname}</td>
+							<td>{$m.telephone}</td>
+							<td>
+								<?php if($m['comsiss_flag'] == 1){ ?>
+								<span class="red">分销商</span>
+								<?php 
+								}else{ ?>
+								普通会员
+								<?php } ?>
+							</td>
+							<td>
+								<?php if($m['share_id'] == 0){ ?>
+									平台推荐
+								<?php }else { ?>
+									<?php $member_info = M('member')->field('name')->where( array('member_id' => $m['share_id']) )->find(); ?>
+									<span class="blue"><?php echo $member_info['name']; ?></span>
+								<?php } ?>
+							</td>
+							
+							<td><?php echo empty($m['create_time'])?'无':date('Y-m-d H:i:s',$m['create_time']); ?></td>
+							
+							<td><?php echo empty($m['last_login_time'])?'无':date('Y-m-d H:i:s',$m['last_login_time']); ?></td>
+							<td>
+								<?php
+								switch($m['status']){
+									case '1':
+									echo '<span class="green bold">启用</span>';
+									break;
+									case '0':
+									echo '<span class="red bold">禁用</span>';
+									break;
+								}
+								?>
+							</td>
+							<td>
+								<a  class="btn btn-xs btn-info" href='{:U("Member/info",array("id"=>$m["member_id"]))}'>
+									<i class="icon-eye-open bigger-120"></i>查看详情
+								</a> 
+								<?php if($m['comsiss_flag'] == 0){ ?>
+								<a class="delete btn btn-xs btn-danger" href='{:U("Member/fencommiss",array("id"=>$m["member_id"]))}' >
+									升级为分销商
+								</a>
+								<?php } ?>
+							</td>
+						</tr>
+						</volist>	
+						
+						<tr>
+							<td colspan="20" class="page">{$page}</td>
+						</tr>
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+</block>
+<block name="javascript">
+<script>
+$(function(){
+	$("#export").click(function(){
+		 var url = $(this).attr('url');
+        var query = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.open(url);
+	})
+	
+	$("#search").click(function () {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });
+	
+	
+});		
+</script>
+</block>
