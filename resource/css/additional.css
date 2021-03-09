@@ -1,0 +1,13 @@
+.modify_money{
+    margin-left: 55px;
+    margin-top: 20px;
+    font-size: 16px;
+    margin-bottom: 25px;
+
+}
+.modify_money p{
+    margin-top: 15px;
+}
+.modify_money p input{
+    margin-left: 10px;
+}
