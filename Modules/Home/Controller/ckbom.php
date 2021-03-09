@@ -1,0 +1,3 @@
+<?php  
+$str = '{"code":0,"data":[{"id":"6","name":"\u5bb6\u5c45","c_sort_order":"0"},{"id":"10","name":"\u5bb6\u5c45\u751f\u6d3b","c_sort_order":"0"},{"id":"8","name":"\u6bcd\u5a74","c_sort_order":"0"},{"id":"9","name":"\u670d\u9970\u7bb1\u5305","c_sort_order":"0"},{"id":"28","name":"\u98df\u54c1\u98df\u54c1","c_sort_order":"0"},{"id":"31","name":"\u6570\u7801\u7535\u5668","c_sort_order":"0"}]}';
+echo $str;
